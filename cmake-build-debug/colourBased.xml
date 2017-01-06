@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<opencv_storage>
-<minHue>0</minHue>
-<maxHue>4</maxHue>
-<minSaturation>246</minSaturation>
-<maxSaturation>255</maxSaturation>
-<minValue>0</minValue>
-<maxValue>255</maxValue>
-</opencv_storage>
