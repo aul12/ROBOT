@@ -31,7 +31,12 @@ namespace cnny{
 
     Mat run(Mat imgOriginal){
         Mat imgBW, imgCanny, imgCannyContours;
-        cvtColor(imgOriginal, imgBW, CV_BGR2GRAY);
+        //cvtColor(imgOriginal, imgBW, CV_BGR2GRAY);
+        Mat planes[3];
+        split(imgOriginal,planes);  // planes[2] is the red channel
+        imgBW = planes[2];
+        blur(imgBW, imgBW, Size(3,3), Point(-1, -1));
+
         Canny(imgBW, imgCanny, threshold, 3*threshold, 3);
 
         std::vector<std::vector<Point>> contourPoints;
@@ -42,20 +47,21 @@ namespace cnny{
 
         imgCannyContours = Mat::zeros(imgOriginal.size(), CV_8UC3);
 
+        cvtColor(imgBW, imgBW, COLOR_GRAY2BGR);
+
         std::cout <<  std::endl << std::endl;
         for( int i = 0; i< contourPoints.size(); i++ )
         {
             std::cout << "Obj: " << i << std::endl;
 
-
             if(crclfnd::isCircle(contourPoints[i])){
-                drawContours(imgCannyContours, contourPoints, i, Scalar(0, 255, 0), 1, 8, hierarchy, 0, Point());
+                drawContours(imgBW, contourPoints, i, Scalar(0, 255, 0), 2, 8, hierarchy, 0, Point());
             }else {
-                drawContours(imgCannyContours, contourPoints, i, Scalar(0, 0, 255), 1, 8, hierarchy, 0, Point());
+                drawContours(imgBW, contourPoints, i, Scalar(0, 0, 255), 1, 8, hierarchy, 0, Point());
             }
         }
 
-        return imgCannyContours;
+        return imgBW;
     }
 }
 

@@ -74,3 +74,19 @@ bool Line::existsIntersection(Line line) {
     return !((this->isVertical() && line.isVertical()) || this->getGradient() == line.getGradient());
 }
 
+int Line::getAngleDegree() {
+    //@TODO not tested
+    if(this->isVertical()){
+        if(p2.y > p1.y)
+            return 90;
+        else
+            return -90;
+    }else{
+        return (int)(atan2(p2.y - p1.y, p2.x - p1.x) * 180 / M_PI);
+    }
+
+}
+
+int Line::getDistPoints() {
+    return (int)sqrt((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y));
+}

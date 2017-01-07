@@ -3,8 +3,6 @@
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/opencv.hpp"
 
-#include "CurvedLine.hpp"
-
 #include "ColourBased.hpp"
 #include "Canny.hpp"
 #include "HoughCircle.hpp"

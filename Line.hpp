@@ -20,6 +20,8 @@ class Line {
         Point getIntersection(Line line);
         int getY(int x);
         int getC();
+        int getAngleDegree();
+        int getDistPoints();
     private:
         Point p1, p2;
         bool isVertical();

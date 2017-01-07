@@ -14,9 +14,11 @@ using namespace cv;
 //Östereicher werden restlos erkannt
 namespace crclfnd{
     int minimumPoints = 10; // < Empfindlicher
+    double cos45 = 0.707106781186547524400;
+    int maxRadius = 500;
     int distanceThreshold = SQ(50);  // < Empfindlicher
-    int circleCenterDistanceThreshold = SQ(250); // > Empfindlicher
-    int deltaRadiusThreshold = SQ(200);     // > Empfindlicher
+    int circleCenterDistanceThreshold = SQ(25); // > Empfindlicher
+    double radiusRatioThreshold = 0.1;
 
     int sqDistance(Point p1, Point p2){
         return (p2.x - p1.x)*(p2.x - p1.x) + (p2.y - p1.y)*(p2.y - p1.y);
@@ -33,6 +35,13 @@ namespace crclfnd{
         return Point(x, y);
     }
 
+    int getPointDistance(Point check, Point p1, Point p2){
+        int dist1 = (int)sqrt(sqDistance(check, p1));
+        int dist2 = (int)sqrt(sqDistance(check, p2));
+
+        return dist1+dist2;
+    }
+
     bool isCircle(std::vector<Point> points){
         //Zu wenig Punkte für Kreis
         if(points.size() < minimumPoints)
@@ -43,9 +52,9 @@ namespace crclfnd{
         //Drei Punkte suchen
         Point triangle[3];
         triangle[0] = points[0];
-        bool p2Found = false, p3Found = false;
+        bool p2Found = false;
         for(int c=1; c<points.size(); c++){
-            if(sqDistance(triangle[0], points[c]) > distanceThreshold){
+            if(sqDistance(triangle[0], points[c]) > distanceThreshold ){
                 triangle[1] = points[c];
                 p2Found = true;
                 break;
@@ -55,20 +64,22 @@ namespace crclfnd{
         if(!p2Found)
             return false;
 
-        for(int c=1; c<points.size(); c++){
-            if(sqDistance(triangle[0], points[c])>distanceThreshold && sqDistance(triangle[1], points[c])>distanceThreshold) {
-                triangle[2] = points[c];
-                p3Found = true;
-                break;
+        int maxDist = 0;
+        int maxInd = 1;
+        for(int c=2; c<points.size(); c++){
+            int dist = getPointDistance(points[c], triangle[0], triangle[1]);
+            if(dist > maxDist){
+                maxDist = dist;
+                maxInd = c;
             }
         }
-
-        if(!p3Found)
+        if(SQ(maxDist) < distanceThreshold)
             return false;
+
+        triangle[2] = points[maxInd];
 
         std::cout << "Drei Punkte gefunden" << std::endl;
 
-        //Mittelpunkte berechnen
         Point lineCenter[] = {getMiddle(triangle[0], triangle[1]),
                               getMiddle(triangle[0], triangle[2]),
                               getMiddle(triangle[1], triangle[2])};
@@ -76,6 +87,27 @@ namespace crclfnd{
                                 Line(triangle[0], triangle[2]),
                                 Line(triangle[1], triangle[2])};
 
+        // Dreieck überprüfen
+        std::vector<int> lineLengths;
+        for(int c=0; c<3; c++){
+            lineLengths.push_back(triangleLines[c].getDistPoints());
+            if(lineLengths[c] > lineLengths[0]){
+                int temp = lineLengths[c];
+                lineLengths[c] = lineLengths[0];
+                lineLengths[0] = temp;
+            }
+        }
+
+        int cosAlpha = (int)((SQ(lineLengths[1]) - SQ(lineLengths[0]) - SQ(lineLengths[2]))
+                           / (-2.0*lineLengths[0]*lineLengths[2]));
+        int cosBeta = (int)((SQ(lineLengths[2]) - SQ(lineLengths[1]) - SQ(lineLengths[0]))
+                          / (-2.0 * lineLengths[0] * lineLengths[1]));
+
+        if(cosAlpha > cos45|| cosBeta > cos45)
+            return false;
+
+
+        //Mittelpunkte berechnen
         std::vector<Line> invertedTriangleLines;
 
         for(int c=0;c<3;c++){
@@ -114,10 +146,22 @@ namespace crclfnd{
             radius += sqDistance(triangle[c], circleCenter);
         }
         radius /= 3;
+        radius = (int)sqrt(radius);
+
+        // Zu große Radien testen
+        if(radius > maxRadius)
+            return false;
+
+        int minRadius = (int)(radius * (1 - radiusRatioThreshold));
+        int maxRadius = (int)(radius * (1 + radiusRatioThreshold));
 
         // Alle Kreispunkte testen
         for(int c=0; c<points.size(); c++){
-            if(abs(sqDistance(circleCenter, points[c])-radius) > deltaRadiusThreshold)
+            /*if(abs(sqrt(sqDistance(circleCenter, points[c]))-radius) > deltaRadiusThreshold)
+                return false;*/
+            int currRadius = (int)sqrt(sqDistance(circleCenter, points[c]));
+
+            if(currRadius < minRadius || currRadius > maxRadius)
                 return false;
         }
 
