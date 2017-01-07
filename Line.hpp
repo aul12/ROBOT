@@ -1,7 +1,7 @@
-//
-// Created by paul on 05.01.17.
-//
-
+/**
+ * @file Line.hpp
+ * @author Paul Nykiel, Tim Luchterhand
+ */
 #ifndef ORANGEBALL_LINE_HPP
 #define ORANGEBALL_LINE_HPP
 
@@ -20,7 +20,6 @@ class Line {
         Point getIntersection(Line line);
         int getY(int x);
         int getC();
-        int getAngleDegree();
         int getDistPoints();
     private:
         Point p1, p2;

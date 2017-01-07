@@ -1,24 +1,35 @@
-//
-// Created by paul on 05.01.17.
-//
-
+/**
+ * @file Line.cpp
+ * @author Paul Nykiel, Tim Luchterhand
+ */
 #include <cmath>
 #include "Line.hpp"
 
+/**
+ * Constructor: define a Line through two points
+ * @param p1 the first point the line should go through
+ * @param p2 the second point the line should go through
+ */
 Line::Line(Point p1, Point p2) {
     this->p1 = p1;
     this->p2 = p2;
 }
 
+/**
+ * Constructor: define a Line through a point and a gradient
+ * @param p the point the line should go through
+ * @param m the gradient of the line
+ */
 Line::Line(Point p, double m) {
     this->p1 = p;
-    //@TODO -> nicht schön!
-    /*if(abs(m) > 1000)
-        this->p2 = Point(p.x, p.y+1);
-    else*/
-        this->p2 = Point(p.x + 128, p.y + (int)(m*128));
+    this->p2 = Point(p.x + 128, p.y + (int)(m*128));
 }
 
+/**
+ * Get the line in 90deg angle to the Line
+ * @param p the point the line should go through
+ * @return a new Line which intersects the Line in the given point
+ */
 Line Line::getInverted(Point p) {
     if(isVertical()){
         return Line(p, Point(p.x + 1, p.y));
@@ -29,6 +40,7 @@ Line Line::getInverted(Point p) {
     }
 }
 
+
 bool Line::isVertical() {
     return p1.x == p2.x;
 }
@@ -37,6 +49,10 @@ bool Line::isHorizontal() {
     return p1.y == p2.y;
 }
 
+/**
+ * Get the current gradient of the line (dx/dy)
+ * @return the gradient of the line, return NAN if the line is vertical (-> gradient is infinity)
+ */
 double Line::getGradient() {
     //@TODO nicht schön
     if(isVertical())
@@ -45,7 +61,11 @@ double Line::getGradient() {
         return (p2.y-p1.y)/(double)(p1.x-p2.x);
 }
 
-
+/**
+ * Get the intersection of the current line with the given line, always check existsIntersection before!
+ * @param line the current line should check the intersection with
+ * @return the point both lines are intersecting
+ */
 Point Line::getIntersection(Line line) {
     if(this->isVertical()){
         return Point(this->p1.x, line.getY(this->p1.x));
@@ -57,6 +77,11 @@ Point Line::getIntersection(Line line) {
     }
 }
 
+/**
+ * Get the y value of the line at a certain x position
+ * @param x the x value the y value should be calculated
+ * @return the y value of the line, or -1 if the line is vertical
+ */
 int Line::getY(int x) {
     //@TODO potenzielle Fehlerquelle
     if(this->isVertical())
@@ -65,28 +90,27 @@ int Line::getY(int x) {
         return (int)(this->p1.y + (x - this->p1.x) * getGradient());
 }
 
+/**
+ * Get the Y value at x=0
+ * @return the y value of the line at x=0
+ */
 int Line::getC() {
     return getY(0);
 }
 
+/**
+ * Check if an intersection between two lines exists
+ * @param line the second line
+ * @return a boolean which is true if there is a well-defined intersection
+ */
 bool Line::existsIntersection(Line line) {
-    //Kein wohldefinierter Schnittpunkt
     return !((this->isVertical() && line.isVertical()) || this->getGradient() == line.getGradient());
 }
 
-int Line::getAngleDegree() {
-    //@TODO not tested
-    if(this->isVertical()){
-        if(p2.y > p1.y)
-            return 90;
-        else
-            return -90;
-    }else{
-        return (int)(atan2(p2.y - p1.y, p2.x - p1.x) * 180 / M_PI);
-    }
-
-}
-
+/**
+ * Get the distance of the two points which define the line (similar to a normal abs function of a line with limited length)
+ * @return the distance of both points which were used to define the line
+ */
 int Line::getDistPoints() {
     return (int)sqrt((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y));
 }

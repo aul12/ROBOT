@@ -1,6 +1,7 @@
-//
-// Created by paul on 05.01.17.
-//
+/**
+ * @file CircleFinder.hpp
+ * @authors Paul Nykiel, Tim Luchterhand
+ */
 
 #ifndef ORANGEBALL_CIRCLEFINDER_HPP
 #define ORANGEBALL_CIRCLEFINDER_HPP
@@ -13,7 +14,7 @@ using namespace cv;
 
 //Östereicher werden restlos erkannt
 namespace crclfnd{
-    int minimumPoints = 10; // < Empfindlicher
+    int minimumPoints = 10; ///<Minimum Points required for a form to be allowed as a circle
     double cos45 = 0.707106781186547524400;
     int maxRadius = 500;
     int distanceThreshold = SQ(50);  // < Empfindlicher

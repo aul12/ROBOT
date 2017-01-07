@@ -5,7 +5,9 @@ find_package(Doxygen)
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 
 if(DOXYGEN_FOUND)
-
+            add_custom_target(doxyDoc COMMAND ${DOXYGEN_EXECUTABLE} "${CMAKE_SOURCE_DIR}/doxygen.config"
+                WORKING_DIRECTORY ${CMAKE_HOME_DIRECTORY} COMMENT "Building user's documentation into doxyDoc build dir..."
+            )
 endif(DOXYGEN_FOUND)
 
 set(CMAKE_CXX_STANDARD 11)

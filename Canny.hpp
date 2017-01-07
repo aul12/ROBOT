@@ -1,3 +1,8 @@
+/**
+ * @file Canny.hpp
+ * @author Paul Nykiel, Tim Luchterhand
+ */
+
 #ifndef ORANGEBALL_CANNY_HPP
 #define ORANGEBALL_CANNY_HPP
 

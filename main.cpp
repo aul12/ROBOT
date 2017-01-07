@@ -1,3 +1,9 @@
+/**
+ * @file main.cpp
+ * @authors Paul Nykiel, Tim Luchterhand
+ * @brief Main file
+ */
+
 #include <iostream>
 #include <thread>
 #include "opencv2/highgui/highgui.hpp"
@@ -9,6 +15,12 @@
 
 Mat imgOriginal;
 
+/**
+ * Event emitted when clicked on the main window
+ * @param event the event type (button...)
+ * @param x the x Position of the mouse event
+ * @param y the y Position of the mouse event
+ */
 void onMouseOriginalClick( int event, int x, int y, int, void*){
     if( event != EVENT_LBUTTONDOWN )
         return;
@@ -21,6 +33,10 @@ void onMouseOriginalClick( int event, int x, int y, int, void*){
     std::cout << (int)pixel[0] << " " << (int)pixel[1] << " " << (int)pixel[2] << std::endl;
 }
 
+/**
+ * Main function
+ * @return exit code
+ */
 int main(){
     VideoCapture cap(1);
 

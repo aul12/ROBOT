@@ -1,3 +1,8 @@
+/**
+ * @file ColourBased.hpp
+ * @author Paul Nykiel, Tim Luchterhand
+ */
+
 #ifndef ORANGEBALL_COLOURBASED_HPP
 #define ORANGEBALL_COLOURBASED_HPP
 using namespace cv;

@@ -1,0 +1,155 @@
+\hypertarget{classLine}{}\section{Line Class Reference}
+\label{classLine}\index{Line@{Line}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classLine_afeaa676c7d249d582c5766dc732a78e2}{Line} (Point p1, Point p2)
+\item 
+\hyperlink{classLine_ae803f230922e370616841c934948d6de}{Line} (Point p, double m)
+\item 
+\hyperlink{classLine}{Line} \hyperlink{classLine_a4cfed9ec6c5f078db5fe45b7df201c0c}{get\+Inverted} (Point p)
+\item 
+double \hyperlink{classLine_a872b756c94ed478d05e430ebb436b116}{get\+Gradient} ()
+\item 
+bool \hyperlink{classLine_aabb022cbf0d8b18e011058c43d1b8290}{exists\+Intersection} (\hyperlink{classLine}{Line} line)
+\item 
+Point \hyperlink{classLine_abe8bb540dbdd9376eed3ba29f9beee51}{get\+Intersection} (\hyperlink{classLine}{Line} line)
+\item 
+int \hyperlink{classLine_abc0b1133b03c85072b1ca7d3f650915b}{getY} (int x)
+\item 
+int \hyperlink{classLine_a16167c02532f44bcba31a5c158629a56}{getC} ()
+\item 
+int \hyperlink{classLine_ae82bab13355161079a09e2fcd1b4fc1c}{get\+Dist\+Points} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Line@{Line}!Line@{Line}}
+\index{Line@{Line}!Line@{Line}}
+\subsubsection[{\texorpdfstring{Line(\+Point p1, Point p2)}{Line(Point p1, Point p2)}}]{\setlength{\rightskip}{0pt plus 5cm}Line\+::\+Line (
+\begin{DoxyParamCaption}
+\item[{Point}]{p1, }
+\item[{Point}]{p2}
+\end{DoxyParamCaption}
+)}\hypertarget{classLine_afeaa676c7d249d582c5766dc732a78e2}{}\label{classLine_afeaa676c7d249d582c5766dc732a78e2}
+Constructor\+: define a \hyperlink{classLine}{Line} through two points 
+\begin{DoxyParams}{Parameters}
+{\em p1} & the first point the line should go through \\
+\hline
+{\em p2} & the second point the line should go through \\
+\hline
+\end{DoxyParams}
+\index{Line@{Line}!Line@{Line}}
+\index{Line@{Line}!Line@{Line}}
+\subsubsection[{\texorpdfstring{Line(\+Point p, double m)}{Line(Point p, double m)}}]{\setlength{\rightskip}{0pt plus 5cm}Line\+::\+Line (
+\begin{DoxyParamCaption}
+\item[{Point}]{p, }
+\item[{double}]{m}
+\end{DoxyParamCaption}
+)}\hypertarget{classLine_ae803f230922e370616841c934948d6de}{}\label{classLine_ae803f230922e370616841c934948d6de}
+Constructor\+: define a \hyperlink{classLine}{Line} through a point and a gradient 
+\begin{DoxyParams}{Parameters}
+{\em p} & the point the line should go through \\
+\hline
+{\em m} & the gradient of the line \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\index{Line@{Line}!exists\+Intersection@{exists\+Intersection}}
+\index{exists\+Intersection@{exists\+Intersection}!Line@{Line}}
+\subsubsection[{\texorpdfstring{exists\+Intersection(\+Line line)}{existsIntersection(Line line)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Line\+::exists\+Intersection (
+\begin{DoxyParamCaption}
+\item[{{\bf Line}}]{line}
+\end{DoxyParamCaption}
+)}\hypertarget{classLine_aabb022cbf0d8b18e011058c43d1b8290}{}\label{classLine_aabb022cbf0d8b18e011058c43d1b8290}
+Check if an intersection between two lines exists 
+\begin{DoxyParams}{Parameters}
+{\em line} & the second line \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a boolean which is true if there is a well-\/defined intersection 
+\end{DoxyReturn}
+\index{Line@{Line}!getC@{getC}}
+\index{getC@{getC}!Line@{Line}}
+\subsubsection[{\texorpdfstring{get\+C()}{getC()}}]{\setlength{\rightskip}{0pt plus 5cm}int Line\+::getC (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classLine_a16167c02532f44bcba31a5c158629a56}{}\label{classLine_a16167c02532f44bcba31a5c158629a56}
+Get the Y value at x=0 \begin{DoxyReturn}{Returns}
+the y value of the line at x=0 
+\end{DoxyReturn}
+\index{Line@{Line}!get\+Dist\+Points@{get\+Dist\+Points}}
+\index{get\+Dist\+Points@{get\+Dist\+Points}!Line@{Line}}
+\subsubsection[{\texorpdfstring{get\+Dist\+Points()}{getDistPoints()}}]{\setlength{\rightskip}{0pt plus 5cm}int Line\+::get\+Dist\+Points (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classLine_ae82bab13355161079a09e2fcd1b4fc1c}{}\label{classLine_ae82bab13355161079a09e2fcd1b4fc1c}
+Get the distance of the two points which define the line (similar to a normal abs function of a line with limited length) \begin{DoxyReturn}{Returns}
+the distance of both points which were used to define the line 
+\end{DoxyReturn}
+\index{Line@{Line}!get\+Gradient@{get\+Gradient}}
+\index{get\+Gradient@{get\+Gradient}!Line@{Line}}
+\subsubsection[{\texorpdfstring{get\+Gradient()}{getGradient()}}]{\setlength{\rightskip}{0pt plus 5cm}double Line\+::get\+Gradient (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classLine_a872b756c94ed478d05e430ebb436b116}{}\label{classLine_a872b756c94ed478d05e430ebb436b116}
+Get the current gradient of the line (dx/dy) \begin{DoxyReturn}{Returns}
+the gradient of the line, return N\+AN if the line is vertical (-\/$>$ gradient is infinity) 
+\end{DoxyReturn}
+\index{Line@{Line}!get\+Intersection@{get\+Intersection}}
+\index{get\+Intersection@{get\+Intersection}!Line@{Line}}
+\subsubsection[{\texorpdfstring{get\+Intersection(\+Line line)}{getIntersection(Line line)}}]{\setlength{\rightskip}{0pt plus 5cm}Point Line\+::get\+Intersection (
+\begin{DoxyParamCaption}
+\item[{{\bf Line}}]{line}
+\end{DoxyParamCaption}
+)}\hypertarget{classLine_abe8bb540dbdd9376eed3ba29f9beee51}{}\label{classLine_abe8bb540dbdd9376eed3ba29f9beee51}
+Get the intersection of the current line with the given line, always check exists\+Intersection before! 
+\begin{DoxyParams}{Parameters}
+{\em line} & the current line should check the intersection with \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the point both lines are intersecting 
+\end{DoxyReturn}
+\index{Line@{Line}!get\+Inverted@{get\+Inverted}}
+\index{get\+Inverted@{get\+Inverted}!Line@{Line}}
+\subsubsection[{\texorpdfstring{get\+Inverted(\+Point p)}{getInverted(Point p)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Line} Line\+::get\+Inverted (
+\begin{DoxyParamCaption}
+\item[{Point}]{p}
+\end{DoxyParamCaption}
+)}\hypertarget{classLine_a4cfed9ec6c5f078db5fe45b7df201c0c}{}\label{classLine_a4cfed9ec6c5f078db5fe45b7df201c0c}
+Get the line in 90deg angle to the \hyperlink{classLine}{Line} 
+\begin{DoxyParams}{Parameters}
+{\em p} & the point the line should go through \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a new \hyperlink{classLine}{Line} which intersects the \hyperlink{classLine}{Line} in the given point 
+\end{DoxyReturn}
+\index{Line@{Line}!getY@{getY}}
+\index{getY@{getY}!Line@{Line}}
+\subsubsection[{\texorpdfstring{get\+Y(int x)}{getY(int x)}}]{\setlength{\rightskip}{0pt plus 5cm}int Line\+::getY (
+\begin{DoxyParamCaption}
+\item[{int}]{x}
+\end{DoxyParamCaption}
+)}\hypertarget{classLine_abc0b1133b03c85072b1ca7d3f650915b}{}\label{classLine_abc0b1133b03c85072b1ca7d3f650915b}
+Get the y value of the line at a certain x position 
+\begin{DoxyParams}{Parameters}
+{\em x} & the x value the y value should be calculated \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the y value of the line, or -\/1 if the line is vertical 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{Line_8hpp}{Line.\+hpp}\item 
+\hyperlink{Line_8cpp}{Line.\+cpp}\end{DoxyCompactItemize}
