@@ -1,17 +1,17 @@
 cmake_minimum_required(VERSION 3.6)
 project(OrangeBall)
 find_package( OpenCV REQUIRED )
-find_package(Doxygen)
 include_directories( ${OpenCV_INCLUDE_DIRS} )
+set(CMAKE_CXX_STANDARD 11)
+set(SOURCE_FILES main.cpp ColourBased.hpp Canny.hpp CircleFinder.hpp Line.cpp Line.hpp CircleFinderResult.cpp CircleFinderResult.hpp tests/gtest.cpp)
+add_executable(OrangeBall ${SOURCE_FILES})
+target_link_libraries( OrangeBall ${OpenCV_LIBS}  -lpthread)
 
+find_package(Doxygen)
 if(DOXYGEN_FOUND)
-            add_custom_target(doxyDoc COMMAND ${DOXYGEN_EXECUTABLE} "${CMAKE_SOURCE_DIR}/doxygen.config"
-                WORKING_DIRECTORY ${CMAKE_HOME_DIRECTORY} COMMENT "Building user's documentation into doxyDoc build dir..."
+    add_custom_target(doxyDoc COMMAND ${DOXYGEN_EXECUTABLE} "${CMAKE_SOURCE_DIR}/doxygen.config"
+            WORKING_DIRECTORY ${CMAKE_HOME_DIRECTORY} COMMENT "Building user's documentation into doxyDoc build dir..."
             )
 endif(DOXYGEN_FOUND)
 
-set(CMAKE_CXX_STANDARD 11)
-
-set(SOURCE_FILES main.cpp ColourBased.hpp Canny.hpp HoughCircle.hpp CircleFinder.hpp Line.cpp Line.hpp CircleFinderResult.cpp CircleFinderResult.hpp)
-add_executable(OrangeBall ${SOURCE_FILES})
-target_link_libraries( OrangeBall ${OpenCV_LIBS}  -lpthread)
+add_subdirectory(tests)
