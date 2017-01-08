@@ -6,6 +6,7 @@
 #ifndef ORANGEBALL_CANNY_HPP
 #define ORANGEBALL_CANNY_HPP
 
+#include "Line.hpp"
 #include "CircleFinder.hpp"
 
 using namespace cv;

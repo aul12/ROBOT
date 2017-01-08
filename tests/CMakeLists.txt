@@ -7,7 +7,9 @@ enable_testing()
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIR})
 
-add_executable(runUnitTests gtest.cpp ${test_SRCS})
+set(SOURCE_FILES ../ColourBased.hpp ../Canny.hpp ../CircleFinder.hpp ../Line.cpp ../Line.hpp ../CircleFinderResult.cpp ../CircleFinderResult.hpp)
+
+add_executable(runUnitTests gtest.cpp ${test_SRCS} ${SOURCE_FILES})
 
 target_link_libraries(runUnitTests ${GTEST_LIBS} -lgtest -lpthread)
 

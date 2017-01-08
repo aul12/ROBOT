@@ -1,7 +1,16 @@
 #include "gtest/gtest.h"
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/opencv.hpp"
 
-TEST(testTest, testTest2){
-    EXPECT_EQ(2, 2);
+#include "../CircleFinder.hpp"
+
+
+bool crclfnd::isCircle(std::vector<Point> points);
+
+std::vector<Point> testPoints = {Point(0,0)};
+
+TEST(isCircleTest, toLessPoints){
+    EXPECT_FALSE(crclfnd::isCircle(testPoints));
 }
 
 int main(int argc, char **argv) {
