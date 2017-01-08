@@ -15,7 +15,7 @@ using namespace cv;
 //Östereicher werden restlos erkannt
 namespace crclfnd{
     int minimumPoints = 10; ///<Minimum Points required for a form to be allowed as a circle
-    double cos45 = 0.707106781186547524400;
+    double cos45 = 0.707106781186547524400; ///<
     int maxRadius = 500;
     int distanceThreshold = SQ(50);  // < Empfindlicher
     int circleCenterDistanceThreshold = SQ(25); // > Empfindlicher

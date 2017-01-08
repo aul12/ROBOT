@@ -11,7 +11,6 @@
 
 #include "ColourBased.hpp"
 #include "Canny.hpp"
-#include "HoughCircle.hpp"
 
 Mat imgOriginal;
 
@@ -38,7 +37,7 @@ void onMouseOriginalClick( int event, int x, int y, int, void*){
  * @return exit code
  */
 int main(){
-    VideoCapture cap(1);
+    VideoCapture cap(0);
 
     if (!cap.isOpened()){
         std::cout << "Webcam nicht verfügbar, greift ein anderes Programm auf die Webcam zu?" << std::endl;
@@ -47,7 +46,6 @@ int main(){
 
     clr::init();
     cnny::init();
-    hghc::init();
 
     while(true){
         if (!cap.read(imgOriginal))
@@ -59,12 +57,10 @@ int main(){
 
         //clr::show(clr::run(imgOriginal));
         cnny::show(cnny::run(imgOriginal));
-        //hghc::show(hghc::run(imgOriginal));
 
         if (waitKey(30) == 27){
             clr::close();
             cnny::close();
-            hghc::close();
             return 0;
         }
     }
