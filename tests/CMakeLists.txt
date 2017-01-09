@@ -9,11 +9,11 @@ include_directories(${GTEST_INCLUDE_DIR})
 
 set(SOURCE_FILES ../ColourBased.hpp ../Canny.hpp ../CircleFinder.hpp ../Line.cpp ../Line.hpp ../CircleFinderResult.cpp ../CircleFinderResult.hpp)
 
-add_executable(runUnitTests gtest.cpp ${test_SRCS} ${SOURCE_FILES})
+add_executable(RunUnitTests gtest.cpp ${test_SRCS} ${SOURCE_FILES})
 
-target_link_libraries(runUnitTests ${GTEST_LIBS} -lgtest -lpthread)
+target_link_libraries(RunUnitTests ${GTEST_LIBS} -lgtest -lpthread)
 
 add_test(
-        NAME runUnitTests
-        COMMAND runUnitTests
+        NAME RunUnitTests
+        COMMAND RunUnitTests
 )

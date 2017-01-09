@@ -5,12 +5,24 @@
 #include "../CircleFinder.hpp"
 
 
-bool crclfnd::isCircle(std::vector<Point> points);
-
-std::vector<Point> testPoints = {Point(0,0)};
-
 TEST(isCircleTest, toLessPoints){
-    EXPECT_FALSE(crclfnd::isCircle(testPoints));
+    EXPECT_FALSE(crclfnd::isCircle({Point(0,0)}));
+    EXPECT_FALSE(crclfnd::isCircle({Point(0,0), Point(0,0)}));
+}
+
+TEST(isCircleTest, noMatchingPoints){
+    EXPECT_FALSE(crclfnd::isCircle({
+        Point(0,0),
+        Point(0,0),
+        Point(0,0),
+        Point(0,0),
+        Point(0,0),
+        Point(0,0),
+        Point(0,0),
+        Point(0,0),
+        Point(0,0),
+        Point(0,0)
+    }));
 }
 
 int main(int argc, char **argv) {
