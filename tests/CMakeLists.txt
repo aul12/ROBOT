@@ -11,9 +11,9 @@ find_package( OpenCV REQUIRED )
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES ../ColourBased.hpp ../Canny.hpp ../CircleFinder.hpp ../Line.cpp ../Line.hpp ../CircleFinderResult.cpp ../CircleFinderResult.hpp)
+set(SOURCE_FILES ../ColourBased.hpp ../Canny.hpp ../CircleFinder.hpp ../Line.cpp ../Line.hpp ../CircleFinderResult.cpp ../CircleFinderResult.hpp IsCircleTest/ToFewPoints.h IsCircleTest/NoMatchingPoints.h IsCircleTest/ImageTests/BasicCircle.h IsCircleTest/ImageTests/CircleFragment.h IsCircleTest/ImageTests/HalfCircle.h IsCircleTest/ImageTests/HorizontalLine.h IsCircleTest/ImageTests/ImperfectCircle.h IsCircleTest/ImageTests/LineWithEdges.h IsCircleTest/ImageTests/LineWithLargeEdge.h IsCircleTest/ImageTests/LineWithSmallEdge.h IsCircleTest/ImageTests/RoundedLine.h IsCircleTest/ImageTests/SmallCircle.h IsCircleTest/ImageTests/Triangle.h IsCircleTest/ImageTests/VerticalLine.h)
 
-add_executable(RunUnitTests gtest.cpp ${test_SRCS} ${SOURCE_FILES})
+add_executable(RunUnitTests gtest.cpp ${test_SRCS} ${SOURCE_FILES} IsCircleTest/ToFewPoints.h IsCircleTest/NoMatchingPoints.h IsCircleTest/ImageTests/BasicCircle.h IsCircleTest/ImageTests/CircleFragment.h IsCircleTest/ImageTests/HalfCircle.h IsCircleTest/ImageTests/HorizontalLine.h IsCircleTest/ImageTests/ImperfectCircle.h IsCircleTest/ImageTests/LineWithEdges.h IsCircleTest/ImageTests/LineWithLargeEdge.h IsCircleTest/ImageTests/LineWithSmallEdge.h IsCircleTest/ImageTests/RoundedLine.h IsCircleTest/ImageTests/SmallCircle.h IsCircleTest/ImageTests/Triangle.h IsCircleTest/ImageTests/VerticalLine.h)
 
 target_link_libraries(RunUnitTests ${GTEST_LIBS} ${OpenCV_LIBS} -lgtest -lpthread)
 
