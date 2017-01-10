@@ -17,3 +17,5 @@ add_test(
         NAME RunUnitTests
         COMMAND RunUnitTests
 )
+
+add_subdirectory(util)

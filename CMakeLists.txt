@@ -10,8 +10,7 @@ target_link_libraries( OrangeBall ${OpenCV_LIBS}  -lpthread)
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
     add_custom_target(DoxygenBuild COMMAND ${DOXYGEN_EXECUTABLE} "${CMAKE_SOURCE_DIR}/doxygen.config"
-            WORKING_DIRECTORY ${CMAKE_HOME_DIRECTORY} COMMENT "Building user's documentation into doxyDoc build dir..."
-            )
+            WORKING_DIRECTORY ${CMAKE_HOME_DIRECTORY} COMMENT "Building user's documentation into doxyDoc build dir...")
 endif(DOXYGEN_FOUND)
 
 add_subdirectory(tests)
