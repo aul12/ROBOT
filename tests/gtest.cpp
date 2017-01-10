@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/opencv.hpp"
+#include "opencv2/videoio.hpp"
 
 #include "../CircleFinder.hpp"
 
@@ -41,6 +42,6 @@ TEST(isCircleTest, isCircle){
 }
 
 int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
+      ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }

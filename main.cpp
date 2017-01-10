@@ -8,6 +8,7 @@
 #include <thread>
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/opencv.hpp"
+#include "opencv2/videoio.hpp"
 
 #include "ColourBased.hpp"
 #include "Canny.hpp"
