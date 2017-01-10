@@ -107,6 +107,7 @@ namespace crclfnd{
         if(cosAlpha > cos45|| cosBeta > cos45)
             return false;
 
+        std::cout << "Winkel ok" << std::endl;
 
         //Mittelpunkte berechnen
         std::vector<Line> invertedTriangleLines;
