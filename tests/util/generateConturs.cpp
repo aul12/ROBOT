@@ -20,13 +20,13 @@ int main(int argc, char** args){
         findContours(img, contourPoints, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
 
         for(int d=0; d<contourPoints.size(); d++){
-            std::cout << "{";
+            std::cout << "{" << std::endl;
             for(int e=0; e<contourPoints[d].size(); e++){
                 if(e!=0)
-                    std::cout << ", ";
+                    std::cout << ", " << std::endl;
                 std::cout << "Point(" << contourPoints[d][e].x << ", " << contourPoints[d][e].x <<  ")";
             }
-            std::cout << "}" << std::endl;
+            std::cout << std::endl << "}" << std::endl;
         }
         std::cout << std::endl << std::endl;
     }
