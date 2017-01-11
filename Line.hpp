@@ -10,6 +10,12 @@
 
 using namespace cv;
 
+/**
+ * Class used for geometrical calculations in two-dimensional space, based on the opencv-Point object
+ * @class Line
+ * @brief a two dimensional Line
+ * @see cv::Point
+ */
 class Line {
     public:
         Line(Point p1, Point p2);
