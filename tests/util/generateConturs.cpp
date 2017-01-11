@@ -4,30 +4,37 @@
 
 using namespace cv;
 
-int main(int argc, char** args){
 
-    std::cout << "Generating contours out of given images:" << std::endl;
-    for(int c=1; c<argc; c++){
-        std::cout << "Img: " << args[c] << std::endl;
+String getContoursString(Mat img){
+    String res = "\t\t{\n";
 
-        Mat img = imread(args[c], CV_LOAD_IMAGE_GRAYSCALE);
+    Canny(img, img, 50, 50*3, 3);
 
-        Canny(img, img, 50, 50*3, 3);
+    std::vector<std::vector<Point>> contourPoints;
+    std::vector<Vec4i> hierarchy;
 
-        std::vector<std::vector<Point>> contourPoints;
-        std::vector<Vec4i> hierarchy;
+    findContours(img, contourPoints, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
 
-        findContours(img, contourPoints, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
+    if(contourPoints.size()!=1){
+        res += "\t\t#error Image more than one/no contours";
+    }else{
+        for(int c=0; c<contourPoints[0].size(); c++){
+            if(c!=0)
+                res +=  ",\n";
 
-        for(int d=0; d<contourPoints.size(); d++){
-            std::cout << "{" << std::endl;
-            for(int e=0; e<contourPoints[d].size(); e++){
-                if(e!=0)
-                    std::cout << ", " << std::endl;
-                std::cout << "Point(" << contourPoints[d][e].x << ", " << contourPoints[d][e].x <<  ")";
-            }
-            std::cout << std::endl << "}" << std::endl;
+            res += format("\t\tPoint(%d,%d)", contourPoints[0][c].x, contourPoints[0][c].y);
         }
-        std::cout << std::endl << std::endl;
     }
+
+
+    return res + "}";
+}
+
+int main(int argc, char** args){
+    if(argc < 2)
+        return -1;
+    std::cout << "TEST(isCircleTest, " << args[1] << "){" << std::endl;
+    std::cout << "\t#warning Change Value!" << std::endl;
+    std::cout << "\tEXPECT_TRUE(crclfnd::isCircle(" << std::endl;
+    std::cout << getContoursString(imread(args[1], CV_LOAD_IMAGE_GRAYSCALE));
 }

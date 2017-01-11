@@ -20,6 +20,8 @@
 #include "IsCircleTest/ImageTests/Triangle.h"
 #include "IsCircleTest/ImageTests/VerticalLine.h"
 
+//@TODO CircleWithEdges generieren
+
 
 int main(int argc, char **argv) {
       ::testing::InitGoogleTest(&argc, argv);
