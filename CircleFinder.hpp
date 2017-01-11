@@ -139,7 +139,7 @@ namespace crclfnd{
 
         // Dreieck überprüfen
         //@TODO check if necessary
-       /* std::vector<int> lineLengths;
+        std::vector<int> lineLengths;
         for(int c=0; c<3; c++){
             lineLengths.push_back(triangleLines[c].getDistPoints());
             if(lineLengths[c] > lineLengths[0]){
@@ -157,7 +157,7 @@ namespace crclfnd{
         if(cosAlpha > cos45|| cosBeta > cos45)
             return false;
 
-        std::cout << "Winkel ok" << std::endl;*/
+        std::cout << "Winkel ok" << std::endl;
 
         //Mittelpunkte berechnen
         std::vector<Line> invertedTriangleLines;
