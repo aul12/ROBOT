@@ -40,11 +40,18 @@ Line Line::getInverted(Point p) {
     }
 }
 
-
+/**
+ * Check if a line is Vertical (Parallel to the x-Axis)
+ * @return a boolean which is true when the line is vertical
+ */
 bool Line::isVertical() {
     return p1.x == p2.x;
 }
 
+/**
+ * Check if a line is Horizontal (Parallel to the y-Axis)
+ * @return a boolean which is true when the line is horizontal
+ */
 bool Line::isHorizontal() {
     return p1.y == p2.y;
 }
@@ -63,6 +70,7 @@ double Line::getGradient() {
 
 /**
  * Get the intersection of the current line with the given line, always check existsIntersection before!
+ * @see existsIntersection
  * @param line the current line should check the intersection with
  * @return the point both lines are intersecting
  */
