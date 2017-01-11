@@ -51,7 +51,47 @@ namespace crclfnd{
         std::cout << "Anzahl Punkte OK" << std::endl;
 
         //Drei Punkte suchen
+        //@TODO
         Point triangle[3];
+        triangle[0] = points[0];
+        Point pTemp;
+        //Temp Punkt suchen
+        bool pTempFound = false;
+        for(int c=1; c<points.size(); c++){
+            if(sqDistance(triangle[0], points[c]) > distanceThreshold ){
+                pTemp = points[c];
+                pTempFound = true;
+                break;
+            }
+        }
+
+        if(!pTempFound)
+            return false;
+        std::cout << "TempPunkt gefunden" << std::endl;
+
+        //Punkt 2 berechnen (größter Abstand zu Punkt 1 und TempPunkt)
+
+        int maxDist = 0;
+        int maxInd = 1;
+        for(int c=2; c<points.size(); c++){
+            int dist = getPointDistance(points[c], triangle[0], pTemp);
+            if(dist > maxDist){
+                maxDist = dist;
+                maxInd = c;
+            }
+        }
+        triangle[1] = points[maxInd];
+
+        for(int i = 1; i < points.size(); i++) {
+            int sqDistToP1 = sqDistance(points[i], triangle[0]);
+            int sqDistToP2 = sqDistance(points[i], triangle[1]);
+            if (sqDistToP1 >= sqDistToP2) {
+                triangle[2] = points[i];
+                break;
+            }
+        }
+
+       /* Point triangle[3];
         triangle[0] = points[0];
         bool p2Found = false;
         for(int c=1; c<points.size(); c++){
@@ -77,7 +117,7 @@ namespace crclfnd{
         if(SQ(maxDist) < distanceThreshold)
             return false;
 
-        triangle[2] = points[maxInd];
+        triangle[2] = points[maxInd];*/
 
         std::cout << "Drei Punkte gefunden" << std::endl;
 
