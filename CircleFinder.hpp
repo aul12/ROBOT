@@ -19,7 +19,8 @@ namespace crclfnd{
     int maxRadius = 500;
     int distanceThreshold = SQ(50);  // < Empfindlicher
     int circleCenterDistanceThreshold = SQ(25); // > Empfindlicher
-    double radiusRatioThreshold = 0.1;
+    float radiusRatioThreshold = 0.1;
+    float  trLineLengthRatioThreshold = 0.1; //TriangleLineRatioThreshold
 
     int sqDistance(Point p1, Point p2){
         return (p2.x - p1.x)*(p2.x - p1.x) + (p2.y - p1.y)*(p2.y - p1.y);
@@ -51,11 +52,12 @@ namespace crclfnd{
         std::cout << "Anzahl Punkte OK" << std::endl;
 
         //Drei Punkte suchen
-        //@TODO
         Point triangle[3];
         triangle[0] = points[0];
         Point pTemp;
+
         //Temp Punkt suchen
+        //@TODO distanceTH proportional zur Größe
         bool pTempFound = false;
         for(int c=1; c<points.size(); c++){
             if(sqDistance(triangle[0], points[c]) > distanceThreshold ){
@@ -85,7 +87,10 @@ namespace crclfnd{
         for(int i = 1; i < points.size(); i++) {
             int sqDistToP1 = sqDistance(points[i], triangle[0]);
             int sqDistToP2 = sqDistance(points[i], triangle[1]);
-            if (sqDistToP1 >= sqDistToP2) {
+            if(sqDistToP2 == 0)
+                continue;
+            float distRatio = sqDistToP1 / sqDistToP2;
+            if (abs(1 - distRatio) < trLineLengthRatioThreshold) {
                 triangle[2] = points[i];
                 break;
             }
@@ -121,6 +126,10 @@ namespace crclfnd{
 
         std::cout << "Drei Punkte gefunden" << std::endl;
 
+        std::cout <<triangle[0].x << "|" << triangle[0].y<< std::endl;
+        std::cout <<triangle[1].x << "|" << triangle[1].y<< std::endl;
+        std::cout <<triangle[2].x << "|" << triangle[2].y<< std::endl;
+
         Point lineCenter[] = {getMiddle(triangle[0], triangle[1]),
                               getMiddle(triangle[0], triangle[2]),
                               getMiddle(triangle[1], triangle[2])};
@@ -129,7 +138,8 @@ namespace crclfnd{
                                 Line(triangle[1], triangle[2])};
 
         // Dreieck überprüfen
-        std::vector<int> lineLengths;
+        //@TODO check if necessary
+       /* std::vector<int> lineLengths;
         for(int c=0; c<3; c++){
             lineLengths.push_back(triangleLines[c].getDistPoints());
             if(lineLengths[c] > lineLengths[0]){
@@ -147,7 +157,7 @@ namespace crclfnd{
         if(cosAlpha > cos45|| cosBeta > cos45)
             return false;
 
-        std::cout << "Winkel ok" << std::endl;
+        std::cout << "Winkel ok" << std::endl;*/
 
         //Mittelpunkte berechnen
         std::vector<Line> invertedTriangleLines;

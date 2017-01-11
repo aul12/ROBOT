@@ -1,6 +1,5 @@
 TEST(isCircleTest, HorizontalLine){
-	#warning Change Value!
-	EXPECT_TRUE(crclfnd::isCircle(
+	EXPECT_FALSE(crclfnd::isCircle(
 		{
 		Point(94,174),
 		Point(92,176),

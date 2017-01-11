@@ -1,5 +1,4 @@
 TEST(isCircleTest, BasicCircle){
-	#warning Change Value!
 	EXPECT_TRUE(crclfnd::isCircle(
 		{
 		Point(160,32),

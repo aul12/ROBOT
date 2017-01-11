@@ -1,6 +1,5 @@
 TEST(isCircleTest, Triangle){
-	#warning Change Value!
-	EXPECT_TRUE(crclfnd::isCircle(
+	EXPECT_FALSE(crclfnd::isCircle(
 		{
 		Point(93,39),
 		Point(92,40),

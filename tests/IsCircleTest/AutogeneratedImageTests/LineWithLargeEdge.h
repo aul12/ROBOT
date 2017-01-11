@@ -1,6 +1,5 @@
 TEST(isCircleTest, LineWithLargeEdge){
-	#warning Change Value!
-	EXPECT_TRUE(crclfnd::isCircle(
+	EXPECT_FALSE(crclfnd::isCircle(
 		{
 		Point(262,101),
 		Point(261,102),

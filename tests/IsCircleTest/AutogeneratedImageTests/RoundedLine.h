@@ -1,6 +1,5 @@
 TEST(isCircleTest, RoundedLine){
-	#warning Change Value!
-	EXPECT_TRUE(crclfnd::isCircle(
+	EXPECT_FALSE(crclfnd::isCircle(
 		{
 		Point(293,200),
 		Point(292,201),

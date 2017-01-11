@@ -1,6 +1,5 @@
 TEST(isCircleTest, VerticalLine){
-	#warning Change Value!
-	EXPECT_TRUE(crclfnd::isCircle(
+	EXPECT_FALSE(crclfnd::isCircle(
 		{
 		Point(285,60),
 		Point(283,62),
