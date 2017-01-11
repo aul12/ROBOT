@@ -27,14 +27,15 @@ String getContoursString(Mat img){
     }
 
 
-    return res + "}";
+    return res + "\n\t\t}";
 }
 
 int main(int argc, char** args){
-    if(argc < 2)
+    if(argc < 3)
         return -1;
-    std::cout << "TEST(isCircleTest, " << args[1] << "){" << std::endl;
+    std::cout << "TEST(isCircleTest, " << args[2] << "){" << std::endl;
     std::cout << "\t#warning Change Value!" << std::endl;
     std::cout << "\tEXPECT_TRUE(crclfnd::isCircle(" << std::endl;
-    std::cout << getContoursString(imread(args[1], CV_LOAD_IMAGE_GRAYSCALE));
+    std::cout << getContoursString(imread(args[1], CV_LOAD_IMAGE_GRAYSCALE))<<std::endl;
+    std::cout << "\t));"<<std::endl<<"}";
 }
