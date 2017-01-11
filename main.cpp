@@ -38,7 +38,7 @@ void onMouseOriginalClick( int event, int x, int y, int, void*){
  * @return exit code
  */
 int main(){
-    VideoCapture cap(0);
+    VideoCapture cap(1);
 
     if (!cap.isOpened()){
         std::cout << "Webcam nicht verfügbar, greift ein anderes Programm auf die Webcam zu?" << std::endl;
