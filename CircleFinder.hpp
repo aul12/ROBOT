@@ -138,7 +138,6 @@ namespace crclfnd{
                                 Line(triangle[1], triangle[2])};
 
         // Dreieck überprüfen
-        //@TODO check if necessary
         std::vector<int> lineLengths;
         for(int c=0; c<3; c++){
             lineLengths.push_back(triangleLines[c].getDistPoints());

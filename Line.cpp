@@ -58,12 +58,13 @@ bool Line::isHorizontal() {
 
 /**
  * Get the current gradient of the line (dx/dy)
- * @return the gradient of the line, return NAN if the line is vertical (-> gradient is infinity)
+ * @return the gradient of the line, return -1 if the line is vertical
+ * @throw returns -1 if line is vertical (gradient is actually infinity)
+ * @see isVertical
  */
 double Line::getGradient() {
-    //@TODO nicht schön
     if(isVertical())
-        return NAN;
+        return -1;
     else
         return (p2.y-p1.y)/(double)(p1.x-p2.x);
 }
@@ -89,9 +90,10 @@ Point Line::getIntersection(Line line) {
  * Get the y value of the line at a certain x position
  * @param x the x value the y value should be calculated
  * @return the y value of the line, or -1 if the line is vertical
+ * @throw -1 if line is vertical and there is no well-defined y-Value, please check isVertical beforehand
+ * @see isVertical
  */
 int Line::getY(int x) {
-    //@TODO potenzielle Fehlerquelle
     if(this->isVertical())
         return -1;
     else
