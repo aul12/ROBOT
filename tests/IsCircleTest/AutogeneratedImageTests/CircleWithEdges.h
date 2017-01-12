@@ -1,4 +1,4 @@
-TEST_TRUE(isCircleTest, CircleWithEdges){
+TEST(isCircleTest, CircleWithEdges){
 	EXPECT_TRUE(crclfnd::isCircle(
 		{
 		Point(197,48),

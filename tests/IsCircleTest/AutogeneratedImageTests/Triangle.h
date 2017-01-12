@@ -1,4 +1,4 @@
-TEST_TRUE(isCircleTest, Triangle){
+TEST(isCircleTest, Triangle){
 	EXPECT_FALSE(crclfnd::isCircle(
 		{
 		Point(93,39),

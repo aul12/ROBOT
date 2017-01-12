@@ -1,4 +1,4 @@
-TEST_TRUE(isCircleTest, SpaceBarEdgeFromScreenshot){
+TEST(isCircleTest, SpaceBarEdgeFromScreenshot){
 	EXPECT_FALSE(crclfnd::isCircle(
 		{
 		Point(298,322),

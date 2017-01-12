@@ -1,4 +1,4 @@
-TEST_TRUE(isCircleTest, KeyFromKeyboardFromScreenshot){
+TEST(isCircleTest, KeyFromKeyboardFromScreenshot){
 	EXPECT_FALSE(crclfnd::isCircle(
 		{
 		Point(398,345),

@@ -1,4 +1,4 @@
-TEST_TRUE(isCircleTest, BasicCircle){
+TEST(isCircleTest, BasicCircle){
 	EXPECT_TRUE(crclfnd::isCircle(
 		{
 		Point(160,32),

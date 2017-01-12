@@ -1,4 +1,4 @@
-TEST_TRUE(isCircleTest, LineWithLargeEdge){
+TEST(isCircleTest, LineWithLargeEdge){
 	EXPECT_FALSE(crclfnd::isCircle(
 		{
 		Point(262,101),

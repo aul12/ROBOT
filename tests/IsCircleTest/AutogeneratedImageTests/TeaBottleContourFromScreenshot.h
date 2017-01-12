@@ -1,4 +1,4 @@
-TEST_TRUE(isCircleTest, TeaBottleContourFromScreenshot){
+TEST(isCircleTest, TeaBottleContourFromScreenshot){
 	EXPECT_FALSE(crclfnd::isCircle(
 		{
 		Point(377,298),

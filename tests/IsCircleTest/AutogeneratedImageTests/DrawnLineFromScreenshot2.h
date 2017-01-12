@@ -1,4 +1,4 @@
-TEST_TRUE(isCircleTest, DrawnLineFromScreenshot2){
+TEST(isCircleTest, DrawnLineFromScreenshot2){
 	EXPECT_FALSE(crclfnd::isCircle(
 		{
 		Point(20,127),
