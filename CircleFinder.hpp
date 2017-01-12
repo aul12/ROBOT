@@ -17,11 +17,10 @@ using namespace cv;
 namespace crclfnd{
     int minimumPoints = 10; ///<Minimum Points required for a form to be allowed as a circle
     double cos45 = 0.707106781186547524400; ///<
-    int maxRadius = 500;
-    int distanceThreshold = SQ(50);  // < Empfindlicher
+    int maxRadius = 200;
+    int distanceThreshold = SQ(4);  // < Empfindlicher
     int circleCenterDistanceThreshold = SQ(25); // > Empfindlicher
-    float radiusRatioThreshold = 0.1;
-    float  trLineLengthRatioThreshold = 0.1; //TriangleLineRatioThreshold
+    float  triangleLineLengthRatioThreshold = 0.1; //TriangleLineRatioThreshold
 
     int sqDistance(Point p1, Point p2){
         return (p2.x - p1.x)*(p2.x - p1.x) + (p2.y - p1.y)*(p2.y - p1.y);
@@ -93,39 +92,11 @@ namespace crclfnd{
             if(sqDistToP2 == 0)
                 continue;
             float distRatio = sqDistToP1 / sqDistToP2;
-            if (abs(1 - distRatio) < trLineLengthRatioThreshold) {
+            if (abs(1 - distRatio) < triangleLineLengthRatioThreshold) {
                 triangle[2] = points[i];
                 break;
             }
         }
-
-       /* Point triangle[3];
-        triangle[0] = points[0];
-        bool p2Found = false;
-        for(int c=1; c<points.size(); c++){
-            if(sqDistance(triangle[0], points[c]) > distanceThreshold ){
-                triangle[1] = points[c];
-                p2Found = true;
-                break;
-            }
-        }
-
-        if(!p2Found)
-            return false;
-
-        int maxDist = 0;
-        int maxInd = 1;
-        for(int c=2; c<points.size(); c++){
-            int dist = getPointDistance(points[c], triangle[0], triangle[1]);
-            if(dist > maxDist){
-                maxDist = dist;
-                maxInd = c;
-            }
-        }
-        if(SQ(maxDist) < distanceThreshold)
-            return false;
-
-        triangle[2] = points[maxInd];*/
 
         std::cout << "Drei Punkte gefunden" << std::endl;
 
@@ -156,11 +127,12 @@ namespace crclfnd{
         int cosBeta = (int)((SQ(lineLengths[2]) - SQ(lineLengths[1]) - SQ(lineLengths[0]))
                           / (-2.0 * lineLengths[0] * lineLengths[1]));
 
-        for(int c=0; c<3; c++)
-            result.triangle[c] = triangle[c];
 
         if(cosAlpha > cos45|| cosBeta > cos45)
             return result;
+
+        for(int c=0; c<3; c++)
+            result.triangle[c] = triangle[c];
 
         std::cout << "Winkel ok" << std::endl;
 
@@ -216,13 +188,16 @@ namespace crclfnd{
         if(radius > maxRadius)
             return result;
 
-        int minRadius = (int)(radius * (1 - radiusRatioThreshold));
-        int maxRadius = (int)(radius * (1 + radiusRatioThreshold));
+        double dynamicRadiusRatioThreshold = -0.14473*log(0.010579*radius);
+       // double dynamicRadiusRatioThreshold = -0.16715*log(0.0136074*radius); weniger Datenpunkte
+        if(dynamicRadiusRatioThreshold < 0.03)
+            dynamicRadiusRatioThreshold = 0.03;
+
+        int minRadius = (int)(radius * (1 - dynamicRadiusRatioThreshold));
+        int maxRadius = (int)(radius * (1 + dynamicRadiusRatioThreshold));
 
         // Alle Kreispunkte testen
         for(int c=0; c<points.size(); c++){
-            /*if(abs(sqrt(sqDistance(circleCenter, points[c]))-radius) > deltaRadiusThreshold)
-                return false;*/
             int currRadius = (int)sqrt(sqDistance(circleCenter, points[c]));
 
             if(currRadius < minRadius || currRadius > maxRadius)

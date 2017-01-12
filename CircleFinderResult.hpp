@@ -27,10 +27,12 @@ class CircleFinderResult {
         int radius;                             ///<Radius of the circle in Pixels
         bool isCircle;                          ///<A boolean whether the object is a circle
 
-        ///Debug Information
-        Point triangle[3];                      ///<Points of the Triangle which was calculated by the algorithm
-        std::vector<Line> invertedTriangleLines;///<Lines which should intersect in the centre
-        Point circleCentreCandidates[3];        ///<The three intersections
+        ///Points of the Triangle which was calculated by the algorithm
+        Point triangle[3] = {Point(0,0),Point(0,0),Point(0,0)};
+        ///Lines which should intersect in the centre
+        std::vector<Line> invertedTriangleLines = {Line(Point(0,0),Point(0,0)), Line(Point(0,0),Point(0,0)), Line(Point(0,0),Point(0,0))};
+        ///The three intersections
+        Point circleCentreCandidates[3] = {Point(0,0),Point(0,0),Point(0,0)};
 };
 
 
