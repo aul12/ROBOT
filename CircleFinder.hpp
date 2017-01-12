@@ -15,21 +15,40 @@ using namespace cv;
 
 //Östereicher werden restlos erkannt
 namespace crclfnd{
-    int minimumPoints = 10; ///<Minimum Points required for a form to be allowed as a circle
-    double cos45 = 0.707106781186547524400; ///<
-    int maxRadius = 200;
-    int distanceThreshold = SQ(4);  // < Empfindlicher
-    int circleCenterDistanceThreshold = SQ(25); // > Empfindlicher
-    float  triangleLineLengthRatioThreshold = 0.1; //TriangleLineRatioThreshold
+    int minimumPoints = 10; ///<Minimum Points required for an object detected as circle
+    double cos45 = 0.707106781186547524400; ///<the cosinus of the minimum angle of any angle in the triangle
+    int maxRadius = 200; ///<Maximum radius for a circle. Larger circles will be ignored
+    int distanceThreshold = SQ(4);  ///<The minimum distance of the first point and the temp point of the triangle. Larger values mean less detections
+    int circleCenterDistanceThreshold = SQ(25); ///<The maximum distance between the calculated potential centers of the circle
+    float  triangleLineLengthRatioThreshold = 0.1; ///<The maximum percentual difference between the two shorter edges of the triangle
 
+    /**
+     *@brief Calculates the squared distance between two points
+     * @param p1 first point
+     * @param p2 second point
+     * @return the squared distance between p1 and p2 in pixel (integer)
+     */
     int sqDistance(Point p1, Point p2){
         return (p2.x - p1.x)*(p2.x - p1.x) + (p2.y - p1.y)*(p2.y - p1.y);
     }
 
+    /**
+     * @brief Calculates the point located at the middle of the line connecting two points
+     * @param p1 first point
+     * @param p2 second point
+     * @return point located at the middle of the line connecting p1 and p2
+     */
     Point getMiddle(Point p1,Point p2){
         return Point((p1.x + p2.x)>>1, (p1.y + p2.y)>>1);
     }
 
+    /**
+     * @brief Calculates a point having the same distance to three other points (lying in the middle)
+     * @param p1 first point
+     * @param p2 second point
+     * @param p3 third point
+     * @return point where distance to p1, p2, p3 is the same
+     */
     Point getMiddle(Point p1, Point p2, Point p3){
         int x=0, y=0;
         x = (p1.x + p2.x + p3.x)/3;
@@ -37,6 +56,13 @@ namespace crclfnd{
         return Point(x, y);
     }
 
+    /**
+     * Calculates the distance between the reference point and two others and sums both up
+     * @param check the reference point
+     * @param p1 first point
+     * @param p2 second point
+     * @return the sum of both distances form point check to p1 / p2 in pixel (integer)
+     */
     int getPointDistance(Point check, Point p1, Point p2){
         int dist1 = (int)sqrt(sqDistance(check, p1));
         int dist2 = (int)sqrt(sqDistance(check, p2));
@@ -47,18 +73,18 @@ namespace crclfnd{
     CircleFinderResult isCircle(std::vector<Point> points){
         CircleFinderResult result(false);
 
-        //Zu wenig Punkte für Kreis
+        //To few points for circle
         if(points.size() < minimumPoints)
             return result;
 
-        std::cout << "Anzahl Punkte OK" << std::endl;
+        std::cout << "number of points ok" << std::endl;
 
-        //Drei Punkte suchen
+        //Find triangle corners
         Point triangle[3];
         triangle[0] = points[0];
         Point pTemp;
 
-        //Temp Punkt suchen
+        //find temporary point
         //@TODO distanceTH proportional zur Größe
         bool pTempFound = false;
         for(int c=1; c<points.size(); c++){
@@ -71,9 +97,9 @@ namespace crclfnd{
 
         if(!pTempFound)
             return result;
-        std::cout << "TempPunkt gefunden" << std::endl;
+        std::cout << "tempPoint found" << std::endl;
 
-        //Punkt 2 berechnen (größter Abstand zu Punkt 1 und TempPunkt)
+        //Find point 2 (with largest distance to point 1 and tempPoint)
 
         int maxDist = 0;
         int maxInd = 1;
@@ -98,7 +124,7 @@ namespace crclfnd{
             }
         }
 
-        std::cout << "Drei Punkte gefunden" << std::endl;
+        std::cout << "triangle corners found" << std::endl;
 
         std::cout <<triangle[0].x << "|" << triangle[0].y<< std::endl;
         std::cout <<triangle[1].x << "|" << triangle[1].y<< std::endl;
@@ -111,7 +137,7 @@ namespace crclfnd{
                                 Line(triangle[0], triangle[2]),
                                 Line(triangle[1], triangle[2])};
 
-        // Dreieck überprüfen
+        //doublecheck triangle (check angles)
         std::vector<int> lineLengths;
         for(int c=0; c<3; c++){
             lineLengths.push_back(triangleLines[c].getDistPoints());
@@ -134,9 +160,9 @@ namespace crclfnd{
         for(int c=0; c<3; c++)
             result.triangle[c] = triangle[c];
 
-        std::cout << "Winkel ok" << std::endl;
+        std::cout << "angles ok" << std::endl;
 
-        //Mittelpunkte berechnen
+        //calculate center candidates
         std::vector<Line> invertedTriangleLines;
 
         for(int c=0;c<3;c++){
@@ -151,7 +177,7 @@ namespace crclfnd{
                 !invertedTriangleLines[1].existsIntersection(invertedTriangleLines[2]))
             return result;
 
-        std::cout << "Schnittpunkt der Mittelsenkrechten" << std::endl;
+        std::cout << "intersection beween inverted trangle lines exist" << std::endl;
 
         Point circleCenterCandidates[] = {
                 invertedTriangleLines[0].getIntersection(invertedTriangleLines[1]),
@@ -167,14 +193,14 @@ namespace crclfnd{
             std::cout << circleCenterCandidates[c].x << "|" << circleCenterCandidates[c].y << std::endl;
             result.circleCentreCandidates[c] = circleCenterCandidates[c];
 
-            //Mittelpunktkandidaten zu weit auseinander
+            //center candidates not close enough to each other
             if(sqDistance(circleCenter, circleCenterCandidates[c]) > circleCenterDistanceThreshold)
                 return result;
         }
 
-        std::cout << "Mittelpunkte OK" << std::endl;
+        std::cout << "center candidates ok" << std::endl;
 
-        // Radius zu Dreieckseckpunkten
+        //calculate radius out of distance to triangle corners
         int radius = 0;
         for(int c=0; c<3; c++){
             radius += sqDistance(triangle[c], circleCenter);
@@ -184,7 +210,7 @@ namespace crclfnd{
 
         result.radius = radius;
 
-        // Zu große Radien testen
+        //too large circle
         if(radius > maxRadius)
             return result;
 
@@ -196,7 +222,7 @@ namespace crclfnd{
         int minRadius = (int)(radius * (1 - dynamicRadiusRatioThreshold));
         int maxRadius = (int)(radius * (1 + dynamicRadiusRatioThreshold));
 
-        // Alle Kreispunkte testen
+        //check all points of object
         for(int c=0; c<points.size(); c++){
             int currRadius = (int)sqrt(sqDistance(circleCenter, points[c]));
 
@@ -204,7 +230,7 @@ namespace crclfnd{
                 return result;
         }
 
-        std::cout << "Kreis OK" << std::endl;
+        std::cout << "circle valid!" << std::endl;
 
         result.isCircle = true;
         return result;
