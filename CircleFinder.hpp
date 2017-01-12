@@ -85,7 +85,6 @@ namespace crclfnd{
         Point pTemp;
 
         //find temporary point
-        //@TODO distanceTH proportional zur Größe
         bool pTempFound = false;
         for(int c=1; c<points.size(); c++){
             if(sqDistance(triangle[0], points[c]) > distanceThreshold ){
