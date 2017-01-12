@@ -22,12 +22,6 @@ using namespace cv;
 class CircleFinderResult {
     public:
         CircleFinderResult(bool isCircle);
-        CircleFinderResult(Point centre, int radius, bool isCircle);
-        CircleFinderResult(Point centre, int radius, bool isCircle, Point triangle[]);
-        CircleFinderResult(Point centre, int radius, bool isCircle, Point triangle[],
-                           std::vector<Line> invertedTriangleLines);
-        CircleFinderResult(Point centre, int radius, bool isCircle, Point triangle[],
-                           std::vector<Line> invertedTriangleLines, Point circleCentreCandidates[]);
 
         Point centre;                           ///<Centre Point of the circle
         int radius;                             ///<Radius of the circle in Pixels
