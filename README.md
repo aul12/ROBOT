@@ -30,16 +30,16 @@ sudo apt-get install libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev lib
 ``
 
 Create a new folder in your working directory (for example ~/OpenCVInstallation).
-In the Terminal change into the folder (cd ~/OpenCVInstallation).
+In the Terminal change directory to folder (cd ~/OpenCVInstallation).
 Then run:
 
 ``
 git clone https://github.com/Itseez/opencv.git
 ``
 
-Next compile it therefore create a build directory:
+Next compile it, therefore create a build directory:
 
-Change into the repo:
+Change to repo folder:
 ``
 cd opencv
 ``
@@ -49,7 +49,7 @@ Create a new folder:
 mkdir build
 ``
 
-Change into the build folder:
+Change to build folder:
 ``
 cd build
 ``
@@ -59,17 +59,17 @@ Next run CMake to configure your installation:
 cmake -D CMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=/usr/local ..
 ``
 
-If there is no error compile OpenCV, this needs some time:
+If there is no error, compile OpenCV, this may take some time:
 ``
 make
 ``
 
-Finally install the compiled OpenCV:
+Finally, install the compiled OpenCV:
 ``
 sudo make install
 ``
 
-####GTest
+#### GTest
 
 To do unit-testing you need to install GTest.
 
@@ -78,7 +78,7 @@ Download the source and install the dependencies:
 sudo apt-get install libgtest-dev
 ``
 
-Next change into the source-directoy:
+Next change to source-directoy:
 ``
 cd /usr/src/gtest
 ``
