@@ -60,7 +60,8 @@ namespace cnny{
         {
             std::cout << "Obj: " << i << std::endl;
 
-            if(crclfnd::isCircle(contourPoints[i])){
+            CircleFinderResult result = crclfnd::isCircle(contourPoints[i]);
+            if(result.isCircle){
                 drawContours(imgBW, contourPoints, i, Scalar(0, 255, 0), 2, 8, hierarchy, 0, Point());
             }else {
                 drawContours(imgBW, contourPoints, i, Scalar(0, 0, 255), 1, 8, hierarchy, 0, Point());

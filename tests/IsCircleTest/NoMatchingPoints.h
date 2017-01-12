@@ -16,6 +16,6 @@
         Point(0,0),
         Point(0,0),
         Point(0,0)
-    }));
+    }).isCircle);
 }
 #endif //ORANGEBALL_NOMATCHINGPOINTS_H

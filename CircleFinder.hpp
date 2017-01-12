@@ -11,6 +11,7 @@ using namespace cv;
 #define SQ(x) (x*x)
 
 #include "Line.hpp"
+#include "CircleFinderResult.hpp"
 
 //Östereicher werden restlos erkannt
 namespace crclfnd{
@@ -44,10 +45,12 @@ namespace crclfnd{
         return dist1+dist2;
     }
 
-    bool isCircle(std::vector<Point> points){
+    CircleFinderResult isCircle(std::vector<Point> points){
+        CircleFinderResult result(false);
+
         //Zu wenig Punkte für Kreis
         if(points.size() < minimumPoints)
-            return false;
+            return result;
 
         std::cout << "Anzahl Punkte OK" << std::endl;
 
@@ -68,7 +71,7 @@ namespace crclfnd{
         }
 
         if(!pTempFound)
-            return false;
+            return result;
         std::cout << "TempPunkt gefunden" << std::endl;
 
         //Punkt 2 berechnen (größter Abstand zu Punkt 1 und TempPunkt)
@@ -153,8 +156,11 @@ namespace crclfnd{
         int cosBeta = (int)((SQ(lineLengths[2]) - SQ(lineLengths[1]) - SQ(lineLengths[0]))
                           / (-2.0 * lineLengths[0] * lineLengths[1]));
 
+        for(int c=0; c<3; c++)
+            result.triangle[c] = triangle[c];
+
         if(cosAlpha > cos45|| cosBeta > cos45)
-            return false;
+            return result;
 
         std::cout << "Winkel ok" << std::endl;
 
@@ -163,12 +169,15 @@ namespace crclfnd{
 
         for(int c=0;c<3;c++){
             invertedTriangleLines.push_back(triangleLines[c].getInverted(lineCenter[c]));
+            result.invertedTriangleLines.push_back(invertedTriangleLines[c]);
         }
+
+
 
         if(!invertedTriangleLines[0].existsIntersection(invertedTriangleLines[1]) ||
                 !invertedTriangleLines[0].existsIntersection(invertedTriangleLines[2]) ||
                 !invertedTriangleLines[1].existsIntersection(invertedTriangleLines[2]))
-            return false;
+            return result;
 
         std::cout << "Schnittpunkt der Mittelsenkrechten" << std::endl;
 
@@ -181,12 +190,14 @@ namespace crclfnd{
         Point circleCenter = getMiddle(circleCenterCandidates[0] , circleCenterCandidates[1], circleCenterCandidates[2]);
 
         std::cout << circleCenter.x << "|" << circleCenter.y << std::endl;
+        result.centre = circleCenter;
         for(int c=0; c<3; c++){
             std::cout << circleCenterCandidates[c].x << "|" << circleCenterCandidates[c].y << std::endl;
+            result.circleCentreCandidates[c] = circleCenterCandidates[c];
 
             //Mittelpunktkandidaten zu weit auseinander
             if(sqDistance(circleCenter, circleCenterCandidates[c]) > circleCenterDistanceThreshold)
-                return false;
+                return result;
         }
 
         std::cout << "Mittelpunkte OK" << std::endl;
@@ -199,9 +210,11 @@ namespace crclfnd{
         radius /= 3;
         radius = (int)sqrt(radius);
 
+        result.radius = radius;
+
         // Zu große Radien testen
         if(radius > maxRadius)
-            return false;
+            return result;
 
         int minRadius = (int)(radius * (1 - radiusRatioThreshold));
         int maxRadius = (int)(radius * (1 + radiusRatioThreshold));
@@ -213,12 +226,13 @@ namespace crclfnd{
             int currRadius = (int)sqrt(sqDistance(circleCenter, points[c]));
 
             if(currRadius < minRadius || currRadius > maxRadius)
-                return false;
+                return result;
         }
 
         std::cout << "Kreis OK" << std::endl;
 
-        return true;
+        result.isCircle = true;
+        return result;
     }
 }
 

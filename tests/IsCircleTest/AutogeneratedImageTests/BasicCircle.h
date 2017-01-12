@@ -322,5 +322,5 @@ TEST(isCircleTest, BasicCircle){
 		Point(181,33),
 		Point(180,32)
 		}
-	));
+	).isCircle);
 }

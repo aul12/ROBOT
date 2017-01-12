@@ -9,6 +9,8 @@
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/opencv.hpp"
 
+#include "Line.hpp"
+
 using namespace cv;
 
 /**
@@ -19,11 +21,22 @@ using namespace cv;
  */
 class CircleFinderResult {
     public:
-        Point centre;                           ///<Centre Point of the circle
-        int radius;                             ///<Radius of the circle in Pixels
-    bool isCircle;                              ///<A boolean whether the object is a circle
         CircleFinderResult(bool isCircle);
         CircleFinderResult(Point centre, int radius, bool isCircle);
+        CircleFinderResult(Point centre, int radius, bool isCircle, Point triangle[]);
+        CircleFinderResult(Point centre, int radius, bool isCircle, Point triangle[],
+                           std::vector<Line> invertedTriangleLines);
+        CircleFinderResult(Point centre, int radius, bool isCircle, Point triangle[],
+                           std::vector<Line> invertedTriangleLines, Point circleCentreCandidates[]);
+
+        Point centre;                           ///<Centre Point of the circle
+        int radius;                             ///<Radius of the circle in Pixels
+        bool isCircle;                          ///<A boolean whether the object is a circle
+
+        ///Debug Information
+        Point triangle[3];                      ///<Points of the Triangle which was calculated by the algorithm
+        std::vector<Line> invertedTriangleLines;///<Lines which should intersect in the centre
+        Point circleCentreCandidates[3];        ///<The three intersections
 };
 
 

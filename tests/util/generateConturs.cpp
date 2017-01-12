@@ -33,9 +33,9 @@ String getContoursString(Mat img){
 int main(int argc, char** args){
     if(argc < 3)
         return -1;
-    std::cout << "TEST(isCircleTest, " << args[2] << "){" << std::endl;
+    std::cout << "TEST_TRUE(isCircleTest, " << args[2] << "){" << std::endl;
     std::cout << "\t#warning Change Value!" << std::endl;
     std::cout << "\tEXPECT_TRUE(crclfnd::isCircle(" << std::endl;
     std::cout << getContoursString(imread(args[1], CV_LOAD_IMAGE_GRAYSCALE))<<std::endl;
-    std::cout << "\t));"<<std::endl<<"}";
+    std::cout << "\t).isCircle);"<<std::endl<<"}";
 }
