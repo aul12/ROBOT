@@ -16,7 +16,7 @@ String getContoursString(Mat img){
     findContours(img, contourPoints, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
 
     if(contourPoints.size()!=1){
-        res += "\t\t#error Image more than one/no contours";
+        res += format("\t\t#error Image more than one/no contours (%d Contours)",contourPoints.size());
     }else{
         for(int c=0; c<contourPoints[0].size(); c++){
             if(c!=0)

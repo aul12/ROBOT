@@ -12,6 +12,7 @@ using namespace cv;
 
 #include "Line.hpp"
 #include "CircleFinderResult.hpp"
+#include "debug.hpp"
 
 //Östereicher werden restlos erkannt
 namespace crclfnd{
@@ -70,6 +71,7 @@ namespace crclfnd{
         return dist1+dist2;
     }
 
+
     CircleFinderResult isCircle(std::vector<Point> points){
         CircleFinderResult result(false);
 
@@ -77,33 +79,17 @@ namespace crclfnd{
         if(points.size() < minimumPoints)
             return result;
 
-        std::cout << "number of points ok" << std::endl;
+        dbg::print("number of points ok");
 
         //Find triangle corners
         Point triangle[3];
         triangle[0] = points[0];
-        Point pTemp;
 
-        //find temporary point
-        bool pTempFound = false;
-        for(int c=1; c<points.size(); c++){
-            if(sqDistance(triangle[0], points[c]) > distanceThreshold ){
-                pTemp = points[c];
-                pTempFound = true;
-                break;
-            }
-        }
-
-        if(!pTempFound)
-            return result;
-        std::cout << "tempPoint found" << std::endl;
-
-        //Find point 2 (with largest distance to point 1 and tempPoint)
-
+        //Find point 2 (with largest distance to point 1)
         int maxDist = 0;
         int maxInd = 1;
         for(int c=2; c<points.size(); c++){
-            int dist = getPointDistance(points[c], triangle[0], pTemp);
+            int dist = sqDistance(points[c], triangle[0]);
             if(dist > maxDist){
                 maxDist = dist;
                 maxInd = c;
@@ -123,11 +109,11 @@ namespace crclfnd{
             }
         }
 
-        std::cout << "triangle corners found" << std::endl;
+        dbg::print("triangle corners found");
 
-        std::cout <<triangle[0].x << "|" << triangle[0].y<< std::endl;
-        std::cout <<triangle[1].x << "|" << triangle[1].y<< std::endl;
-        std::cout <<triangle[2].x << "|" << triangle[2].y<< std::endl;
+        dbg::print(triangle[0]);
+        dbg::print(triangle[1]);
+        dbg::print(triangle[2]);
 
         Point lineCenter[] = {getMiddle(triangle[0], triangle[1]),
                               getMiddle(triangle[0], triangle[2]),
@@ -136,7 +122,7 @@ namespace crclfnd{
                                 Line(triangle[0], triangle[2]),
                                 Line(triangle[1], triangle[2])};
 
-        //doublecheck triangle (check angles)
+        //double check triangle (check angles)
         std::vector<int> lineLengths;
         for(int c=0; c<3; c++){
             lineLengths.push_back(triangleLines[c].getDistPoints());
@@ -159,7 +145,7 @@ namespace crclfnd{
         for(int c=0; c<3; c++)
             result.triangle[c] = triangle[c];
 
-        std::cout << "angles ok" << std::endl;
+        dbg::print("angles ok");
 
         //calculate center candidates
         std::vector<Line> invertedTriangleLines;
@@ -176,7 +162,7 @@ namespace crclfnd{
                 !invertedTriangleLines[1].existsIntersection(invertedTriangleLines[2]))
             return result;
 
-        std::cout << "intersection beween inverted trangle lines exist" << std::endl;
+        dbg::print("intersection beween inverted trangle lines exist");
 
         Point circleCenterCandidates[] = {
                 invertedTriangleLines[0].getIntersection(invertedTriangleLines[1]),
@@ -186,10 +172,10 @@ namespace crclfnd{
 
         Point circleCenter = getMiddle(circleCenterCandidates[0] , circleCenterCandidates[1], circleCenterCandidates[2]);
 
-        std::cout << circleCenter.x << "|" << circleCenter.y << std::endl;
+        dbg::print(circleCenter);
         result.centre = circleCenter;
         for(int c=0; c<3; c++){
-            std::cout << circleCenterCandidates[c].x << "|" << circleCenterCandidates[c].y << std::endl;
+            dbg::print(circleCenterCandidates[c]);
             result.circleCentreCandidates[c] = circleCenterCandidates[c];
 
             //center candidates not close enough to each other
@@ -197,7 +183,7 @@ namespace crclfnd{
                 return result;
         }
 
-        std::cout << "center candidates ok" << std::endl;
+        dbg::print("center candidates ok");
 
         //calculate radius out of distance to triangle corners
         int radius = 0;
@@ -229,7 +215,7 @@ namespace crclfnd{
                 return result;
         }
 
-        std::cout << "circle valid!" << std::endl;
+        dbg::print("circle valid!");
 
         result.isCircle = true;
         return result;

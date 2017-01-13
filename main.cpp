@@ -48,6 +48,8 @@ int main(){
     clr::init();
     cnny::init();
 
+    dbg::disable();
+
     while(true){
         if (!cap.read(imgOriginal))
             std::cout << "Fehler beim Lesen eines neues Frames" << std::endl;

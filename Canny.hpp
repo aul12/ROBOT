@@ -8,6 +8,7 @@
 
 #include "Line.hpp"
 #include "CircleFinder.hpp"
+#include "debug.hpp"
 
 using namespace cv;
 
@@ -55,10 +56,11 @@ namespace cnny{
 
         cvtColor(imgBW, imgBW, COLOR_GRAY2BGR);
 
-        std::cout <<  std::endl << std::endl;
+        dbg::newLine();
+
         for( int i = 0; i< contourPoints.size(); i++ )
         {
-            std::cout << "Obj: " << i << std::endl;
+            dbg::print("Obj:" + i);
 
             CircleFinderResult result = crclfnd::isCircle(contourPoints[i]);
             if(result.isCircle){
