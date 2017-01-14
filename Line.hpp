@@ -1,6 +1,7 @@
 /**
  * @file Line.hpp
  * @author Paul Nykiel, Tim Luchterhand
+ * @brief Header of the Line class
  */
 #ifndef ORANGEBALL_LINE_HPP
 #define ORANGEBALL_LINE_HPP

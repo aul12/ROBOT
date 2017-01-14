@@ -1,6 +1,7 @@
 /**
- * @file CircleFinderResult.cpp
+ * @file CircleFinderResult.hpp
  * @author Paul Nykiel, Tim Luchterhand
+ * @brief Header file for class containing all information of the isCircle-Algorithm
  */
 
 #ifndef ORANGEBALL_CIRCLEFINDERRESULT_HPP

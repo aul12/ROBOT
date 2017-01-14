@@ -1,6 +1,7 @@
 /**
  * @file CircleFinder.hpp
  * @authors Paul Nykiel, Tim Luchterhand
+ * @brief The file checks whether a given contour is a circle
  */
 
 #ifndef ORANGEBALL_CIRCLEFINDER_HPP
@@ -15,6 +16,10 @@ using namespace cv;
 #include "debug.hpp"
 
 //Östereicher werden restlos erkannt
+
+/**
+ * @brief Namespace containing all algorithms to check whether a given set of points describes a circle.
+ */
 namespace crclfnd{
     int minimumPoints = 10; ///<Minimum Points required for an object detected as circle
     double cos45 = 0.707106781186547524400; ///<the cosinus of the minimum angle of any angle in the triangle

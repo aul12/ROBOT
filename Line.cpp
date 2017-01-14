@@ -1,6 +1,7 @@
 /**
  * @file Line.cpp
  * @author Paul Nykiel, Tim Luchterhand
+ * @brief Implementation of the Line class
  */
 #include <cmath>
 #include "Line.hpp"

@@ -1,6 +1,7 @@
 /**
  * @file Canny.hpp
  * @author Paul Nykiel, Tim Luchterhand
+ * @brief Detect features of the image by analysing the contours of the image
  */
 
 #ifndef ORANGEBALL_CANNY_HPP
@@ -12,6 +13,9 @@
 
 using namespace cv;
 
+/**
+ * @brief Namespace containing all methods to manage the analysis of the image by analysing it's contours
+ */
 namespace cnny{
     int threshold;
 

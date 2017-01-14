@@ -1,6 +1,7 @@
 /**
  * @file CircleFinderResult.cpp
  * @author Paul Nykiel, Tim Luchterhand
+ * @brief Implementation for class containing all information of the isCircle-Algorithm
  */
 
 #include "CircleFinderResult.hpp"
