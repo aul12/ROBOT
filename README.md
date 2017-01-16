@@ -3,12 +3,14 @@
 ### Color Based
 
 ---
+
 #### HSV colorspace
-The module converts the BGR (**B**lue-**G**reen-**R**ed) 
-image to a HSV (**H**ue-**S**aturation-**V**alue).
+The module converts the BGR (<b>B</b>lue-<b>G</b>reen-<b>R</b>ed) 
+image to a HSV (<b>H</b>ue-<b>S</b>aturation-<b>V</b>alue).
 The HSV colorspace has the huge advantage that only the Hue and Saturation values
 need to be precise. The value (comparable to the brightness), does not need to be
 checked so the filter shouldn't be influenced by changing brightness.
+
 ---
 
 The algorithm blurs the image at first to reduce noise. Next it checks pixel-wise if
