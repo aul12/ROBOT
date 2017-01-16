@@ -8,6 +8,8 @@ using namespace cv;
 String getContoursString(Mat img){
     String res = "\t\t{\n";
 
+    blur(img, img, Size(3,3), Point(-1, -1));
+
     Canny(img, img, 50, 50*3, 3);
 
     std::vector<std::vector<Point>> contourPoints;
