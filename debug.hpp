@@ -12,9 +12,6 @@
 #include <iostream>
 #include <fstream>
 
-
-
-
 /**
  * @brief Namespace used for writing debug output to a specified output (stdout, file...)
  */

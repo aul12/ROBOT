@@ -1,4 +1,26 @@
 # Orange Ball detection
+## Modules
+### Color Based
+
+---
+#### HSV colorspace
+The module converts the BGR (**B**lue-**G**reen-**R**ed) 
+image to a HSV (**H**ue-**S**aturation-**V**alue).
+The HSV colorspace has the huge advantage that only the Hue and Saturation values
+need to be precise. The value (comparable to the brightness), does not need to be
+checked so the filter shouldn't be influenced by changing brightness.
+---
+
+The algorithm blurs the image at first to reduce noise. Next it checks pixel-wise if
+the respective pixel fits the criteria (minHue, maxHue, minSaturation...). If it fits
+it will be drawn as a white pixel on the output img, if not it will be drawn as a black image.
+
+Finally all contour areas get sorted by size and the largest is highlighted in the image.
+
+### Canny
+
+#### CircleFinder submodule
+
 ## Toolchain
 ### Main Toolchain
 * OpenCV (3.1)
