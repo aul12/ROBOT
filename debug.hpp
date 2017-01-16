@@ -10,6 +10,8 @@
 #include <opencv2/core/cvstd.hpp>
 #include <opencv2/core/types.hpp>
 #include <iostream>
+#include <fstream>
+
 
 
 
@@ -23,46 +25,83 @@ namespace dbg{
      */
     enum Output{
         NONE,   ///<Do not write the debug output anywhere. The output does not get buffered!
-        STDOUT  ///<Write the debug output into the stdout (usually the console)
+        STDOUT, ///<Write the debug output into the stdout (usually the console)
+        FILE    ///<Write the debug output into a file called log.txt. The file is located in the same directory as the binary
     };
 
     Output _output = NONE;
+    std::ofstream debugFile;
 
 
     /**
-     * Set the output to one of the options of the Enum Output.
-     * @param output the output which should be used
+     * Initialize the library and select the output.
+     * @param output The output the library should write to.
+     */
+    void init(Output output){
+        _output = output;
+        switch (output){
+            case FILE:
+                debugFile.open("log.txt", std::ios::trunc);
+                break;
+            case NONE:break;
+            case STDOUT:break;
+        }
+
+    }
+
+    /**
+     * Always call this function before exiting the program.
+     * Otherwise your output won't be written to the debug file
+     */
+    void close(){
+        switch(_output){
+            case NONE:break;
+            case STDOUT:break;
+            case FILE:
+                debugFile.close();
+                break;
+        }
+    }
+
+    /**
+     * Prototype function which implements printing a simple string to the selected output.
+     * @param text The text to be printed
      * @see Output
      */
-    void setOutput(Output output){
-        _output = output;
+    void print(cv::String text){
+        switch(_output){
+            case STDOUT:
+                std::cout << text;
+                break;
+            case FILE:
+                debugFile << text;
+                break;
+            case NONE:break;
+        }
     }
 
     /**
-     * Print text to the selected output
+     * Print text to the selected output. After writing out the text the function will write a new line.
      * @param text the text which should be printed
      */
-    void print(cv::String text){
-        if(_output == STDOUT)
-            std::cout << text << std::endl;
+    void printLn(cv::String text){
+        print(text+"\n");
     }
 
     /**
-     * Print a point to the selected output.
+     * Print a point to the selected output. After writing out the text the function will write a new line.
      * The Text is formatted as ([X]|[Y]) with [X] and [Y] being the respective values of the point
      * @param p The point which should be displayed
      */
-    void print(cv::Point p){
-        if(_output == STDOUT)
-            std::cout << "(" << p.x << "|" << p.y << ")" << std::endl;
+    void printLn(cv::Point p){
+        print(format("(%d|%d)\n", p.x, p.y));
     }
 
     /**
-     * Generate a new line on the selected output
+     * Generate a new line on the selected output.
      */
-    void newLine(){
-        if(_output == STDOUT)
-            std::cout << std::endl;
+    void printLn(){
+        print("\n");
     }
 }
 

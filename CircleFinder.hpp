@@ -84,7 +84,7 @@ namespace crclfnd{
         if(points.size() < minimumPoints)
             return result;
 
-        dbg::print("number of points ok");
+        dbg::printLn("number of points ok");
 
         //Find triangle corners
         Point triangle[3];
@@ -114,11 +114,11 @@ namespace crclfnd{
             }
         }
 
-        dbg::print("triangle corners found");
+        dbg::printLn("triangle corners found");
 
-        dbg::print(triangle[0]);
-        dbg::print(triangle[1]);
-        dbg::print(triangle[2]);
+        dbg::printLn(triangle[0]);
+        dbg::printLn(triangle[1]);
+        dbg::printLn(triangle[2]);
 
         Point lineCenter[] = {getMiddle(triangle[0], triangle[1]),
                               getMiddle(triangle[0], triangle[2]),
@@ -150,7 +150,7 @@ namespace crclfnd{
         for(int c=0; c<3; c++)
             result.triangle[c] = triangle[c];
 
-        dbg::print("angles ok");
+        dbg::printLn("angles ok");
 
         //calculate center candidates
         std::vector<Line> invertedTriangleLines;
@@ -167,7 +167,7 @@ namespace crclfnd{
                 !invertedTriangleLines[1].existsIntersection(invertedTriangleLines[2]))
             return result;
 
-        dbg::print("intersection beween inverted trangle lines exist");
+        dbg::printLn("intersection beween inverted trangle lines exist");
 
         Point circleCenterCandidates[] = {
                 invertedTriangleLines[0].getIntersection(invertedTriangleLines[1]),
@@ -177,10 +177,10 @@ namespace crclfnd{
 
         Point circleCenter = getMiddle(circleCenterCandidates[0] , circleCenterCandidates[1], circleCenterCandidates[2]);
 
-        dbg::print(circleCenter);
+        dbg::printLn(circleCenter);
         result.centre = circleCenter;
         for(int c=0; c<3; c++){
-            dbg::print(circleCenterCandidates[c]);
+            dbg::printLn(circleCenterCandidates[c]);
             result.circleCentreCandidates[c] = circleCenterCandidates[c];
 
             //center candidates not close enough to each other
@@ -188,7 +188,7 @@ namespace crclfnd{
                 return result;
         }
 
-        dbg::print("center candidates ok");
+        dbg::printLn("center candidates ok");
 
         //calculate radius out of distance to triangle corners
         int radius = 0;
@@ -220,7 +220,7 @@ namespace crclfnd{
                 return result;
         }
 
-        dbg::print("circle valid!");
+        dbg::printLn("circle valid!");
 
         result.isCircle = true;
         return result;

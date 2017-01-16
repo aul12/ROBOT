@@ -48,7 +48,7 @@ int main(){
     clr::init();
     cnny::init();
 
-    dbg::setOutput(dbg::STDOUT);
+    dbg::init(dbg::NONE);
 
     while(true){
         if (!cap.read(imgOriginal))
@@ -64,6 +64,7 @@ int main(){
         if (waitKey(30) == 27){
             clr::close();
             cnny::close();
+            dbg::close();
             return 0;
         }
     }

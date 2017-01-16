@@ -1,4 +1,4 @@
-# Kameraerkennung für den Orangenen Ball
+# Orange Ball detection
 ## Toolchain
 ### Main Toolchain
 * OpenCV (3.1)
@@ -15,7 +15,6 @@ The code can run on all *nix system but hasn't been tested.
 
 First install the compiler, cmake (the build-system), 
 doxygen (used for documentation) and git (used as VCS):
-
 
     sudo apt-get install build-essential cmake doxygen git
 
