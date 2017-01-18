@@ -157,7 +157,7 @@ namespace crclfnd{
 
         for(int c=0;c<3;c++){
             invertedTriangleLines.push_back(triangleLines[c].getInverted(lineCenter[c]));
-            result.invertedTriangleLines.push_back(invertedTriangleLines[c]);
+            result.midperpendicular.push_back(invertedTriangleLines[c]);
         }
 
 
@@ -167,7 +167,7 @@ namespace crclfnd{
                 !invertedTriangleLines[1].existsIntersection(invertedTriangleLines[2]))
             return result;
 
-        dbg::printLn("intersection between inverted triangle lines exist");
+        dbg::printLn("intersection between midperpendiculars exist");
 
         Point circleCenterCandidates[] = {
                 invertedTriangleLines[0].getIntersection(invertedTriangleLines[1]),

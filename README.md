@@ -22,6 +22,28 @@ Finally all contour areas get sorted by size and the largest is highlighted in t
 ### Canny
 
 #### CircleFinder submodule
+The CircleFinder submodule determins which objects created by the Canny algorithm resemble a circle-like object. 
+Every Canny-object will be put through following procedures:
+1. If an object contains less than a specific amount of points
+   (e.g. a line which only has a start and an end or a small noise dot),
+   it will be determined a non-circle object.
+2. The algorithm places a triangle with two equally long edges in the object.
+3. If the triangle is to flat (two angles are smaller than a specific threshold),
+   the object will be determined a non-circle object.
+4. For each triangle edge the midperpendicular is calculated.
+5. The intersections of said midperpendiculars are calculated. If there is no intersection,
+   the object is determined a non-circle object.
+6. Since more than one intersection of the midperpendiculars can exist (due to inaccuracy during
+   measurment or calculation), the middle of all intersections is calculated. If however the 
+   intersections differ to far from each other, the object will be determined an non-cirlce object.
+7. The middle of the three intersections resembles the center of a potential circle.
+8. The radius of the potential circle is calculated as the average of the distances of each 
+   triangle corner to the center.
+9. The distance of every point of the object to the center is calculated. If said distance differs 
+   to far from the radius calculated in step 9, the object will be determined a non-circle object.
+   The difference-threshold used in this step to determine whether an object is a circle is 
+   calculated according to the potential circle's radius.
+10. If all previous steps are passed, the object will be determined a circle-like object.
 
 ## Toolchain
 ### Main Toolchain
