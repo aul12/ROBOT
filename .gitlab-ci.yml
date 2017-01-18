@@ -37,3 +37,6 @@ test:
     - cmake ..
     - make RunUnitTests
     - tests/RunUnitTests
+   artifacts:
+      paths:
+        - tests/log.txt
