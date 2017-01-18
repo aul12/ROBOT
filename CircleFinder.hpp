@@ -167,7 +167,7 @@ namespace crclfnd{
                 !invertedTriangleLines[1].existsIntersection(invertedTriangleLines[2]))
             return result;
 
-        dbg::printLn("intersection beween inverted trangle lines exist");
+        dbg::printLn("intersection between inverted triangle lines exist");
 
         Point circleCenterCandidates[] = {
                 invertedTriangleLines[0].getIntersection(invertedTriangleLines[1]),
