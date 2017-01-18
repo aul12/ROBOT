@@ -50,19 +50,19 @@ Every Canny-object will be put through following procedures:
 * OpenCV (3.1)
 * g++ (5.4.0)
 * CMake (3.6)
-
-### Optional
 * Doxygen (1.8.11)
 * Google-Test (1.8.0)
+* cppcheck (1.72)
 
 ### Installation
 At the moment Ubuntu (16.04 amd64) is the only supported OS.
 The code can run on all *nix system but hasn't been tested.
 
 First install the compiler, cmake (the build-system), 
-doxygen (used for documentation) and git (used as VCS):
+doxygen (used for documentation), git (used as VCS) 
+and cppcheck (used for static code analysis):
 
-    sudo apt-get install build-essential cmake doxygen git
+    sudo apt-get install build-essential cmake doxygen git cppcheck
 
 
 #### OpenCV

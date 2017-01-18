@@ -2,8 +2,8 @@
 
 stages:
 - validate
-- test
 - build
+- test
 
 # Static Type Analysis
 check:
