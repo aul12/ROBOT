@@ -1,6 +1,4 @@
 #Thsi file requires all libraries to be installed, for more information see the readme
-image: shell
-
 build:
   stage: build
   script: 
