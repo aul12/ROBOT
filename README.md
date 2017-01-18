@@ -22,11 +22,11 @@ Finally all contour areas get sorted by size and the largest is highlighted in t
 ### Canny
 
 #### CircleFinder submodule
-The CircleFinder submodule determins which objects created by the canny algorithm resemble a circle-like object. 
+The CircleFinder submodule determins which objects created by the Canny algorithm resemble a circle-like object. 
 Every Canny-object will be put through following procedures:
 1. If an object contains less than a specific amount of points
    (e.g. a line which only has a start and an end or a small noise dot),
-   it will be a non-circle object.
+   it will be determined a non-circle object.
 2. The algorithm places a triangle with two equally long edges in the object.
 3. If the triangle is to flat (two angles are smaller than a specific threshold),
    the object will be determined a non-circle object.
