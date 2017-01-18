@@ -1,4 +1,15 @@
-#Thsi file requires all libraries to be installed, for more information see the readme
+#This file requires all libraries to be installed, for more information see the readme
+
+# Static Type Analysis
+check:
+  stage: test
+  script:
+    - cppcheck . -i cmake-build-debug/ -I *.hpp > cppcheck.txt
+  artifacts:
+    paths:
+    - cppcheck.txt
+
+# Build the program
 build:
   stage: build
   script: 
