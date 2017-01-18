@@ -36,3 +36,4 @@ test:
     - cd build
     - cmake ..
     - make RunUnitTests
+    - tests/RunUnitTests
