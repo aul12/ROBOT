@@ -1,4 +1,7 @@
 # Orange Ball detection
+
+[![build status](https://git.markdorf-robotics.de/panykiel/OrangeBall/badges/master/build.svg)](https://git.markdorf-robotics.de/panykiel/OrangeBall/commits/master)
+
 ## Modules
 ### Color Based
 
