@@ -39,4 +39,4 @@ test:
     - tests/RunUnitTests
    artifacts:
       paths:
-        - tests/log.txt
+      - tests/log.txt
