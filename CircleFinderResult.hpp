@@ -31,7 +31,7 @@ class CircleFinderResult {
         ///Points of the Triangle which was calculated by the algorithm
         Point triangle[3] = {Point(0,0),Point(0,0),Point(0,0)};
         ///Lines which should intersect in the centre
-        std::vector<Line> invertedTriangleLines = {Line(Point(0,0),Point(0,0)), Line(Point(0,0),Point(0,0)), Line(Point(0,0),Point(0,0))};
+        std::vector<Line> midperpendicular = {Line(Point(0,0),Point(0,0)), Line(Point(0,0),Point(0,0)), Line(Point(0,0),Point(0,0))};
         ///The three intersections
         Point circleCentreCandidates[3] = {Point(0,0),Point(0,0),Point(0,0)};
 };
