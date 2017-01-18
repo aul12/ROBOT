@@ -1,10 +1,15 @@
 #This file requires all libraries to be installed, for more information see the readme
 
+stages:
+- validate
+- test
+- build
+
 # Static Type Analysis
 check:
-  stage: test
+  stage: validate
   script:
-    - cppcheck . -i cmake-build-debug/ -I *.hpp > cppcheck.txt
+    - cppcheck . -I *.hpp > cppcheck.txt
   artifacts:
     paths:
     - cppcheck.txt
