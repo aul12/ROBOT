@@ -9,7 +9,7 @@ stages:
 check:
   stage: validate
   script:
-    - cppcheck . -I *.hpp > cppcheck.txt
+    - cppcheck . --enable=all -I *.hpp > cppcheck.txt
   artifacts:
     paths:
     - cppcheck.txt
