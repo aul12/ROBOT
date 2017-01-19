@@ -56,7 +56,9 @@ development machine.
 ### Installation
 First add the gitlab-runner package to your package-list:
 
-    curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-ci-multi-runner/script.deb.sh | sudo bash
+    wget https://packages.gitlab.com/install/repositories/runner/gitlab-ci-multi-runner/script.deb.sh
+    
+    sudo bash script.deb.sh
 
 To reload the package list execute:
 
