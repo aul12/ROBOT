@@ -1,5 +1,5 @@
 TEST(isCircleTest, VerySmallCircle){
-	EXPECT_FALSE(crclfnd::isCircle(
+	EXPECT_TRUE(crclfnd::isCircle(
 		{
 		Point(257,138),
 		Point(256,139),
