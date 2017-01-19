@@ -48,6 +48,47 @@ Every Canny-object will be put through following procedures:
    calculated according to the potential circle's radius.
 10. If all previous steps are passed, the object will be determined a circle-like object.
 
+## Runner
+Because there is no build server available gitlab requires a runner to build, 
+execute and test the program, therefore you are advised to install a runner on your
+development machine.
+
+### Installation
+First add the gitlab-runner package to your package-list:
+
+    curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-ci-multi-runner/script.deb.sh | sudo bash
+
+To reload the package list execute:
+
+    sudo apt-get update
+
+Finally install the gitlab-runner:
+
+    sudo apt-get install gitlab-ci-multi-runner
+     
+## Configure the runner
+To use the runner you need to configure the runner to build the project in the right repo:
+
+    sudo gitlab-ci-multi-runner register
+    
+During execution enter [https://git.markdorf-robotics.de/ci](https://git.markdorf-robotics.de/ci) 
+as the "gitlab-ci coordinator URL".
+
+Next get a token for the repo. The token is available
+in the settings of the gitlab page 
+([https://git.markdorf-robotics.de/panykiel/OrangeBall/runners](https://git.markdorf-robotics.de/panykiel/OrangeBall/runners)).
+Enter this token as "gitlab-ci token for this runner".
+
+Next enter a description of your runner (e.g. John Doe's Laptop).
+
+Finally you need to select a executor, just choose "shell".
+
+## Coding Style
+The code style should follow the kernel.org code style 
+[https://www.kernel.org/doc/Documentation/process/coding-style.rst](https://www.kernel.org/doc/Documentation/process/coding-style.rst).
+The only difference is the naming convention: we strictly advise you to use camelCase
+naming, this helps the readability and reduces the length of variable names.
+
 ## Toolchain
 ### Main Toolchain
 * OpenCV (3.1)
