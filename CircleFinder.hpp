@@ -63,13 +63,15 @@ namespace crclfnd{
     }
 
     CircleFinderResult isCircle(std::vector<Point> points){
+        dbg::print("Number of points...");
         CircleFinderResult result(false);
 
         //To few points for circle
         if(points.size() < minimumPoints)
             return result;
 
-        dbg::printLn("number of points ok");
+        dbg::printLn("Ok");
+        dbg::print("Calculating triangle corners...");
 
         //Find triangle corners
         Point triangle[3];
@@ -104,7 +106,8 @@ namespace crclfnd{
         if(!lastPointFound)
             return result;
 
-        dbg::printLn("triangle corners found");
+        dbg::printLn("OK");
+        dbg::printLn("Checking Angles...");
 
         dbg::printLn(triangle[0]);
         dbg::printLn(triangle[1]);
@@ -140,7 +143,8 @@ namespace crclfnd{
         for(int c=0; c<3; c++)
             result.triangle[c] = triangle[c];
 
-        dbg::printLn("angles ok");
+        dbg::printLn("OK");
+        dbg::print("Checking intersections of midperpendiculars...");
 
         //calculate center candidates
         std::vector<Line> invertedTriangleLines;
@@ -157,7 +161,8 @@ namespace crclfnd{
                 !invertedTriangleLines[1].existsIntersection(invertedTriangleLines[2]))
             return result;
 
-        dbg::printLn("intersection between midperpendiculars exist");
+        dbg::printLn("OK");
+        dbg::printLn("Checking center candidates...");
 
         Point circleCenterCandidates[] = {
                 invertedTriangleLines[0].getIntersection(invertedTriangleLines[1]),
@@ -178,7 +183,8 @@ namespace crclfnd{
                 return result;
         }
 
-        dbg::printLn("center candidates ok");
+        dbg::printLn("OK");
+        dbg::print("Checking radius...");
 
         //calculate radius out of distance to triangle corners
         int radius = 0;
@@ -212,7 +218,8 @@ namespace crclfnd{
                 return result;
         }
 
-        dbg::printLn("circle valid!");
+        dbg::printLn("OK");
+        dbg::printLn("Circle valid!");
 
         result.isCircle = true;
         return result;
