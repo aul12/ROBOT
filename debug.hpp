@@ -78,6 +78,22 @@ namespace dbg{
     }
 
     /**
+     * Print an integer to the selected output. After writing out the text the function will write a new line.
+     * @param n the signed integer which should be printed
+     */
+    void printLn(int n){
+        print(format("%d\n", n));
+    }
+
+    /**
+     * Print a double to the selected output. After writing out the text the function will write a new line.
+     * @param d the signed double which should be printed
+     */
+    void printLn(double d){
+        print(format("%f\n", d));
+    }
+
+    /**
      * Print text to the selected output. After writing out the text the function will write a new line.
      * @param text the text which should be printed
      */

@@ -9,7 +9,7 @@
 
 using namespace cv;
 
-#define SQ(x) (x*x)
+#define SQ(x) ((x)*(x))
 
 #include "Line.hpp"
 #include "CircleFinderResult.hpp"
@@ -25,8 +25,8 @@ namespace crclfnd{
     double cos30 = 0.866025403; ///<the cosinus of the minimum angle of any angle in the triangle
     int maxRadius = 200; ///<Maximum radius for a circle. Larger circles will be ignored
     int minRadius = 10;     ///<Minimum radius for a circle. Smaller circles will be ignored
-    int circleCenterDistanceThreshold = SQ(25); ///<The maximum distance between the calculated potential centers of the circle
-    float  triangleLineLengthRatioThreshold = 0.1; ///<The maximum percentual difference between the two shorter edges of the triangle
+    int circleCenterDistanceThreshold = SQ(10); ///<The maximum distance between the calculated potential centers of the circle
+    float triangleLineLengthRatioThreshold = 0.1; ///<The maximum percentage difference between the two shorter edges of the triangle
 
     /**
      *@brief Calculates the squared distance between two points
@@ -74,6 +74,7 @@ namespace crclfnd{
         //Find triangle corners
         Point triangle[3];
         triangle[0] = points[0];
+        bool lastPointFound = false;
 
         //Find point 2 (with largest distance to point 1)
         int maxDist = 0;
@@ -95,9 +96,13 @@ namespace crclfnd{
             float distRatio = sqDistToP1 / sqDistToP2;
             if (abs(1 - distRatio) < triangleLineLengthRatioThreshold) {
                 triangle[2] = points[i];
+                lastPointFound = true;
                 break;
             }
         }
+
+        if(!lastPointFound)
+            return result;
 
         dbg::printLn("triangle corners found");
 
@@ -193,8 +198,8 @@ namespace crclfnd{
 
         double dynamicRadiusRatioThreshold = -0.14473*log(0.010579*radius);
        // double dynamicRadiusRatioThreshold = -0.16715*log(0.0136074*radius); weniger Datenpunkte
-        if(dynamicRadiusRatioThreshold < 0.03)
-            dynamicRadiusRatioThreshold = 0.03;
+        if(dynamicRadiusRatioThreshold < 0.1)
+            dynamicRadiusRatioThreshold = 0.1;
 
         int minRadius = (int)(radius * (1 - dynamicRadiusRatioThreshold));
         int maxRadius = (int)(radius * (1 + dynamicRadiusRatioThreshold));

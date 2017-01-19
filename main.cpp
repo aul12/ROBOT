@@ -30,7 +30,7 @@ int main(){
     clr::init();
     cnny::init();
 
-    dbg::init(dbg::NONE);
+    dbg::init(dbg::STDOUT);
 
     while(true){
         if (!cap.read(imgOriginal))
