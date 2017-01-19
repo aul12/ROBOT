@@ -60,10 +60,6 @@ First add the gitlab-runner package to your package-list:
     
     sudo bash script.deb.sh
 
-To reload the package list execute:
-
-    sudo apt-get update
-
 Finally install the gitlab-runner:
 
     sudo apt-get install gitlab-ci-multi-runner
