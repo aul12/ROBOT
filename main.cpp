@@ -20,7 +20,7 @@ Mat imgOriginal;
  * @return exit code
  */
 int main(){
-    VideoCapture cap(0);
+    VideoCapture cap(1);
 
     if (!cap.isOpened()){
         std::cout << "Camera not available is a other program already using the camera?" << std::endl;
