@@ -106,12 +106,12 @@ namespace crclfnd{
         if(!lastPointFound)
             return result;
 
-        dbg::printLn("OK");
-        dbg::printLn("Checking Angles...");
-
         dbg::printLn(triangle[0]);
         dbg::printLn(triangle[1]);
         dbg::printLn(triangle[2]);
+
+        dbg::printLn("OK");
+        dbg::printLn("Checking Angles...");
 
         Point lineCenter[] = {getMiddle(triangle[0], triangle[1]),
                               getMiddle(triangle[0], triangle[2]),
