@@ -22,9 +22,8 @@ using namespace cv;
  */
 namespace crclfnd{
     int minimumPoints = 10; ///<Minimum Points required for an object detected as circle
-    double cos45 = 0.707106781186547524400; ///<the cosinus of the minimum angle of any angle in the triangle
+    double cos30 = 0.866025403; ///<the cosinus of the minimum angle of any angle in the triangle
     int maxRadius = 200; ///<Maximum radius for a circle. Larger circles will be ignored
-    int distanceThreshold = SQ(4);  ///<The minimum distance of the first point and the temp point of the triangle. Larger values mean less detections
     int circleCenterDistanceThreshold = SQ(25); ///<The maximum distance between the calculated potential centers of the circle
     float  triangleLineLengthRatioThreshold = 0.1; ///<The maximum percentual difference between the two shorter edges of the triangle
 
@@ -61,21 +60,6 @@ namespace crclfnd{
         y = (p1.y + p2.y + p3.y)/3;
         return Point(x, y);
     }
-
-    /**
-     * Calculates the distance between the reference point and two others and sums both up
-     * @param check the reference point
-     * @param p1 first point
-     * @param p2 second point
-     * @return the sum of both distances form point check to p1 / p2 in pixel (integer)
-     */
-    int getPointDistance(Point check, Point p1, Point p2){
-        int dist1 = (int)sqrt(sqDistance(check, p1));
-        int dist2 = (int)sqrt(sqDistance(check, p2));
-
-        return dist1+dist2;
-    }
-
 
     CircleFinderResult isCircle(std::vector<Point> points){
         CircleFinderResult result(false);
@@ -138,13 +122,13 @@ namespace crclfnd{
             }
         }
 
-        int cosAlpha = (int)((SQ(lineLengths[1]) - SQ(lineLengths[0]) - SQ(lineLengths[2]))
+        double cosAlpha = ((SQ(lineLengths[1]) - SQ(lineLengths[0]) - SQ(lineLengths[2]))
                            / (-2.0*lineLengths[0]*lineLengths[2]));
-        int cosBeta = (int)((SQ(lineLengths[2]) - SQ(lineLengths[1]) - SQ(lineLengths[0]))
+        double cosBeta = ((SQ(lineLengths[2]) - SQ(lineLengths[1]) - SQ(lineLengths[0]))
                           / (-2.0 * lineLengths[0] * lineLengths[1]));
 
 
-        if(cosAlpha > cos45|| cosBeta > cos45)
+        if(cosAlpha > cos30|| cosBeta > cos30)
             return result;
 
         for(int c=0; c<3; c++)
