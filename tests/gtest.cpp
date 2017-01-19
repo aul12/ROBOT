@@ -41,5 +41,7 @@
 int main(int argc, char **argv) {
     dbg::init(dbg::FILE);
       ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+    int res = RUN_ALL_TESTS();
+    dbg::close();
+    return res;
 }
