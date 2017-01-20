@@ -42,7 +42,7 @@ namespace cnny{
 
     Mat run(Mat imgOriginal){
         Mat imgBW, imgCanny, imgCannyContours;
-        //cvtColor(imgOriginal, imgBW, CV_BGR2GRAY);
+        cvtColor(imgOriginal, imgBW, CV_BGR2GRAY);
         Mat planes[3];
         split(imgOriginal,planes);  // planes[2] is the red channel
         imgBW = planes[2];
@@ -72,17 +72,12 @@ namespace cnny{
                /* line(imgBW, result.triangle[0], result.triangle[1], Scalar(255,0,0), 2, 8);
                 line(imgBW, result.triangle[1], result.triangle[2], Scalar(255,0,0), 2, 8);
                 line(imgBW, result.triangle[0], result.triangle[2], Scalar(255,0,0), 2, 8);*/
-
-              /*  circle(imgBW, result.triangle[0], 2, Scalar(255,0,0), 2, 8);
-                circle(imgBW, result.triangle[1], 2, Scalar(255,0,0), 2, 8);
-                circle(imgBW, result.triangle[2], 2, Scalar(255,0,0), 2, 8);*/
             }else {
                 drawContours(imgBW, contourPoints, i, Scalar(0, 0, 255), 1, 8, hierarchy, 0, Point());
             }
             line(imgBW, result.triangle[0], result.triangle[1], Scalar(255,0,0), 2, 8);
             line(imgBW, result.triangle[1], result.triangle[2], Scalar(255,0,0), 2, 8);
             line(imgBW, result.triangle[0], result.triangle[2], Scalar(255,0,0), 2, 8);
-            //circle(imgBW, result.centre, result.radius, Scalar(255,0,0), 2, 8);
         }
 
         return imgBW;

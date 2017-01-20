@@ -22,7 +22,7 @@ using namespace cv;
  */
 namespace crclfnd{
     int minimumPoints = 10; ///<Minimum Points required for an object detected as circle
-    double cos30 = 0.866025403; ///<the cosinus of the minimum angle of any angle in the triangle
+    double cos30 = 0.86602540378443; ///<the cosinus of the minimum angle of any angle in the triangle
     int maxRadius = 200; ///<Maximum radius for a circle. Larger circles will be ignored
     int minRadius = 10;     ///<Minimum radius for a circle. Smaller circles will be ignored
     int circleCenterDistanceThreshold = SQ(10); ///<The maximum distance between the calculated potential centers of the circle
@@ -78,10 +78,22 @@ namespace crclfnd{
         triangle[0] = points[0];
         bool lastPointFound = false;
 
-        //Find point 2 (with largest distance to point 1)
+        //Find point 1 (with largest distance to point[0])
         int maxDist = 0;
         int maxInd = 1;
-        for(int c=2; c<points.size(); c++){
+        for(int c=1; c<points.size(); c++){
+            int dist = sqDistance(points[c], points[0]);
+            if(dist > maxDist){
+                maxDist = dist;
+                maxInd = c;
+            }
+        }
+        triangle[0] = points[maxInd];
+
+        //Find point 2 (with largest distance to point 1)
+        maxDist = 0;
+        maxInd = 1;
+        for(int c=0; c<points.size(); c++){
             int dist = sqDistance(points[c], triangle[0]);
             if(dist > maxDist){
                 maxDist = dist;
