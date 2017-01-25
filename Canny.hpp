@@ -42,7 +42,7 @@ namespace cnny{
 
     Mat run(Mat imgOriginal){
         Mat imgBW, imgCanny, imgCannyContours;
-        cvtColor(imgOriginal, imgBW, CV_BGR2GRAY);
+        //cvtColor(imgOriginal, imgBW, CV_BGR2GRAY);
         Mat planes[3];
         split(imgOriginal,planes);  // planes[2] is the red channel
         imgBW = planes[2];

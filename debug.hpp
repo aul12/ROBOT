@@ -11,6 +11,9 @@
 #include <opencv2/core/types.hpp>
 #include <iostream>
 #include <fstream>
+#include <ctime>
+#include <iomanip>
+
 
 /**
  * @brief Namespace used for writing debug output to a specified output (stdout, file...)
@@ -28,7 +31,6 @@ namespace dbg{
 
     Output _output = NONE;
     std::ofstream debugFile;
-
 
     /**
      * Initialize the library and select the output.
@@ -62,16 +64,18 @@ namespace dbg{
 
     /**
      * Prototype function which implements printing a simple string to the selected output.
+     * The string output gets prepended by a timestamp formatted as (HOUR:MINUTE:SECOND).
      * @param text The text to be printed
      * @see Output
      */
     void print(cv::String text){
+        std::time_t timeNow = std::time(nullptr);
         switch(_output){
             case STDOUT:
-                std::cout << text;
+                std::cout << std::put_time(std::localtime(&timeNow), "%OH:%OM:%OS") << ":\t" << text;
                 break;
             case FILE:
-                debugFile << text;
+                debugFile << std::put_time(std::localtime(&timeNow), "%OH:%OM:%OS") << ":\t" << text;
                 break;
             case NONE:break;
         }
