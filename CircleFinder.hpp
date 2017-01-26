@@ -71,7 +71,7 @@ namespace crclfnd{
             return result;
 
         dbg::printLn("Ok");
-        dbg::print("Calculating triangle corners...");
+        dbg::printLn("Calculating triangle corners...");
 
         //Find triangle corners
         Point triangle[3];

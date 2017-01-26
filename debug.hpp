@@ -29,15 +29,23 @@ namespace dbg{
         FILE    ///<Write the debug output into a file called log.txt. The file is located in the same directory as the binary
     };
 
+    enum LogLevel{
+        LOG,
+        WARN,
+        ERROR
+    };
+
     Output _output = NONE;
+    LogLevel _logLevel = LOG;
     std::ofstream debugFile;
 
     /**
      * Initialize the library and select the output.
      * @param output The output the library should write to.
      */
-    void init(Output output){
+    void init(Output output, LogLevel logLevel){
         _output = output;
+        _logLevel = logLevel;
         switch (output){
             case FILE:
                 debugFile.open("log.txt", std::ios::trunc);
@@ -64,45 +72,56 @@ namespace dbg{
 
     /**
      * Prototype function which implements printing a simple string to the selected output.
-     * The string output gets prepended by a timestamp formatted as (HOUR:MINUTE:SECOND).
      * @param text The text to be printed
      * @see Output
      */
-    void print(cv::String text){
-        std::time_t timeNow = std::time(nullptr);
-        switch(_output){
-            case STDOUT:
-                std::cout << std::put_time(std::localtime(&timeNow), "%OH:%OM:%OS") << ":\t" << text;
-                break;
-            case FILE:
-                debugFile << std::put_time(std::localtime(&timeNow), "%OH:%OM:%OS") << ":\t" << text;
-                break;
-            case NONE:break;
+    void print(cv::String text, LogLevel level = LOG){
+        if(level >= _logLevel){
+            std::time_t timeNow = std::time(nullptr);
+            switch(_output){
+                case STDOUT:
+                    std::cout << std::put_time(std::localtime(&timeNow), "%OH:%OM:%OS") << ":\t" << text;
+                    break;
+                case FILE:
+                    debugFile << std::put_time(std::localtime(&timeNow), "%OH:%OM:%OS") << ":\t" << text;
+                    break;
+                case NONE:break;
+            }
         }
+    }
+
+
+    /**
+     * Print text to the selected output. After writing out the text the function will write a new line.
+     * The string output gets prepended by a timestamp formatted as (HOUR:MINUTE:SECOND).
+     * @param text the text which should be printed
+     * @see Output
+     */
+    void printLn(cv::String text, LogLevel level = LOG){
+        print(text + "\n", level);
+    }
+
+    /**
+     * Generate a new line on the selected output.
+     */
+    void printLn(LogLevel level = LOG){
+        print("\n", level);
     }
 
     /**
      * Print an integer to the selected output. After writing out the text the function will write a new line.
      * @param n the signed integer which should be printed
      */
-    void printLn(int n){
-        print(format("%d\n", n));
+    void printLn(int n, LogLevel level = LOG){
+        printLn(format("%d", n), level);
     }
 
     /**
      * Print a double to the selected output. After writing out the text the function will write a new line.
      * @param d the signed double which should be printed
      */
-    void printLn(double d){
-        print(format("%f\n", d));
-    }
-
-    /**
-     * Print text to the selected output. After writing out the text the function will write a new line.
-     * @param text the text which should be printed
-     */
-    void printLn(cv::String text){
-        print(text+"\n");
+    void printLn(double d, LogLevel level = LOG){
+        printLn(format("%f", d), level);
     }
 
     /**
@@ -110,15 +129,33 @@ namespace dbg{
      * The Text is formatted as ([X]|[Y]) with [X] and [Y] being the respective values of the point
      * @param p The point which should be displayed
      */
-    void printLn(cv::Point p){
-        print(format("(%d|%d)\n", p.x, p.y));
+    void printLn(cv::Point p, LogLevel level = LOG){
+        printLn(format("(%d|%d)", p.x, p.y), level);
     }
 
     /**
-     * Generate a new line on the selected output.
+    * Print an integer to the selected output.
+    * @param n the signed integer which should be printed
+    */
+    void print(int n, LogLevel level = LOG){
+        print(format("%d", n), level);
+    }
+
+    /**
+     * Print a double to the selected output.
+     * @param d the signed double which should be printed
      */
-    void printLn(){
-        print("\n");
+    void print(double d, LogLevel level = LOG){
+        print(format("%f", d), level);
+    }
+
+    /**
+     * Print a point to the selected output.
+     * The Text is formatted as ([X]|[Y]) with [X] and [Y] being the respective values of the point
+     * @param p The point which should be displayed
+     */
+    void print(cv::Point p, LogLevel level = LOG){
+        print(format("(%d|%d)", p.x, p.y), level);
     }
 }
 

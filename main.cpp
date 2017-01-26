@@ -20,21 +20,23 @@ Mat imgOriginal;
  * @return exit code
  */
 int main(){
+    dbg::init(dbg::STDOUT, dbg::WARN);
+
     VideoCapture cap(1);
 
     if (!cap.isOpened()){
-        std::cout << "Camera not available is a other program already using the camera?" << std::endl;
+        dbg::printLn("Camera not available is a other program already using the camera?", dbg::ERROR);
         return -1;
     }
 
     clr::init();
     cnny::init();
 
-    dbg::init(dbg::STDOUT);
+
 
     while(true){
         if (!cap.read(imgOriginal))
-            std::cout << "Error getting a new frame" << std::endl;
+            dbg::printLn("Camera not available is a other program already using the camera?", dbg::WARN);
 
         imshow("Original", imgOriginal);
 
