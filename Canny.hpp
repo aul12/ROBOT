@@ -53,8 +53,7 @@ namespace cnny{
         // Apply the colour filter
         Mat planes[3];
         split(imgOriginal,planes);  // Split image into three images one for each color pane
-        imgColourFiltered = planes[RED];
-        bitwise_not(planes[GREEN], planes[GREEN]);
+        bitwise_not(planes[GREEN], planes[GREEN]);  // Invert the image
         addWeighted(planes[RED], 0.6, planes[GREEN], 0.4, 0, imgColourFiltered);
 
         blur(imgColourFiltered, imgColourFiltered, Size(3,3), Point(-1, -1));
