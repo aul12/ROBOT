@@ -25,7 +25,7 @@ int main(){
     VideoCapture cap(1);
 
     if (!cap.isOpened()){
-        dbg::printLn("Camera not available is a other program already using the camera?", dbg::ERROR);
+        dbg::println("Camera not available is a other program already using the camera?", dbg::ERROR);
         return -1;
     }
 
@@ -36,7 +36,7 @@ int main(){
 
     while(true){
         if (!cap.read(imgOriginal))
-            dbg::printLn("Camera not available is a other program already using the camera?", dbg::WARN);
+            dbg::println("Camera not available is a other program already using the camera?", dbg::WARN);
 
         imshow("Original", imgOriginal);
 

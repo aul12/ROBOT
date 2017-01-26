@@ -97,14 +97,14 @@ namespace dbg{
      * @param text the text which should be printed
      * @see Output
      */
-    void printLn(cv::String text, LogLevel level = LOG){
+    void println(cv::String text, LogLevel level = LOG){
         print(text + "\n", level);
     }
 
     /**
      * Generate a new line on the selected output.
      */
-    void printLn(LogLevel level = LOG){
+    void println(LogLevel level = LOG){
         print("\n", level);
     }
 
@@ -112,16 +112,16 @@ namespace dbg{
      * Print an integer to the selected output. After writing out the text the function will write a new line.
      * @param n the signed integer which should be printed
      */
-    void printLn(int n, LogLevel level = LOG){
-        printLn(format("%d", n), level);
+    void println(int n, LogLevel level = LOG){
+        println(format("%d", n), level);
     }
 
     /**
      * Print a double to the selected output. After writing out the text the function will write a new line.
      * @param d the signed double which should be printed
      */
-    void printLn(double d, LogLevel level = LOG){
-        printLn(format("%f", d), level);
+    void println(double d, LogLevel level = LOG){
+        println(format("%f", d), level);
     }
 
     /**
@@ -129,8 +129,8 @@ namespace dbg{
      * The Text is formatted as ([X]|[Y]) with [X] and [Y] being the respective values of the point
      * @param p The point which should be displayed
      */
-    void printLn(cv::Point p, LogLevel level = LOG){
-        printLn(format("(%d|%d)", p.x, p.y), level);
+    void println(cv::Point p, LogLevel level = LOG){
+        println(format("(%d|%d)", p.x, p.y), level);
     }
 
     /**
