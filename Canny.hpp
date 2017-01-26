@@ -19,6 +19,12 @@ using namespace cv;
 namespace cnny{
     int threshold;
 
+    enum COLORS{
+        BLUE = 0,
+        GREEN = 1,
+        RED = 2
+    };
+
     void init(){
         FileStorage fileStorage("canny.xml", FileStorage::READ);
 
@@ -41,14 +47,21 @@ namespace cnny{
     }
 
     Mat run(Mat imgOriginal){
-        Mat imgBW, imgCanny, imgCannyContours;
-        //cvtColor(imgOriginal, imgBW, CV_BGR2GRAY);
-        Mat planes[3];
-        split(imgOriginal,planes);  // planes[2] is the red channel
-        imgBW = planes[2];
-        blur(imgBW, imgBW, Size(3,3), Point(-1, -1));
+        // Define the necessary images
+        Mat imgColourFiltered, imgCanny, imgCannyContours;
 
-        Canny(imgBW, imgCanny, threshold, 3*threshold, 3);
+        // Apply the colour filter
+        Mat planes[3];
+        split(imgOriginal,planes);  // Split image into three images one for each color pane
+        imgColourFiltered = planes[RED];
+        bitwise_not(planes[GREEN], planes[GREEN]);
+        addWeighted(planes[RED], 0.6, planes[GREEN], 0.4, 0, imgColourFiltered);
+
+        blur(imgColourFiltered, imgColourFiltered, Size(3,3), Point(-1, -1));
+
+
+        // Get the contours with the canny algorithm
+        Canny(imgColourFiltered, imgCanny, threshold, 3*threshold, 3);
 
         std::vector<std::vector<Point>> contourPoints;
         std::vector<Vec4i> hierarchy;
@@ -58,7 +71,7 @@ namespace cnny{
 
         imgCannyContours = Mat::zeros(imgOriginal.size(), CV_8UC3);
 
-        cvtColor(imgBW, imgBW, COLOR_GRAY2BGR);
+        cvtColor(imgColourFiltered, imgColourFiltered, COLOR_GRAY2BGR);
 
         dbg::printLn();
 
@@ -68,19 +81,19 @@ namespace cnny{
 
             CircleFinderResult result = crclfnd::isCircle(contourPoints[i]);
             if(result.isCircle){
-                drawContours(imgBW, contourPoints, i, Scalar(0, 255, 0), 2, 8, hierarchy, 0, Point());
-               /* line(imgBW, result.triangle[0], result.triangle[1], Scalar(255,0,0), 2, 8);
-                line(imgBW, result.triangle[1], result.triangle[2], Scalar(255,0,0), 2, 8);
-                line(imgBW, result.triangle[0], result.triangle[2], Scalar(255,0,0), 2, 8);*/
+                drawContours(imgColourFiltered, contourPoints, i, Scalar(0, 255, 0), 2, 8, hierarchy, 0, Point());
+               /* line(imgColourFiltered, result.triangle[0], result.triangle[1], Scalar(255,0,0), 2, 8);
+                line(imgColourFiltered, result.triangle[1], result.triangle[2], Scalar(255,0,0), 2, 8);
+                line(imgColourFiltered, result.triangle[0], result.triangle[2], Scalar(255,0,0), 2, 8);*/
             }else {
-                drawContours(imgBW, contourPoints, i, Scalar(0, 0, 255), 1, 8, hierarchy, 0, Point());
+                drawContours(imgColourFiltered, contourPoints, i, Scalar(0, 0, 255), 1, 8, hierarchy, 0, Point());
             }
-            line(imgBW, result.triangle[0], result.triangle[1], Scalar(255,0,0), 2, 8);
-            line(imgBW, result.triangle[1], result.triangle[2], Scalar(255,0,0), 2, 8);
-            line(imgBW, result.triangle[0], result.triangle[2], Scalar(255,0,0), 2, 8);
+            line(imgColourFiltered, result.triangle[0], result.triangle[1], Scalar(255,0,0), 2, 8);
+            line(imgColourFiltered, result.triangle[1], result.triangle[2], Scalar(255,0,0), 2, 8);
+            line(imgColourFiltered, result.triangle[0], result.triangle[2], Scalar(255,0,0), 2, 8);
         }
 
-        return imgBW;
+        return imgColourFiltered;
     }
 }
 

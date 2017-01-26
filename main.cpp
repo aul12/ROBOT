@@ -38,7 +38,7 @@ int main(){
 
         imshow("Original", imgOriginal);
 
-        clr::show(clr::run(imgOriginal));
+        //clr::show(clr::run(imgOriginal));
         cnny::show(cnny::run(imgOriginal));
 
         if (waitKey(30) == 27){
