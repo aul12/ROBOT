@@ -46,18 +46,42 @@ namespace cnny{
         imshow("Canny", img);
     }
 
+
+    uchar transformColor(Vec3b color){
+        if(color[1] < 40){
+            return 0;
+        }else if(color[2] < 50){
+            return 0;
+        }else if(color[0] > 60){
+            return 0;
+        }else{
+            return color[2];
+        }
+    }
+
     Mat run(Mat imgOriginal){
         // Define the necessary images
         Mat imgColourFiltered, imgCanny, imgCannyContours;
 
-        // Apply the colour filter
-        Mat planes[3];
-        split(imgOriginal,planes);  // Split image into three images one for each color pane
-        bitwise_not(planes[GREEN], planes[GREEN]);  // Invert the image
-        addWeighted(planes[RED], 0.6, planes[GREEN], 0.4, 0, imgColourFiltered);
+        // Apply a colour filter
+        //Mat planes[3];
+        //split(imgOriginal,planes);  // Split image into three images one for each color pane
+        //bitwise_not(planes[GREEN], planes[GREEN]);  // Invert the image
+        //addWeighted(planes[RED], 0.45, planes[GREEN], 0.55, 0, imgColourFiltered);
 
+        // Apply a color-transformation to the image
+        imgColourFiltered = Mat::zeros(imgOriginal.size(), CV_8UC1);
+        cvtColor(imgOriginal, imgOriginal, COLOR_BGR2HSV);
+        for( int y = 0; y < imgOriginal.rows; y++ ) {
+            for( int x = 0; x < imgOriginal.cols; x++ ) {
+                Vec3b colour = imgOriginal.at<Vec3b>(Point(x, y));
+
+                imgColourFiltered.at<uchar>(y, x) = transformColor(colour);
+            }
+        }
+
+        // Blur the image to reduce noise
         blur(imgColourFiltered, imgColourFiltered, Size(3,3), Point(-1, -1));
-
 
         // Get the contours with the canny algorithm
         Canny(imgColourFiltered, imgCanny, threshold, 3*threshold, 3);

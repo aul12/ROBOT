@@ -24,8 +24,36 @@ Finally all contour areas get sorted by size and the largest is highlighted in t
 
 ### Canny
 
+The canny algorithm is used to detect edges in the image.
+The algorithm only works on one color plane (for example Black and White),
+that's why we apply a special colour filter beforehand. The contours
+then get checked on their circularity.
+
+#### Colour Filter
+The colour filter was designed to get the best possible contrast between
+the ball and the field. To achieve this result we use two filters:
+* One filter is a simple red filter, using this filter the field is black
+  and the line and the ball completely white. This is a problem, we get
+  a good contrast while the ball is completely in the field. If the ball is on
+  the line we have problems because there is no clear contrast between the
+  white line and the white looking ball.
+* The second filter is a simple green filter. After applying this filter
+  to the original image the field and the line is white and the ball completely
+  black. Then we invert the image to get the ball as the only bright object.
+  
+Both images get combined, but with different weight. In short this leads all
+red areas to be completely white but all areas which are not red are gray to black.
+
+#### Canny algorithm
+The canny algorithm detects edges based on the gradient in the image.
+It calculates the gradient in different directions of the image,
+this means it calculates the derivative of the image in every direction
+and then calculates the absolute value of each pixel.
+
+    
+
 #### CircleFinder submodule
-The CircleFinder submodule determins which objects created by the Canny algorithm resemble a circle-like object. 
+The CircleFinder submodule determines which objects created by the Canny algorithm resemble a circle-like object. 
 Every Canny-object will be put through following procedures:
 1. If an object contains less than a specific amount of points
    (e.g. a line which only has a start and an end or a small noise dot),
@@ -37,7 +65,7 @@ Every Canny-object will be put through following procedures:
 5. The intersections of said midperpendiculars are calculated. If there is no intersection,
    the object is determined a non-circle object.
 6. Since more than one intersection of the midperpendiculars can exist (due to inaccuracy during
-   measurment or calculation), the middle of all intersections is calculated. If however the 
+   measurement or calculation), the middle of all intersections is calculated. If however the 
    intersections differ to far from each other, the object will be determined an non-cirlce object.
 7. The middle of the three intersections resembles the center of a potential circle.
 8. The radius of the potential circle is calculated as the average of the distances of each 
