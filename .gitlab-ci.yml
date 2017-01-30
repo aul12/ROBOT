@@ -33,5 +33,6 @@ test:
     - make RunUnitTests
     - tests/RunUnitTests --gtest_repeat=10 --gtest_output=xml:testOutput.xml
   artifacts:
+    when: always
     paths:
     - testOutput.xml
