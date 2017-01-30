@@ -23,13 +23,12 @@ it will be drawn as a white pixel on the output img, if not it will be drawn as 
 Finally all contour areas get sorted by size and the largest is highlighted in the image.
 
 ### Canny
-
 The canny algorithm is used to detect edges in the image.
 The algorithm only works on one color plane (for example Black and White),
 that's why we apply a special colour filter beforehand. The contours
 then get checked on their circularity.
 
-#### Colour Filter
+#### Colour Filter (WIP)
 The colour filter was designed to get the best possible contrast between
 the ball and the field. To achieve this result we use two filters:
 * One filter is a simple red filter, using this filter the field is black
@@ -49,8 +48,6 @@ The canny algorithm detects edges based on the gradient in the image.
 It calculates the gradient in different directions of the image,
 this means it calculates the derivative of the image in every direction
 and then calculates the absolute value of each pixel.
-
-    
 
 #### CircleFinder submodule
 The CircleFinder submodule determines which objects created by the Canny algorithm resemble a circle-like object. 
@@ -91,6 +88,8 @@ First add the gitlab-runner package to your package-list:
 Finally install the gitlab-runner:
 
     sudo apt-get install gitlab-ci-multi-runner
+    
+If you haven't already installed all dev-dependencies you are advised to do so, the gitlab-runner requires them.
      
 ## Configure the runner
 To use the runner you need to configure the runner to build the project in the right repo:
