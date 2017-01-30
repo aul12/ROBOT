@@ -35,4 +35,4 @@ test:
   artifacts:
     when: always
     paths:
-    - tests/testOutput.xml
+    - build/tests/testOutput.xml
