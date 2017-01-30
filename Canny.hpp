@@ -48,11 +48,11 @@ namespace cnny{
 
 
     uchar transformColor(Vec3b color){
-        if(color[1] < 40){
+        if(color[1] < 10){
             return 0;
-        }else if(color[2] < 50){
+        }else if(color[2] < 0){
             return 0;
-        }else if(color[0] > 60){
+        }else if(color[0] > 42){
             return 0;
         }else{
             return color[2];

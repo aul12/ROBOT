@@ -31,7 +31,7 @@ test:
     - cd build
     - cmake ..
     - make RunUnitTests
-    - tests/RunUnitTests
+    - tests/RunUnitTests --gtest_repeat=10 --gtest_output=xml:testOutput.xml
   artifacts:
     paths:
-    - tests/log.txt
+    - testOutput.xml
