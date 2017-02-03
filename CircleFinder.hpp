@@ -22,7 +22,7 @@ using namespace cv;
  */
 namespace crclfnd{
     int minimumPoints = 10; ///<Minimum Points required for an object detected as circle
-    double cos30 = 0.86602540378443; ///<the cosinus of the minimum angle of any angle in the triangle
+    double cos30 = 0.86602540378443; ///<the cosine of the minimum angle of any angle in the triangle
     int maxRadius = 200; ///<Maximum radius for a circle. Larger circles will be ignored
     int minRadius = 0;     ///<Minimum radius for a circle. Smaller circles will be ignored
     int circleCenterDistanceThreshold = SQ(10); ///<The maximum distance between the calculated potential centers of the circle
