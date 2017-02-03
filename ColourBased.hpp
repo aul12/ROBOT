@@ -1,6 +1,7 @@
 /**
  * @file ColourBased.hpp
  * @author Paul Nykiel, Tim Luchterhand
+ * @brief Detect the orange ball solely by the color
  */
 
 #ifndef ORANGEBALL_COLOURBASED_HPP

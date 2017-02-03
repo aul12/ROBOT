@@ -1,7 +1,7 @@
 /**
  * @file debug.hpp
  * @author Paul Nykiel, Tim Luchterhand
- * @brief Small file to handle all debug output in a flexible manner
+ * @brief Small library to handle all debug output in a flexible manner
  */
 
 #ifndef ORANGEBALL_DEBUG_HPP
@@ -29,10 +29,14 @@ namespace dbg{
         FILE    ///<Write the debug output into a file called log.txt. The file is located in the same directory as the binary
     };
 
+    /**
+     * Enum containing all Log-Levels. When one log level is selected all smaller log levels are displayed
+     * as well, order is: LOG < WARN < ERROR
+     */
     enum LogLevel{
-        LOG,
-        WARN,
-        ERROR
+        LOG,    ///<Most common log level, log all necessary data
+        WARN,   ///<Small warning, reasons for algorithms to fail etc.
+        ERROR   ///<Severe issues, issues regarding i/o etc.
     };
 
     Output _output = NONE;
