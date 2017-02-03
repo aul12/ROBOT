@@ -10,6 +10,7 @@
 #include "Line.hpp"
 #include "CircleFinder.hpp"
 #include "debug.hpp"
+#include "ColourTransform.hpp"
 
 using namespace cv;
 
@@ -47,17 +48,7 @@ namespace cnny{
     }
 
 
-    uchar transformColor(Vec3b color){
-        if(color[1] < 10){
-            return 0;
-        }else if(color[2] < 0){
-            return 0;
-        }else if(color[0] > 42){
-            return 0;
-        }else{
-            return color[2];
-        }
-    }
+
 
     Mat run(Mat imgOriginal){
         // Define the necessary images
@@ -76,7 +67,7 @@ namespace cnny{
             for( int x = 0; x < imgOriginal.cols; x++ ) {
                 Vec3b colour = imgOriginal.at<Vec3b>(Point(x, y));
 
-                imgColourFiltered.at<uchar>(y, x) = transformColor(colour);
+                imgColourFiltered.at<uchar>(y, x) = clrTrfrm::transformColor(colour);
             }
         }
 
