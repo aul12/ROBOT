@@ -55,13 +55,17 @@ namespace cnny{
         Mat imgColourFiltered, imgCanny, imgCannyContours;
 
         // Apply a colour filter
-        //Mat planes[3];
-        //split(imgOriginal,planes);  // Split image into three images one for each color pane
-        //bitwise_not(planes[GREEN], planes[GREEN]);  // Invert the image
-        //addWeighted(planes[RED], 0.45, planes[GREEN], 0.55, 0, imgColourFiltered);
+        Mat planes[3];
+        split(imgOriginal,planes);  // Split image into three images one for each color pane
+        bitwise_not(planes[GREEN], planes[GREEN]);  // Invert the image
+        addWeighted(planes[RED], 0.45, planes[GREEN], 0.55, 0, imgColourFiltered);
+
+        imgColourFiltered -= 127;
+        imgColourFiltered *= 2;
+        imgColourFiltered += 127;
 
         // Apply a color-transformation to the image
-        imgColourFiltered = Mat::zeros(imgOriginal.size(), CV_8UC1);
+        /*imgColourFiltered = Mat::zeros(imgOriginal.size(), CV_8UC1);
         cvtColor(imgOriginal, imgOriginal, COLOR_BGR2HSV);
         for( int y = 0; y < imgOriginal.rows; y++ ) {
             for( int x = 0; x < imgOriginal.cols; x++ ) {
@@ -69,7 +73,7 @@ namespace cnny{
 
                 imgColourFiltered.at<uchar>(y, x) = clrTrfrm::transformColor(colour);
             }
-        }
+        }*/
 
         // Blur the image to reduce noise
         blur(imgColourFiltered, imgColourFiltered, Size(3,3), Point(-1, -1));
