@@ -28,20 +28,21 @@ The algorithm only works on one color plane (for example Black and White),
 that's why we apply a special colour filter beforehand. The contours
 then get checked on their circularity.
 
-#### Colour Filter (WIP)
+#### Colour Filter
 The colour filter was designed to get the best possible contrast between
-the ball and the field. To achieve this result we use two filters:
-* One filter is a simple red filter, using this filter the field is black
-  and the line and the ball completely white. This is a problem, we get
-  a good contrast while the ball is completely in the field. If the ball is on
-  the line we have problems because there is no clear contrast between the
-  white line and the white looking ball.
+the ball and its surroundings. Therefore we use two filters:
+* The first one is a simple red filter, changing objects with high green 
+  component to dark and bright or reddish objects to white. This however 
+  results in the Canny algorithm being unable to clearly distinguish between white 
+  lines and the ball. When the ball lies on said lines, its contours might melt together
+  with the lines' ones. To avoid this problem we use a second filter.
 * The second filter is a simple green filter. After applying this filter
-  to the original image the field and the line is white and the ball completely
-  black. Then we invert the image to get the ball as the only bright object.
+  to the original image the field and the line appear white and the ball completely
+  black. We additionally invert the filtered image so the ball becomes a white object
+  while the field and other objects become dark.
   
-Both images get combined, but with different weight. In short this leads all
-red areas to be completely white but all areas which are not red are gray to black.
+Both images get combined, but with different weight. This results in an overall grayish
+image where only orange / red objects are clearly visible.
 
 #### Canny algorithm
 The canny algorithm detects edges based on the gradient in the image.
