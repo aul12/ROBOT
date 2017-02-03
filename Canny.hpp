@@ -28,6 +28,13 @@ namespace cnny{
      */
     int colorBias;
 
+    /**
+     * Factor to change the contrast of the color-filtered image. Values smaller 1 reduce the contrast,
+     * values larger 1 enhance the contrast. If it is set to one the image won't get changed. 0 means the
+     * complete image is gray. Negative numbers invert the image. 2 is a good value if both filters are combined.
+     */
+     int contrastFactor;
+
     /// Enum with shortcuts for the different colour planes of a BGR image
     enum COLORS_BGR{
         BLUE = 0,
@@ -44,6 +51,7 @@ namespace cnny{
 
         threshold = fileStorage["threshold"];
         colorBias = fileStorage["colorBias"];
+        contrastFactor = fileStorage["contrastFactor"];
     }
 
 
@@ -55,6 +63,7 @@ namespace cnny{
 
         fileStorage << "threshold" << threshold;
         fileStorage << "colorBias" << colorBias;
+        fileStorage << "contrastFactor" << contrastFactor;
 
         fileStorage.release();
     }
@@ -68,6 +77,7 @@ namespace cnny{
         namedWindow("Canny", CV_WINDOW_AUTOSIZE);
         createTrackbar("Threshold", "Canny", &threshold, 100);
         createTrackbar("Color bias", "Canny", &colorBias, 100);
+        createTrackbar("Contrast", "Canny", &contrastFactor, 10);
         imshow("Canny", img);
     }
 
@@ -86,10 +96,14 @@ namespace cnny{
         bitwise_not(planes[GREEN], planes[GREEN]);  // Invert the image
         addWeighted(planes[RED], colorBias/100.0, planes[GREEN], 1-colorBias/100.0, 0, imgColourFiltered);
 
+        imgColourFiltered.convertTo(imgColourFiltered, CV_16SC1);
+
         // Increase the contrast
         imgColourFiltered -= 127;
-        imgColourFiltered *= 2;
+        imgColourFiltered *= contrastFactor;
         imgColourFiltered += 127;
+
+        imgColourFiltered.convertTo(imgColourFiltered, CV_8UC1);
 
         // Blur the image to reduce noise
         blur(imgColourFiltered, imgColourFiltered, Size(3,3), Point(-1, -1));
