@@ -73,7 +73,6 @@ namespace crclfnd{
             return result;
         }
 
-
         dbg::println("Ok");
         dbg::println("Calculating triangle corners...");
 

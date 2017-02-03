@@ -20,7 +20,7 @@ Mat imgOriginal;
  * @return exit code
  */
 int main(){
-    dbg::init(dbg::STDOUT, dbg::ERROR);
+    dbg::init(dbg::STDOUT, dbg::WARN);
 
     VideoCapture cap(0);
 

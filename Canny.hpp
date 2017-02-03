@@ -35,7 +35,10 @@ namespace cnny{
         RED = 2
     };
 
-    /// Initialise all configuration data required for the algorithm. This is done by reading a configuration file.
+
+    /**
+     * Initialise all configuration data required for the algorithm. This is done by reading a configuration file.
+     */
     void init(){
         FileStorage fileStorage("canny.xml", FileStorage::READ);
 
@@ -43,7 +46,10 @@ namespace cnny{
         colorBias = fileStorage["colorBias"];
     }
 
-    /// Write out all configuration data into the configuration file.
+
+    /**
+     * Write out all configuration data into the configuration file.
+     */
     void close(){
         FileStorage fileStorage("canny.xml", FileStorage::WRITE);
 
@@ -53,6 +59,11 @@ namespace cnny{
         fileStorage.release();
     }
 
+    /**
+     * Show the image and all trackbars for configuration in window
+     * @param img the image which got created by run
+     * @see run
+     */
     void show(Mat img){
         namedWindow("Canny", CV_WINDOW_AUTOSIZE);
         createTrackbar("Threshold", "Canny", &threshold, 100);
@@ -60,6 +71,11 @@ namespace cnny{
         imshow("Canny", img);
     }
 
+    /**
+     * Run the canny algorithm on the image and detect circular objects
+     * @param imgOriginal the image the algorithm should check
+     * @return an image with debug information
+     */
     Mat run(Mat imgOriginal){
         // Define the necessary images
         Mat imgColourFiltered, imgCanny, imgCannyContours;
