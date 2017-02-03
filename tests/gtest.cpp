@@ -5,6 +5,7 @@
 
 #include "../CircleFinder.hpp"
 #include "../Canny.hpp"
+#include "../ColourTransform.hpp"
 
 // Color Transform Test
 #include "tests/ColorTransformTest.hpp"

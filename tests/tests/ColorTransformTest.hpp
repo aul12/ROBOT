@@ -7,7 +7,7 @@
 
 
 TEST(ColorTransFormTest, RedTest){
-    EXPECT_NE(cnny::transformColor({255, 0, 0}), 255/3);
+    EXPECT_NE(clrTrfrm::::transformColor({255, 0, 0}), 255/3);
 }
 
 #endif //ORANGEBALL_COLORTRANSFORMTEST_HPP
