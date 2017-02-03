@@ -10,7 +10,6 @@
 #include "Line.hpp"
 #include "CircleFinder.hpp"
 #include "debug.hpp"
-#include "ColourTransform.hpp"
 
 using namespace cv;
 
@@ -18,24 +17,38 @@ using namespace cv;
  * @brief Namespace containing all methods to manage the analysis of the image by analysing it's contours
  */
 namespace cnny{
+    /**
+     * Lower canny threshold can be adjusted with a slider. The lower the threshold the more edges get detected
+     * but there is more noise as well.
+     */
     int threshold;
+    /**
+     * The bias of the color filter. 0 means the inverted green filter only, 100 means the red filter only.
+     * A good value is at approximately 45.
+     */
+    int colorBias;
 
-    enum COLORS{
+    /// Enum with shortcuts for the different colour planes of a BGR image
+    enum COLORS_BGR{
         BLUE = 0,
         GREEN = 1,
         RED = 2
     };
 
+    /// Initialise all configuration data required for the algorithm. This is done by reading a configuration file.
     void init(){
         FileStorage fileStorage("canny.xml", FileStorage::READ);
 
         threshold = fileStorage["threshold"];
+        colorBias = fileStorage["colorBias"];
     }
 
+    /// Write out all configuration data into the configuration file.
     void close(){
         FileStorage fileStorage("canny.xml", FileStorage::WRITE);
 
         fileStorage << "threshold" << threshold;
+        fileStorage << "colorBias" << colorBias;
 
         fileStorage.release();
     }
@@ -43,12 +56,9 @@ namespace cnny{
     void show(Mat img){
         namedWindow("Canny", CV_WINDOW_AUTOSIZE);
         createTrackbar("Threshold", "Canny", &threshold, 100);
-
+        createTrackbar("Color bias", "Canny", &colorBias, 100);
         imshow("Canny", img);
     }
-
-
-
 
     Mat run(Mat imgOriginal){
         // Define the necessary images
@@ -58,22 +68,11 @@ namespace cnny{
         Mat planes[3];
         split(imgOriginal,planes);  // Split image into three images one for each color pane
         bitwise_not(planes[GREEN], planes[GREEN]);  // Invert the image
-        addWeighted(planes[RED], 0.45, planes[GREEN], 0.55, 0, imgColourFiltered);
+        addWeighted(planes[RED], colorBias/100.0, planes[GREEN], 1-colorBias/100.0, 0, imgColourFiltered);
 
         imgColourFiltered -= 127;
         imgColourFiltered *= 2;
         imgColourFiltered += 127;
-
-        // Apply a color-transformation to the image
-        /*imgColourFiltered = Mat::zeros(imgOriginal.size(), CV_8UC1);
-        cvtColor(imgOriginal, imgOriginal, COLOR_BGR2HSV);
-        for( int y = 0; y < imgOriginal.rows; y++ ) {
-            for( int x = 0; x < imgOriginal.cols; x++ ) {
-                Vec3b colour = imgOriginal.at<Vec3b>(Point(x, y));
-
-                imgColourFiltered.at<uchar>(y, x) = clrTrfrm::transformColor(colour);
-            }
-        }*/
 
         // Blur the image to reduce noise
         blur(imgColourFiltered, imgColourFiltered, Size(3,3), Point(-1, -1));

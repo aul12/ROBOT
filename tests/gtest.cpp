@@ -7,9 +7,6 @@
 #include "../Canny.hpp"
 #include "../ColourTransform.hpp"
 
-// Color Transform Test
-#include "tests/ColorTransformTest.hpp"
-
 // Hand written tests
 #include "tests/IsCircleTest/ToFewPoints.h"
 #include "tests/IsCircleTest/NoMatchingPoints.h"

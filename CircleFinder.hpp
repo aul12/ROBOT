@@ -68,8 +68,11 @@ namespace crclfnd{
         CircleFinderResult result(false);
 
         //To few points for circle
-        if(points.size() < minimumPoints)
+        if(points.size() < minimumPoints){
+            dbg::println("To few points", dbg::WARN);
             return result;
+        }
+
 
         dbg::println("Ok");
         dbg::println("Calculating triangle corners...");
@@ -116,8 +119,11 @@ namespace crclfnd{
             }
         }
 
-        if(!lastPointFound)
+        if(!lastPointFound){
+            dbg::println("No matching triangle", dbg::WARN);
             return result;
+        }
+
 
         dbg::println(triangle[0]);
         dbg::println(triangle[1]);
@@ -150,8 +156,11 @@ namespace crclfnd{
                           / (-2.0 * lineLengths[0] * lineLengths[1]));
 
 
-        if(cosAlpha > cos30|| cosBeta > cos30)
+        if(cosAlpha > cos30|| cosBeta > cos30){
+            dbg::println("Angles to small", dbg::WARN);
             return result;
+        }
+
 
         for(int c=0; c<3; c++)
             result.triangle[c] = triangle[c];
@@ -171,8 +180,11 @@ namespace crclfnd{
 
         if(!invertedTriangleLines[0].existsIntersection(invertedTriangleLines[1]) ||
                 !invertedTriangleLines[0].existsIntersection(invertedTriangleLines[2]) ||
-                !invertedTriangleLines[1].existsIntersection(invertedTriangleLines[2]))
+                !invertedTriangleLines[1].existsIntersection(invertedTriangleLines[2])){
+            dbg::println("No intersection", dbg::WARN);
             return result;
+        }
+
 
         dbg::println("OK");
         dbg::println("Checking center candidates...");
@@ -192,8 +204,10 @@ namespace crclfnd{
             result.circleCentreCandidates[c] = circleCenterCandidates[c];
 
             //center candidates not close enough to each other
-            if(sqDistance(circleCenter, circleCenterCandidates[c]) > circleCenterDistanceThreshold)
+            if(sqDistance(circleCenter, circleCenterCandidates[c]) > circleCenterDistanceThreshold){
+                dbg::println("Center candidates not close enough", dbg::WARN);
                 return result;
+            }
         }
 
         dbg::println("OK");
@@ -210,13 +224,12 @@ namespace crclfnd{
         result.radius = radius;
 
         //too large/small circle
-        if(radius > maxRadius)
+        if(radius > maxRadius || radius < minRadius){
+            dbg::println("Radius to small/large", dbg::WARN);
             return result;
-        else if(radius < minRadius)
-            return result;
+        }
 
         double dynamicRadiusRatioThreshold = -0.14473*log(0.010579*radius);
-       // double dynamicRadiusRatioThreshold = -0.16715*log(0.0136074*radius); weniger Datenpunkte
         if(dynamicRadiusRatioThreshold < 0.1)
             dynamicRadiusRatioThreshold = 0.1;
 
@@ -227,12 +240,15 @@ namespace crclfnd{
         for(int c=0; c<points.size(); c++){
             int currRadius = (int)sqrt(sqDistance(circleCenter, points[c]));
 
-            if(currRadius < minRadius || currRadius > maxRadius)
+            if(currRadius < minRadius || currRadius > maxRadius){
+                dbg::println("Radius not fitting for all Points", dbg::WARN);
                 return result;
+            }
+
         }
 
         dbg::println("OK");
-        dbg::println("Circle valid!");
+        dbg::println("Circle valid!", dbg::WARN);
 
         result.isCircle = true;
         return result;
