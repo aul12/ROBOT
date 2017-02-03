@@ -23,10 +23,19 @@ it will be drawn as a white pixel on the output img, if not it will be drawn as 
 Finally all contour areas get sorted by size and the largest is highlighted in the image.
 
 ### Canny
-The canny algorithm is used to detect edges in the image.
-The algorithm only works on one color plane (for example Black and White),
+The Canny algorithm is used to detect edges in the image. It uses gradient based edge 
+detection and basically consists of following procedures:
+1. A Gaussian blur is applied to smooth the image in order to reduce noise
+2. Calculate the intensity gradients of pixels
+3. Suppress maximums close to larger intensity gradient maximums
+4. Apply double threshold to classify edges in strong, weak edges. Edges below both thresholds 
+will be ignored
+5. Edge tracking: Ignore weak edges which are not connected to strong ones.
+
+The algorithm only works on a single color plane (for example Black and White),
 that's why we apply a special colour filter beforehand. The contours
 then get checked on their circularity.
+For further information on the Canny algorithm see: https://en.wikipedia.org/wiki/Canny_edge_detector
 
 #### Colour Filter
 The colour filter was designed to get the best possible contrast between
