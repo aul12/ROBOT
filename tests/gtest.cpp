@@ -5,7 +5,6 @@
 
 #include "../CircleFinder.hpp"
 #include "../Canny.hpp"
-#include "../ColourTransform.hpp"
 
 // Hand written tests
 #include "tests/IsCircleTest/ToFewPoints.h"

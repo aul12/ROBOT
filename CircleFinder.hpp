@@ -24,7 +24,7 @@ namespace crclfnd{
     int minimumPoints = 10; ///<Minimum Points required for an object detected as circle
     double cos30 = 0.86602540378443; ///<the cosinus of the minimum angle of any angle in the triangle
     int maxRadius = 200; ///<Maximum radius for a circle. Larger circles will be ignored
-    int minRadius = 10;     ///<Minimum radius for a circle. Smaller circles will be ignored
+    int minRadius = 0;     ///<Minimum radius for a circle. Smaller circles will be ignored
     int circleCenterDistanceThreshold = SQ(10); ///<The maximum distance between the calculated potential centers of the circle
     float triangleLineLengthRatioThreshold = 0.1; ///<The maximum percentage difference between the two shorter edges of the triangle
 
@@ -228,9 +228,8 @@ namespace crclfnd{
             return result;
         }
 
-        double dynamicRadiusRatioThreshold = -0.14473*log(0.010579*radius);
-        if(dynamicRadiusRatioThreshold < 0.1)
-            dynamicRadiusRatioThreshold = 0.1;
+
+        double dynamicRadiusRatioThreshold = max(0.385947-0.00608397*radius, 0.1);
 
         int minRadius = (int)(radius * (1 - dynamicRadiusRatioThreshold));
         int maxRadius = (int)(radius * (1 + dynamicRadiusRatioThreshold));

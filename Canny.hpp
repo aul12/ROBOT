@@ -86,6 +86,7 @@ namespace cnny{
         bitwise_not(planes[GREEN], planes[GREEN]);  // Invert the image
         addWeighted(planes[RED], colorBias/100.0, planes[GREEN], 1-colorBias/100.0, 0, imgColourFiltered);
 
+        // Increase the contrast
         imgColourFiltered -= 127;
         imgColourFiltered *= 2;
         imgColourFiltered += 127;
