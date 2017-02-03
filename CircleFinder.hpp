@@ -27,6 +27,9 @@ namespace crclfnd{
     int minRadius = 0;     ///<Minimum radius for a circle. Smaller circles will be ignored
     int circleCenterDistanceThreshold = SQ(10); ///<The maximum distance between the calculated potential centers of the circle
     float triangleLineLengthRatioThreshold = 0.1; ///<The maximum percentage difference between the two shorter edges of the triangle
+    float maxRadiusRatioTolerance = 0.385947; ///<The maximum tolerance for the ratio between the calculated radius and the actual distance from a point to the center
+    float minRadiusRatioTolerance = 0.1; ///<The minimum tolerance for the ratio between the calculated radius and the actual distance from a point to the center
+    float radiusRatioToleranceFactor = 0.00608397; ///<The scaling factor of the dynamic radius ratio threshold (higher means more tolerant)
 
     /**
      *@brief Calculates the squared distance between two points
@@ -229,7 +232,7 @@ namespace crclfnd{
         }
 
 
-        double dynamicRadiusRatioThreshold = max(0.385947-0.00608397*radius, 0.1);
+        double dynamicRadiusRatioThreshold = max(maxRadiusRatioTolerance - radiusRatioToleranceFactor * radius, minRadiusRatioTolerance);
 
         int minRadius = (int)(radius * (1 - dynamicRadiusRatioThreshold));
         int maxRadius = (int)(radius * (1 + dynamicRadiusRatioThreshold));
