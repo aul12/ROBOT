@@ -67,8 +67,6 @@ namespace crclfnd{
     }
 
     CircleFinderResult isCircle(std::vector<Point> points){
-        std::cout << COS(30/57.0);
-
         dbg::println("New contour");
         dbg::print("Number of points...");
         CircleFinderResult result(false);
