@@ -9,11 +9,12 @@
 
 using namespace cv;
 
-#define SQ(x) ((x)*(x))
+
 
 #include "Line.hpp"
 #include "CircleFinderResult.hpp"
 #include "debug.hpp"
+#include "preprocessor_math.h"
 
 //Östereicher werden restlos erkannt
 
@@ -22,7 +23,7 @@ using namespace cv;
  */
 namespace crclfnd{
     int minimumPoints = 10; ///<Minimum Points required for an object detected as circle
-    double cos30 = 0.86602540378443; ///<the cosine of the minimum angle of any angle in the triangle
+    double minAngle = COS(DEG_TO_RAD(30)); ///<the cosine of the minimum angle of any angle in the triangle
     int maxRadius = 200; ///<Maximum radius for a circle. Larger circles will be ignored
     int minRadius = 6;     ///<Minimum radius for a circle. Smaller circles will be ignored
     int circleCenterDistanceThreshold = SQ(10); ///<The maximum distance between the calculated potential centers of the circle
@@ -66,6 +67,8 @@ namespace crclfnd{
     }
 
     CircleFinderResult isCircle(std::vector<Point> points){
+        std::cout << COS(30/57.0);
+
         dbg::println("New contour");
         dbg::print("Number of points...");
         CircleFinderResult result(false);
@@ -158,7 +161,7 @@ namespace crclfnd{
                           / (-2.0 * lineLengths[0] * lineLengths[1]));
 
 
-        if(cosAlpha > cos30|| cosBeta > cos30){
+        if(cosAlpha > minAngle|| cosBeta > minAngle){
             dbg::println("Angles to small", dbg::WARN);
             return result;
         }
