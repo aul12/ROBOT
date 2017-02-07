@@ -1,4 +1,4 @@
-TEST(isCircleTest, Omega){
+TEST(DISABLED_isCircleTest, Omega){
 	EXPECT_TRUE(crclfnd::isCircle(
 		{
 		Point(282,74),

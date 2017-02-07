@@ -1,4 +1,4 @@
-TEST(isCircleTest, CircleFragment){
+TEST(DISABLED_isCircleTest, CircleFragment){
 	EXPECT_TRUE(crclfnd::isCircle(
 		{
 		Point(295,74),
