@@ -1,4 +1,4 @@
-# orange Ball detecting Algorithm (oBdA)
+# Robot orange ball-shaped object tracker (ROBOT)
 
 [![build status](https://git.markdorf-robotics.de/panykiel/OrangeBall/badges/master/build.svg)](https://git.markdorf-robotics.de/panykiel/OrangeBall/commits/master)
 
