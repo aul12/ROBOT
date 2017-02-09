@@ -1,4 +1,4 @@
-# Robot Orange Ball-shaped Object Tracker (ROBOT)
+# ROBOT - ROBOT Orange Ball-shaped Object Tracker
 
 [![build status](https://git.markdorf-robotics.de/panykiel/OrangeBall/badges/master/build.svg)](https://git.markdorf-robotics.de/panykiel/OrangeBall/commits/master)
 
