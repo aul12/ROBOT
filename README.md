@@ -26,7 +26,7 @@ Finally all contour areas get sorted by size and the largest is highlighted in t
 The Canny algorithm is used to detect edges in the image. 
 The algorithm only works on a single color plane (for example Black and White),
 that's why we apply a special colour filter beforehand. The contours
-then get checked on their circularity.
+then are checked on their circularity.
 
 #### Colour Filter
 The colour filter was designed to get the best possible contrast between
@@ -41,7 +41,7 @@ the ball and its surroundings. Therefore we use two filters:
   black. We additionally invert the filtered image so the ball becomes a white object
   while the field and other objects become dark.
   
-Both images get combined, but with different weight. This results in an overall grayish
+Both images are combined, but with different weight. This results in an overall grayish
 image where only orange / red objects are clearly visible.
 
 #### Canny algorithm
@@ -216,3 +216,31 @@ Compile the project:
 Finally install GTest:
 
     sudo cp *.a /usr/lib
+
+
+##Calibration
+###CircleFinder Module
+####Calibration during runtime
+
+There are three sliders which let you configure the canny threshold and the colour filter:
+1. Threshold: Sets the threshold for the edge detector. A high value means that only prominent
+ and clearly visible edges will be detected by the Canny algorithm. At a low value the edge detector
+ is more tolerant.
+2. Color bias: Determines the ratio of the two pre-color-filters. Low values (slider on the right)
+ mean that the inverted green filter will be weighted greater than the red filter and vise versa.
+3. Contrast: Sets the contrast of the filtered image.
+
+Example how to configure the three values to ensure the best results:
+1. Set Threshold and Color bias to maximum and Contrast to the lowest possible amount before the
+ image becomes only gray.
+2. Set Color bias to a value where all background colors appear in the same grayish tone and
+ only reddish colors are clearly distinguished.
+3. Adjust the contrast so reddish areas are marked by red line (detected as edge). You can do this
+ simultaneously with the previous step if necessary.
+4. Reduce the Canny threshold to improve edge detection of reddish objects. Don't go to low
+ to avoid noise.
+ 
+@TODO Example images!
+
+---
+####Parameters and constants
