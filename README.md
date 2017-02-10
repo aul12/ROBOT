@@ -218,11 +218,11 @@ Finally install GTest:
     sudo cp *.a /usr/lib
 
 
-##Calibration
+## Calibration
 
-###CircleFinder Module
+### CircleFinder Module
 
-####Calibration during runtime
+#### Calibration during runtime
 
 
 There are three sliders which let you configure the canny threshold and the colour filter:
@@ -246,4 +246,4 @@ Example how to configure the three values to ensure the best results:
 @TODO Example images!
 
 ---
-####Parameters and constants
+#### Parameters and constants
