@@ -219,8 +219,11 @@ Finally install GTest:
 
 
 ##Calibration
+
 ###CircleFinder Module
+
 ####Calibration during runtime
+
 
 There are three sliders which let you configure the canny threshold and the colour filter:
 1. Threshold: Sets the threshold for the edge detector. A high value means that only prominent
