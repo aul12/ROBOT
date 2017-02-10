@@ -238,7 +238,7 @@ Example how to configure the three values to ensure the best results:
  image becomes only gray.
 2. Set Color bias to a value where all background colors appear in the same grayish tone and
  only reddish colors are clearly distinguished.
-3. Adjust the contrast so reddish areas are marked by red line (detected as edge). You can do this
+3. Adjust the contrast so reddish areas are marked by red lines (detected as edge). You can do this
  simultaneously with the previous step if necessary.
 4. Reduce the Canny threshold to improve edge detection of reddish objects. Don't go to low
  to avoid noise.
@@ -246,4 +246,13 @@ Example how to configure the three values to ensure the best results:
 @TODO Example images!
 
 ---
-#### Parameters and constants
+#### Configure the circle detection
+
+Following variables let you configure the CircleFinder module:
+1. minimumPoints: Edge-objects consisting of less points than specified will be ignored without
+ even being put through the whole test procedure. You can use this variable to reduce the amount
+ of objects the CircleFinder has to go through. A recommended value would be around 10.
+2. maxRadius and minRadius: Round edges with a radius not between max- and minRadius will be
+ sorted out. Use this option to ignore small noise dots or large slightly rounded edges which
+  don't resemble a circle.
+
