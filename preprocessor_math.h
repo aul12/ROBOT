@@ -15,7 +15,6 @@
 #define COT(x) (COS(X)/SIN(X))
 #define EXP(x) (1+(x)+SQ(x)/2.0 + (x)*SQ(x)/6.0 + SQ(SQ(x))/24.0)
 
-
 #define DEG_TO_RAD(x) ((x)/57.3)
 #define RAD_TO_DEG(x) ((x)*57.3)
 

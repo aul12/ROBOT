@@ -22,7 +22,7 @@ Mat imgOriginal;
 int main(){
     dbg::init(dbg::STDOUT, dbg::WARN);
 
-    VideoCapture cap(0);
+    VideoCapture cap(1);
 
     if (!cap.isOpened()){
         dbg::println("Camera not available is a other program already using the camera?", dbg::ERROR);
