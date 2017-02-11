@@ -238,12 +238,27 @@ Example how to configure the three values to ensure the best results:
     image becomes only gray.
     
     ![Image Step 1](https://git.markdorf-robotics.de/panykiel/OrangeBall/raw/master/calibrationImg/filterStep1.png "Step 1")
+
 2.  Set Color bias to a value where all background colors appear in the same grayish tone and
     only reddish colors are clearly distinguished.
+    
+    ![Image Step 2](https://git.markdorf-robotics.de/panykiel/OrangeBall/raw/master/calibrationImg/filterStep2.png "Step 2")
+
 3.  Adjust the contrast so reddish areas are marked by red / green lines (detected as edge). You can do this
     simultaneously with the previous step if necessary.
+    
+    ![Image Step 3](https://git.markdorf-robotics.de/panykiel/OrangeBall/raw/master/calibrationImg/filterStep3.png "Step 3")
+
+    
 4.  Reduce the Canny threshold to improve edge detection of reddish objects. Don't go to low
     to avoid noise.
+    
+    ![Image Step 4](https://git.markdorf-robotics.de/panykiel/OrangeBall/raw/master/calibrationImg/filterStep4.png "Step 4")
+
+    or
+    
+    ![Image Step 4 alternative](https://git.markdorf-robotics.de/panykiel/OrangeBall/raw/master/calibrationImg/filterStep4_1.png "Step 4 alternative")
+
  
 @TODO Example images!
 
