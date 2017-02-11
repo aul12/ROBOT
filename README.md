@@ -236,7 +236,8 @@ There are three sliders which let you configure the canny threshold and the colo
 Example how to configure the three values to ensure the best results:
 1.  Set Threshold and Color bias to maximum and Contrast to the lowest possible amount before the
     image becomes only gray.
-    (https://git.markdorf-robotics.de/panykiel/OrangeBall/raw/master/calibrationImg/filterStep1.png "Step 1")
+    
+    ![Image Step 1](https://git.markdorf-robotics.de/panykiel/OrangeBall/raw/master/calibrationImg/filterStep1.png "Step 1")
 2.  Set Color bias to a value where all background colors appear in the same grayish tone and
     only reddish colors are clearly distinguished.
 3.  Adjust the contrast so reddish areas are marked by red / green lines (detected as edge). You can do this
