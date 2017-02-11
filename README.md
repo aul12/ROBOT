@@ -55,6 +55,7 @@ will be ignored
 5. Edge tracking: Ignore weak edges which are not connected to strong ones.
 
 For further information on the Canny algorithm see: https://en.wikipedia.org/wiki/Canny_edge_detector
+
 #### CircleFinder submodule
 The CircleFinder submodule determines which objects created by the Canny algorithm resemble a circle-like object. 
 Every Canny-object will be put through following procedures:
@@ -78,6 +79,59 @@ Every Canny-object will be put through following procedures:
    The difference-threshold used in this step to determine whether an object is a circle is 
    calculated according to the potential circle's radius.
 10. If all previous steps are passed, the object will be determined a circle-like object.
+
+## Calibration
+
+### CircleFinder Module
+
+#### Calibration during runtime
+There are three sliders which let you configure the canny threshold and the colour filter:
+1. Threshold: Sets the threshold for the edge detector. A high value means that only prominent
+ and clearly visible edges will be detected by the Canny algorithm. At a low value the edge detector
+ is more tolerant.
+2. Color bias: Determines the ratio of the two pre-color-filters. Low values (slider on the right)
+ mean that the inverted green filter will be weighted greater than the red filter and vise versa.
+3. Contrast: Sets the contrast of the filtered image.
+
+Example how to configure the three values to ensure the best results:
+1.  Set Threshold and Color bias to maximum and Contrast to the lowest possible amount before the
+    image becomes only gray.
+    <br><br><br>
+    ![Image Step 1](https://git.markdorf-robotics.de/panykiel/OrangeBall/raw/master/calibrationImg/filterStep1.png "Step 1")
+    <br><br><br>
+2.  Set Color bias to a value where all background colors appear in the same grayish tone and
+    only reddish colors are clearly distinguished.
+    <br><br><br>
+    ![Image Step 2](https://git.markdorf-robotics.de/panykiel/OrangeBall/raw/master/calibrationImg/filterStep2.png "Step 2")
+    <br><br><br>
+3.  Adjust the contrast so reddish areas are marked by red / green lines (detected as edge). You can do this
+    simultaneously with the previous step if necessary.
+    <br><br><br>
+    ![Image Step 3](https://git.markdorf-robotics.de/panykiel/OrangeBall/raw/master/calibrationImg/filterStep3.png "Step 3")
+
+    <br><br><br>
+4.  Reduce the Canny threshold to improve edge detection of reddish objects. Don't go to low
+    to avoid noise.
+    <br><br><br>
+    ![Image Step 4](https://git.markdorf-robotics.de/panykiel/OrangeBall/raw/master/calibrationImg/filterStep4.png "Step 4")
+    <br><br><br>
+    or (with a lower contrast, the canny threshold needs to be lower. 
+    Both setups work equally well. Choose one depending on the environmental lighting)
+    <br><br><br>
+    ![Image Step 4 alternative](https://git.markdorf-robotics.de/panykiel/OrangeBall/raw/master/calibrationImg/filterStep4_1.png "Step 4 alternative")
+
+ 
+
+---
+#### Configure the circle detection
+
+Following variables let you configure the CircleFinder module:
+*   **minimumPoints**: Edge-objects consisting of less points than specified will be ignored without
+    even being put through the whole test procedure. You can use this variable to reduce the amount
+    of objects the CircleFinder has to go through. A recommended value would be around 10.
+*   **maxRadius** and **minRadius**: Round edges with a radius not between max and minRadius will be
+    sorted out. Use this option to ignore small noise dots or large slightly rounded edges which
+    don't resemble a circle.
 
 ## Runner
 Because there is no build server available gitlab requires a runner to build, 
@@ -216,59 +270,3 @@ Compile the project:
 Finally install GTest:
 
     sudo cp *.a /usr/lib
-
-
-## Calibration
-
-### CircleFinder Module
-
-#### Calibration during runtime
-
-
-There are three sliders which let you configure the canny threshold and the colour filter:
-1. Threshold: Sets the threshold for the edge detector. A high value means that only prominent
- and clearly visible edges will be detected by the Canny algorithm. At a low value the edge detector
- is more tolerant.
-2. Color bias: Determines the ratio of the two pre-color-filters. Low values (slider on the right)
- mean that the inverted green filter will be weighted greater than the red filter and vise versa.
-3. Contrast: Sets the contrast of the filtered image.
-
-Example how to configure the three values to ensure the best results:
-1.  Set Threshold and Color bias to maximum and Contrast to the lowest possible amount before the
-    image becomes only gray.
-    <br><br><br>
-    ![Image Step 1](https://git.markdorf-robotics.de/panykiel/OrangeBall/raw/master/calibrationImg/filterStep1.png "Step 1")
-    <br><br><br>
-2.  Set Color bias to a value where all background colors appear in the same grayish tone and
-    only reddish colors are clearly distinguished.
-    <br><br><br>
-    ![Image Step 2](https://git.markdorf-robotics.de/panykiel/OrangeBall/raw/master/calibrationImg/filterStep2.png "Step 2")
-    <br><br><br>
-3.  Adjust the contrast so reddish areas are marked by red / green lines (detected as edge). You can do this
-    simultaneously with the previous step if necessary.
-    <br><br><br>
-    ![Image Step 3](https://git.markdorf-robotics.de/panykiel/OrangeBall/raw/master/calibrationImg/filterStep3.png "Step 3")
-
-    <br><br><br>
-4.  Reduce the Canny threshold to improve edge detection of reddish objects. Don't go to low
-    to avoid noise.
-    <br><br><br>
-    ![Image Step 4](https://git.markdorf-robotics.de/panykiel/OrangeBall/raw/master/calibrationImg/filterStep4.png "Step 4")
-    <br><br><br>
-    or (with a lower contrast, the canny threshold needs to be lower. 
-    Both setups work equally well. Choose one depending on the environmental lighting)
-    <br><br><br>
-    ![Image Step 4 alternative](https://git.markdorf-robotics.de/panykiel/OrangeBall/raw/master/calibrationImg/filterStep4_1.png "Step 4 alternative")
-
- 
-
----
-#### Configure the circle detection
-
-Following variables let you configure the CircleFinder module:
-*   **minimumPoints**: Edge-objects consisting of less points than specified will be ignored without
-    even being put through the whole test procedure. You can use this variable to reduce the amount
-    of objects the CircleFinder has to go through. A recommended value would be around 10.
-*   **maxRadius** and **minRadius**: Round edges with a radius not between max and minRadius will be
-    sorted out. Use this option to ignore small noise dots or large slightly rounded edges which
-    don't resemble a circle.

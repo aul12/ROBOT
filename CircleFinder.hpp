@@ -9,8 +9,6 @@
 
 using namespace cv;
 
-
-
 #include "Line.hpp"
 #include "CircleFinderResult.hpp"
 #include "debug.hpp"
@@ -23,7 +21,7 @@ using namespace cv;
  */
 namespace crclfnd{
     int minimumPoints = 10; ///<Minimum Points required for an object detected as circle
-    double minAngle = COS(DEG_TO_RAD(30)); ///<the cosine of the minimum angle of any angle in the triangle
+    float minAngle = (float)COS(DEG_TO_RAD(30)); ///<the cosine of the minimum angle of any angle in the triangle
     int maxRadius = 200; ///<Maximum radius for a circle. Larger circles will be ignored
     int minRadius = 6;     ///<Minimum radius for a circle. Smaller circles will be ignored
     int circleCenterDistanceThreshold = SQ(10); ///<The maximum distance between the calculated potential centers of the circle
