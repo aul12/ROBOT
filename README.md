@@ -236,31 +236,30 @@ There are three sliders which let you configure the canny threshold and the colo
 Example how to configure the three values to ensure the best results:
 1.  Set Threshold and Color bias to maximum and Contrast to the lowest possible amount before the
     image becomes only gray.
-    
+    <br><br><br>
     ![Image Step 1](https://git.markdorf-robotics.de/panykiel/OrangeBall/raw/master/calibrationImg/filterStep1.png "Step 1")
-
+    <br><br><br>
 2.  Set Color bias to a value where all background colors appear in the same grayish tone and
     only reddish colors are clearly distinguished.
-    
+    <br><br><br>
     ![Image Step 2](https://git.markdorf-robotics.de/panykiel/OrangeBall/raw/master/calibrationImg/filterStep2.png "Step 2")
-
+    <br><br><br>
 3.  Adjust the contrast so reddish areas are marked by red / green lines (detected as edge). You can do this
     simultaneously with the previous step if necessary.
-    
+    <br><br><br>
     ![Image Step 3](https://git.markdorf-robotics.de/panykiel/OrangeBall/raw/master/calibrationImg/filterStep3.png "Step 3")
 
-    
+    <br><br><br>
 4.  Reduce the Canny threshold to improve edge detection of reddish objects. Don't go to low
     to avoid noise.
-    
+    <br><br><br>
     ![Image Step 4](https://git.markdorf-robotics.de/panykiel/OrangeBall/raw/master/calibrationImg/filterStep4.png "Step 4")
-
+    <br><br><br>
     or
-    
+    <br><br><br>
     ![Image Step 4 alternative](https://git.markdorf-robotics.de/panykiel/OrangeBall/raw/master/calibrationImg/filterStep4_1.png "Step 4 alternative")
 
  
-@TODO Example images!
 
 ---
 #### Configure the circle detection
