@@ -255,7 +255,8 @@ Example how to configure the three values to ensure the best results:
     <br><br><br>
     ![Image Step 4](https://git.markdorf-robotics.de/panykiel/OrangeBall/raw/master/calibrationImg/filterStep4.png "Step 4")
     <br><br><br>
-    or
+    or (with a lower contrast, the canny threshold needs to be lower. 
+    Both setups work equally well. Choose one depending on the environmental lighting)
     <br><br><br>
     ![Image Step 4 alternative](https://git.markdorf-robotics.de/panykiel/OrangeBall/raw/master/calibrationImg/filterStep4_1.png "Step 4 alternative")
 
@@ -265,10 +266,9 @@ Example how to configure the three values to ensure the best results:
 #### Configure the circle detection
 
 Following variables let you configure the CircleFinder module:
-1. minimumPoints: Edge-objects consisting of less points than specified will be ignored without
- even being put through the whole test procedure. You can use this variable to reduce the amount
- of objects the CircleFinder has to go through. A recommended value would be around 10.
-2. maxRadius and minRadius: Round edges with a radius not between max- and minRadius will be
- sorted out. Use this option to ignore small noise dots or large slightly rounded edges which
-  don't resemble a circle.
-
+*   **minimumPoints**: Edge-objects consisting of less points than specified will be ignored without
+    even being put through the whole test procedure. You can use this variable to reduce the amount
+    of objects the CircleFinder has to go through. A recommended value would be around 10.
+*   **maxRadius** and **minRadius**: Round edges with a radius not between max and minRadius will be
+    sorted out. Use this option to ignore small noise dots or large slightly rounded edges which
+    don't resemble a circle.
