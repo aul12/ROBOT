@@ -128,22 +128,22 @@ Example how to configure the three values to ensure the best results:
 Following variables let you configure the CircleFinder module:
 *   **minimumPoints**: Edge-objects consisting of less points than specified will be ignored without
     even being put through the whole test procedure. You can use this variable to reduce the amount
-    of objects the CircleFinder has to go through. A recommended value would be around 10.
+    of objects the CircleFinder has to go through. A recommended value would be around **10**.
 *   **minAngle**: The algorithm tries to fit triangles into detected objects which are used to calculate
     the center of a circle later. Objects which are to flat or long are sorted out by checking the angles
     of the corresponding triangle. The higher this parameter is, the bigger the volume of an object has to
-    be to pass this test step (flat objects can only contain flat triangles).
+    be to pass this test step (flat objects can only contain flat triangles). The default  value is **30**.
 *   **maxRadius** and **minRadius**: Round edges with a radius not between max and minRadius will be
     sorted out. Use this option to ignore small noise dots or large slightly rounded edges which
     don't resemble a circle.
 *   **circleCenterDistanceThreshold**: When calculating the circle of a potential circle, the algorithm 
     first determines three center candidates which theoretically are all the same. Due to inaccuracies
     the three points slightly differ. This parameter restricts the allowed distance (in pixels) 
-    between said points. Normally, the default value of 10 should do the job.
+    between said points. Normally, the default value of **10** should do the job.
 *   **triangleLineLengthRatioThreshold**: If possible the algorithm tries to fit a triangle with two
     equally long sides into an object. This parameter determines the maximum difference between said
     triangle sides (1 = 100%, 0.5 = 50%...). A higher value means stricter criteria for the circle
-    detection. Normally, the default value of 0.1 is recommended. Changing the value drastically can
+    detection. Normally, the default value of **0.1** is recommended. Changing the value drastically can
     result in bad detections.
 *   **max-/minRadiusRatioTolerance**: At different distances between the camera and the object, the algorithm
     has to be more or less tolerant in terms of the ratio between the theoretical calculated radius of the
@@ -157,6 +157,47 @@ Following variables let you configure the CircleFinder module:
     
     NOTE: The calculated tolerance will always be between **max-** and **minRadiusRatioTolerance**.
     
+##### Step-by-Step instruction
+
+1.  Calibrate the color filter so that the object you want to detect is clearly visible and distinguished from
+    the background.
+2.  Set all parameters with default values to their **default values** (**minimumPoints, minAngle, circleCenterDistanceThreshold,
+    triangleLineLengthRatioThreshold**).
+3.  Find out what the largest and smallest possible circle will be and set the corresponding parameters to that value
+    (**maxRadius** and **minRadius**, in pixel!).
+4.  Set **radiusRatioToleranceFactor** **maxRadiusRatioToleranceand** to **0**.
+5.  Set **minRadiusRatioTolerance** to a value where the object (the ball) is only detected as circle (marked green) on 
+    close range (about 10-20 cm, depends on your camera). A recommended value would be between **0.1** and **1**. Note 
+    the value and set it back to 0.
+6.  Set **maxRadiusRatioTolerance** to a value where the object (the ball) is only detected as circle (marked green) on 
+    maximum range. A recommended value would be between **0.1** and **1**.
+7.  Set **minRadiusRatioTolerance** back to the value you used in step 5.
+8.  Start with **radiusRatioToleranceFactor** at **0.1** and double or halve the value until the ball is detected as
+    circle at every distance (marked green). Keep the value as high as possible to avoid false-positives!
+   
+##### Trouble-shooting
+
+*   Reduce noise and to small objects by adjusting **minimumPoints**.
+*   Avoid false-positives by:
+    * Adjusting **max-** and **minRadius**
+    * Setting **minAngle** to a higher value
+    * Lowering **max-/minRadiusRatioTolerance**
+    * Setting **radiusRatioToleranceFactor** to a higher value
+    * Setting **triangleLineLengthRatioThreshold** to a lower value
+*   Bad detection of far away or small objects:
+    * Set **minRadius** to a lower value
+    * Set **maxRadiusRatioTolerance** to a higher value
+    * Set **radiusRatioToleranceFactor** to a lower value
+    * Set **minAngle** to a lower value
+    * (Set **triangleLineLengthRatioThreshold** to a higher value)
+*   Bad detection of close and large objects:
+    * Set **maxRadius** to a higher value
+    * Set **minRadiusRatioTolerance** to a higher value
+    * Set **radiusRatioToleranceFactor** to a lower value
+    * Set **minAngle** to a lower value
+    * (Set **triangleLineLengthRatioThreshold** to a higher value)
+*   Bad detection of objects at a medium distance:
+    * Adjust **radiusRatioToleranceFactor**
     
 
 ## Runner
