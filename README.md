@@ -1,6 +1,6 @@
 # ROBOT - ROBOT Orange Ball-shaped Object Tracker
 
-[![build status](https://git.markdorf-robotics.de/panykiel/OrangeBall/badges/master/build.svg)](https://git.markdorf-robotics.de/panykiel/OrangeBall/commits/master)
+[![build status](https://git.markdorf-robotics.de/Orangener-Ball/ROBOT/badges/master/build.svg)](https://git.markdorf-robotics.de/Orangener-Ball/ROBOT/commits/master)
 
 ## Modules
 ### Color Based
@@ -97,28 +97,28 @@ Example how to configure the three values to ensure the best results:
 1.  Set Threshold and Color bias to maximum and Contrast to the lowest possible amount before the
     image becomes only gray.
     <br><br><br>
-    ![Image Step 1](https://git.markdorf-robotics.de/panykiel/OrangeBall/raw/master/calibrationImg/filterStep1.png "Step 1")
+    ![Image Step 1](https://git.markdorf-robotics.de/Orangener-Ball/ROBOT/raw/master/calibrationImg/filterStep1.png "Step 1")
     <br><br><br>
 2.  Set Color bias to a value where all background colors appear in the same grayish tone and
     only reddish colors are clearly distinguished.
     <br><br><br>
-    ![Image Step 2](https://git.markdorf-robotics.de/panykiel/OrangeBall/raw/master/calibrationImg/filterStep2.png "Step 2")
+    ![Image Step 2](https://git.markdorf-robotics.de/Orangener-Ball/ROBOT/raw/master/calibrationImg/filterStep2.png "Step 2")
     <br><br><br>
 3.  Adjust the contrast so reddish areas are marked by red / green lines (detected as edge). You can do this
     simultaneously with the previous step if necessary.
     <br><br><br>
-    ![Image Step 3](https://git.markdorf-robotics.de/panykiel/OrangeBall/raw/master/calibrationImg/filterStep3.png "Step 3")
+    ![Image Step 3](https://git.markdorf-robotics.de/Orangener-Ball/ROBOT/raw/master/calibrationImg/filterStep3.png "Step 3")
 
     <br><br><br>
 4.  Reduce the Canny threshold to improve edge detection of reddish objects. Don't go to low
     to avoid noise.
     <br><br><br>
-    ![Image Step 4](https://git.markdorf-robotics.de/panykiel/OrangeBall/raw/master/calibrationImg/filterStep4.png "Step 4")
+    ![Image Step 4](https://git.markdorf-robotics.de/Orangener-Ball/ROBOT/raw/master/calibrationImg/filterStep4.png "Step 4")
     <br><br><br>
     or (with a lower contrast, the canny threshold needs to be lower. 
     Both setups work equally well. Choose one depending on the environmental lighting)
     <br><br><br>
-    ![Image Step 4 alternative](https://git.markdorf-robotics.de/panykiel/OrangeBall/raw/master/calibrationImg/filterStep4_1.png "Step 4 alternative")
+    ![Image Step 4 alternative](https://git.markdorf-robotics.de/Orangener-Ball/ROBOT/raw/master/calibrationImg/filterStep4_1.png "Step 4 alternative")
 
  
 
