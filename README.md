@@ -132,6 +132,28 @@ Following variables let you configure the CircleFinder module:
 *   **maxRadius** and **minRadius**: Round edges with a radius not between max and minRadius will be
     sorted out. Use this option to ignore small noise dots or large slightly rounded edges which
     don't resemble a circle.
+*   **circleCenterDistanceThreshold**: When calculating the circle of a potential circle, the algorithm 
+    first determines three center candidates which theoretically are all the same. Due to inaccuracies
+    the three points slightly differ. This parameter restricts the allowed distance (in pixels) 
+    between said points. Normally, the default value of 10 should do the job.
+*   **triangleLineLengthRatioThreshold**: If possible the algorithm tries to fit a triangle with two
+    equally long sides into an object. This parameter determines the maximum difference between said
+    triangle sides (1 = 100%, 0.5 = 50%...). A higher value means stricter criteria for the circle
+    detection. Normally, the default value of 0.1 is recommended. Changing the value drastically can
+    result in bad detections.
+*   **max-/minRadiusRatioTolerance**: At different distances between the camera and the object, the algorithm
+    has to be more or less tolerant in terms of the ratio between the theoretical calculated radius of the
+    object and the actual distance between the objects' points and the potential center. This value sets
+    maximum / minimum tolerance for executing said procedure.
+*   **radiusRatioToleranceFactor**: The tolerance for comparing the distance between an object's potential 
+    center and its points to its calculated radius is inversely proportional to the object's size (its 
+    calculated radius; the smaller the object, the more tolerant the algorithm). This parameter determines
+    is the proportional factor used for the scaling. At high values the tolerance will decrease more rapidly
+    from small to large objects. 
+    
+    NOTE: The calculated tolerance will always be between **max-** and **minRadiusRatioTolerance**.
+    
+    
 
 ## Runner
 Because there is no build server available gitlab requires a runner to build, 
