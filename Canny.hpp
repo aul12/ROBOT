@@ -111,7 +111,7 @@ namespace cnny{
         // Get the contours with the canny algorithm
         Canny(imgColourFiltered, imgCanny, threshold, 3*threshold, 3);
 
-        std::vector<std::vector<Point>> contourPoints;
+        std::vector<std::vector<Point> > contourPoints;
         std::vector<Vec4i> hierarchy;
 
         findContours(imgCanny, contourPoints, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));

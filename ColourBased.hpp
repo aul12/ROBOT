@@ -74,7 +74,7 @@ namespace clr{
         dilate( imgColorThresholded, imgColorThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) );
 
         //Konturen finden
-        std::vector<std::vector<Point>> colorContours;
+        std::vector<std::vector<Point> > colorContours;
         std::vector<Vec4i> colorHierarchy;
         findContours( imgColorThresholded, colorContours, colorHierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE, Point(0, 0) );
 
