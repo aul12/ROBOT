@@ -129,6 +129,10 @@ Following variables let you configure the CircleFinder module:
 *   **minimumPoints**: Edge-objects consisting of less points than specified will be ignored without
     even being put through the whole test procedure. You can use this variable to reduce the amount
     of objects the CircleFinder has to go through. A recommended value would be around 10.
+*   **minAngle**: The algorithm tries to fit triangles into detected objects which are used to calculate
+    the center of a circle later. Objects which are to flat or long are sorted out by checking the angles
+    of the corresponding triangle. The higher this parameter is, the bigger the volume of an object has to
+    be to pass this test step (flat objects can only contain flat triangles).
 *   **maxRadius** and **minRadius**: Round edges with a radius not between max and minRadius will be
     sorted out. Use this option to ignore small noise dots or large slightly rounded edges which
     don't resemble a circle.
