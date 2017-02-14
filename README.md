@@ -165,7 +165,7 @@ Following variables let you configure the CircleFinder module:
     triangleLineLengthRatioThreshold**).
 3.  Find out what the largest and smallest possible circle will be and set the corresponding parameters to that value
     (**maxRadius** and **minRadius**, in pixel!).
-4.  Set **radiusRatioToleranceFactor** **maxRadiusRatioToleranceand** to **0**.
+4.  Set **radiusRatioToleranceFactor** and **maxRadiusRatioToleranceand** to **0**.
 5.  Set **minRadiusRatioTolerance** to a value where the object (the ball) is only detected as circle (marked green) on 
     close range (about 10-20 cm, depends on your camera). A recommended value would be between **0.1** and **1**. Note 
     the value and set it back to 0.
