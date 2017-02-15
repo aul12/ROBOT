@@ -104,16 +104,15 @@ namespace cnny{
         bitwise_not(planes[GREEN], planes[GREEN]);  // Invert the image
         addWeighted(planes[RED], colorBias/100.0, planes[GREEN], 1-colorBias/100.0, 0, imgColourFiltered);
 
-        /*imgColourFiltered.convertTo(imgColourFiltered, CV_16SC1);
+        imgColourFiltered.convertTo(imgColourFiltered, CV_16SC1);
 
         // Increase the contrast
         imgColourFiltered -= 127;
-        imgColourFiltered *= contrastFactor;
+        imgColourFiltered *= (contrastFactor/20.0);
         imgColourFiltered += 127;
 
-        imgColourFiltered.convertTo(imgColourFiltered, CV_8UC1);*/
+        imgColourFiltered.convertTo(imgColourFiltered, CV_8UC1);
 
-        imgColourFiltered.convertTo(imgColourFiltered, -1, (contrastFactor-50)/50.0+1, 0);
 
         // Blur the image to reduce noise
         blur(imgColourFiltered, imgColourFiltered, Size(3,3), Point(-1, -1));
@@ -175,7 +174,7 @@ namespace cnny{
             line(imgColourFiltered, result.triangle[0], result.triangle[2], Scalar(255,0,0), 2, 8);
         }
         if(existsCircle)
-            std::cout << "Circle Exists" << std::endl;
+            std::cout << "################################Circle Exists" << std::endl;
 
         now = std::chrono::duration_cast<std::chrono::milliseconds >(
                 std::chrono::system_clock::now().time_since_epoch()
