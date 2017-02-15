@@ -22,6 +22,21 @@ void printHelp(){
     std::cout << "--help\t Show this help message" << std::endl;
 }
 
+Matx<float,3,3> cameraMatrix (
+        2.7558586477980515e+02, 0, 3.1950000000000000e+02,
+        0, 2.7558586477980515e+02, 2.3950000000000000e+02,
+        0, 0, 1
+);
+
+
+Matx<float,1,5> distCoeffs (
+        -2.5803810151961959e-01,
+        5.1724264728968586e-02,
+        -4.0138190007831046e-03,
+        -1.1546095045681297e-03,
+        -3.9872469723213665e-03
+);
+
 /**
  * Main function
  * @return exit code
@@ -49,9 +64,7 @@ int main(int argc, char* argv[]){
             return 0;
         }else if(arg == "--device") {
             if(c+1<argc) {
-                //String device = argv[c + 1];
                 videoNumber = atoi(argv[++c]);
-
             }
         }else{
             std::cout << "Unknown argument: " << arg << std::endl;
@@ -77,14 +90,17 @@ int main(int argc, char* argv[]){
         if (!cap.read(imgOriginal))
             dbg::println("Camera not available is a other program already using the camera?", dbg::ERROR);
 
+        Mat imgUndist;
+        undistort(imgOriginal,imgUndist,cameraMatrix,distCoeffs);
+
         Mat imgCannyResult, imgColourResult;
         if(cannyEnable)
-            imgCannyResult = cnny::run(imgOriginal);
+            imgCannyResult = cnny::run(imgUndist);
         if(colorEnable)
-            imgColourResult = clr::run(imgOriginal);
+            imgColourResult = clr::run(imgUndist);
 
         if(guiEnable){
-            imshow("Original", imgOriginal);
+            imshow("Original", imgUndist);
 
             if(cannyEnable)
                 cnny::show(imgCannyResult);

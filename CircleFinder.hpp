@@ -22,11 +22,11 @@ using namespace cv;
 namespace crclfnd{
     int minimumPoints = 10; ///<Minimum Points required for an object detected as circle
     float minAngle = (float)COS(DEG_TO_RAD(25)); ///<the cosine of the minimum angle of any angle in the triangle
-    int maxRadius = 80; ///<Maximum radius for a circle. Larger circles will be ignored
+    int maxRadius = 200; ///<Maximum radius for a circle. Larger circles will be ignored
     int minRadius = 5;     ///<Minimum radius for a circle. Smaller circles will be ignored
     int circleCenterDistanceThreshold = SQ(10); ///<The maximum distance between the calculated potential centers of the circle
     float triangleLineLengthRatioThreshold = 0.1; ///<The maximum percentage difference between the two shorter edges of the triangle
-    float maxRadiusRatioTolerance = 0.4;///<The maximum tolerance for the ratio between the calculated radius and the actual distance from a point to the center
+    float maxRadiusRatioTolerance = 0.5;///<The maximum tolerance for the ratio between the calculated radius and the actual distance from a point to the center
     float minRadiusRatioTolerance = 0.09; ///<The minimum tolerance for the ratio between the calculated radius and the actual distance from a point to the center
     float radiusRatioToleranceFactor = 0.012;///<The scaling factor of the dynamic radius ratio threshold (lower means more tolerant)
 
