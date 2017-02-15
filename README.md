@@ -165,7 +165,7 @@ Following variables let you configure the CircleFinder module:
     triangleLineLengthRatioThreshold**).
 3.  Find out what the largest and smallest possible circle will be and set the corresponding parameters to that value
     (**maxRadius** and **minRadius**, in pixel!).
-4.  Set **radiusRatioToleranceFactor** and **maxRadiusRatioToleranceand** to **0**.
+4.  Set **radiusRatioToleranceFactor** and **maxRadiusRatioTolerance** to **0**.
 5.  Set **minRadiusRatioTolerance** to a value where the object (the ball) is only detected as circle (marked green) on 
     close range (about 10-20 cm, depends on your camera). A recommended value would be between **0.1** and **1**. Note 
     the value and set it back to 0.
@@ -250,7 +250,7 @@ naming, this helps the readability and reduces the length of variable names.
 * Google-Test (1.8.0)
 * cppcheck (1.72)
 
-### Installation
+### Setup the development tools
 At the moment Ubuntu (16.04 amd64) is the only supported OS.
 The code can run on all *nix system but hasn't been tested.
 
@@ -267,7 +267,7 @@ Next you have to compile OpenCV:
 First install all dependencies:
 
 
-    sudo apt-get install libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev
+    sudo apt-get install libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev
 
 
 Create a new folder in your working directory (for example ~/OpenCVInstallation).
@@ -337,3 +337,43 @@ Compile the project:
 Finally install GTest:
 
     sudo cp *.a /usr/lib
+    
+    
+## Installation on the target device
+### Build tools for the target Device
+Install the compiler, cmake (the build-system) and git:
+
+    sudo apt-get install build-essential cmake git
+    
+Next you need to install opencv, please follow the guide
+in the Toolchain section.
+
+### Compile ROBOT
+Change into your home directory and clone the git project:
+
+    git clone https://git.markdorf-robotics.de/Orangener-Ball/ROBOT.git
+    
+Change into the directory and create a build folder:
+
+    cd ROBOT
+    
+    mkdir build
+    
+    cd build
+    
+Next run cmake:
+
+    cmake ..
+    
+Then compile the program:
+
+    make
+
+Finally run the program:
+
+    ./OrangeBall [params]
+    
+### Command line parameters
+To get all available parameters run:
+
+    ./OrangeBall --help
