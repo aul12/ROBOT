@@ -79,7 +79,7 @@ namespace cnny{
         namedWindow("Canny", CV_WINDOW_AUTOSIZE);
         createTrackbar("Threshold", "Canny", &threshold, 100);
         createTrackbar("Color bias", "Canny", &colorBias, 100);
-        createTrackbar("Contrast", "Canny", &contrastFactor, 10);
+        createTrackbar("Contrast", "Canny", &contrastFactor, 100);
         imshow("Canny", img);
     }
 
@@ -112,6 +112,8 @@ namespace cnny{
         imgColourFiltered += 127;
 
         imgColourFiltered.convertTo(imgColourFiltered, CV_8UC1);*/
+
+        imgColourFiltered.convertTo(imgColourFiltered, -1, (contrastFactor-50)/50.0+1, 0);
 
         // Blur the image to reduce noise
         blur(imgColourFiltered, imgColourFiltered, Size(3,3), Point(-1, -1));
