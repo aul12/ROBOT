@@ -87,6 +87,7 @@ namespace cnny{
      * @return an image with debug information
      */
     Mat run(Mat imgOriginal){
+        std::time_t timeBegin = std::time(0);
         std::cout << "START_FRAME" << std::endl;
 
         // Define the necessary images
@@ -110,7 +111,7 @@ namespace cnny{
         // Blur the image to reduce noise
         blur(imgColourFiltered, imgColourFiltered, Size(3,3), Point(-1, -1));
 
-        std::cout << "CANNY" << std::endl;
+        std::cout << "CANNY " << (std::time(0)-timeBegin) << std::endl;
 
         // Get the contours with the canny algorithm
         Canny(imgColourFiltered, imgCanny, threshold, 3*threshold, 3);
@@ -118,7 +119,7 @@ namespace cnny{
         std::vector<std::vector<Point> > contourPoints;
         std::vector<Vec4i> hierarchy;
 
-        std::cout << "FIND_CONTOURS" << std::endl;
+        std::cout << "FIND_CONTOURS " << (std::time(0)-timeBegin)<< std::endl;
 
         findContours(imgCanny, contourPoints, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
 
@@ -127,7 +128,7 @@ namespace cnny{
 
         cvtColor(imgColourFiltered, imgColourFiltered, COLOR_GRAY2BGR);
 
-        std::cout << "CIRCLE_FINDER" << std::endl;
+        std::cout << "CIRCLE_FINDER " << (std::time(0)-timeBegin)<< std::endl;
         for( int i = 0; i< contourPoints.size(); i++ )
         {
             CircleFinderResult result = crclfnd::isCircle(contourPoints[i]);
@@ -142,7 +143,7 @@ namespace cnny{
             line(imgColourFiltered, result.triangle[0], result.triangle[2], Scalar(255,0,0), 2, 8);
         }
 
-        std::cout << "END_FRAME" << std::endl;
+        std::cout << "END_FRAME "<< (std::time(0)-timeBegin) << std::endl;
 
         return imgColourFiltered;
     }
