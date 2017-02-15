@@ -104,14 +104,14 @@ namespace cnny{
         bitwise_not(planes[GREEN], planes[GREEN]);  // Invert the image
         addWeighted(planes[RED], colorBias/100.0, planes[GREEN], 1-colorBias/100.0, 0, imgColourFiltered);
 
-        imgColourFiltered.convertTo(imgColourFiltered, CV_16SC1);
+        /*imgColourFiltered.convertTo(imgColourFiltered, CV_16SC1);
 
         // Increase the contrast
         imgColourFiltered -= 127;
         imgColourFiltered *= contrastFactor;
         imgColourFiltered += 127;
 
-        imgColourFiltered.convertTo(imgColourFiltered, CV_8UC1);
+        imgColourFiltered.convertTo(imgColourFiltered, CV_8UC1);*/
 
         // Blur the image to reduce noise
         blur(imgColourFiltered, imgColourFiltered, Size(3,3), Point(-1, -1));
