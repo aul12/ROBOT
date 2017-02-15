@@ -121,6 +121,9 @@ namespace cnny{
         );
         std::chrono::duration<double> elapsed_seconds = startTime-now;
         std::cout << "CANNY " << elapsed_seconds.count() << std::endl;
+        startTime = std::chrono::duration_cast<std::chrono::milliseconds >(
+                std::chrono::system_clock::now().time_since_epoch()
+        );
 
         // Get the contours with the canny algorithm
         Canny(imgColourFiltered, imgCanny, threshold, 3*threshold, 3);
@@ -133,6 +136,9 @@ namespace cnny{
         );
         elapsed_seconds = startTime-now;
         std::cout << "FIND_CONTOURS " << elapsed_seconds.count() << std::endl;
+        startTime = std::chrono::duration_cast<std::chrono::milliseconds >(
+                std::chrono::system_clock::now().time_since_epoch()
+        );
 
         findContours(imgCanny, contourPoints, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
 
@@ -146,6 +152,10 @@ namespace cnny{
         );
         elapsed_seconds = startTime-now;
         std::cout << "CIRCLE_FINDER " << elapsed_seconds.count() << std::endl;
+        startTime = std::chrono::duration_cast<std::chrono::milliseconds >(
+                std::chrono::system_clock::now().time_since_epoch()
+        );
+
         for( int i = 0; i< contourPoints.size(); i++ )
         {
             CircleFinderResult result = crclfnd::isCircle(contourPoints[i]);
