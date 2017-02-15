@@ -54,7 +54,7 @@ int main(int argc, char* argv[]){
 
     dbg::init(dbg::STDOUT, dbg::WARN);
 
-    VideoCapture cap(0);
+    VideoCapture cap(1);
     Mat imgOriginal;
 
     if (!cap.isOpened()){
