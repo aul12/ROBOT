@@ -157,11 +157,12 @@ namespace cnny{
 
         cvtColor(imgColourFiltered, imgColourFiltered, COLOR_GRAY2BGR);
 
-
+        bool existsCircle = false;
         for( int i = 0; i< contourPoints.size(); i++ )
         {
             CircleFinderResult result = crclfnd::isCircle(contourPoints[i]);
             if(result.isCircle){
+                existsCircle = true;
                 drawContours(imgColourFiltered, contourPoints, i, Scalar(0, 255, 0), 2, 8, hierarchy, 0, Point());
             }else {
                 drawContours(imgColourFiltered, contourPoints, i, Scalar(0, 0, 255), 1, 8, hierarchy, 0, Point());
@@ -171,6 +172,8 @@ namespace cnny{
             line(imgColourFiltered, result.triangle[1], result.triangle[2], Scalar(255,0,0), 2, 8);
             line(imgColourFiltered, result.triangle[0], result.triangle[2], Scalar(255,0,0), 2, 8);
         }
+        if(existsCircle)
+            std::cout << "Circle Exists" << std::endl;
 
         now = std::chrono::duration_cast<std::chrono::milliseconds >(
                 std::chrono::system_clock::now().time_since_epoch()
