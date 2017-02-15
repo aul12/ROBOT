@@ -81,13 +81,13 @@ namespace dbg{
      */
     void print(cv::String text, LogLevel level = LOG){
         if(level >= _logLevel){
-            std::time_t timeNow = std::time(nullptr);
+            //std::time_t timeNow = std::time(nullptr);
             switch(_output){
                 case STDOUT:
-                    std::cout << std::put_time(std::localtime(&timeNow), "%OH:%OM:%OS") << ":\t" << text;
+                    std::cout /*<< std::put_time(std::localtime(&timeNow), "%OH:%OM:%OS") << ":\t"*/ << text;
                     break;
                 case FILE:
-                    debugFile << std::put_time(std::localtime(&timeNow), "%OH:%OM:%OS") << ":\t" << text;
+                    debugFile /*<< std::put_time(std::localtime(&timeNow), "%OH:%OM:%OS") << ":\t"*/ << text;
                     break;
                 case NONE:break;
             }
