@@ -18,6 +18,7 @@ void printHelp(){
     std::cout << "--gui\t Show a graphical output of the images" << std::endl;
     std::cout << "--color\t Run the color based algorithm" << std::endl;
     std::cout << "--canny\t Run the canny based algorithm" << std::endl;
+    std::cout << "--device\t Select the video device number" << std::endl;
     std::cout << "--help\t Show this help message" << std::endl;
 }
 
@@ -27,6 +28,7 @@ void printHelp(){
  */
 int main(int argc, char* argv[]){
     bool guiEnable = false, colorEnable=false, cannyEnable=false;
+    int videoNumber = 0;
 
     if(argc <= 1){
         printHelp();
@@ -42,9 +44,15 @@ int main(int argc, char* argv[]){
             cannyEnable = true;
         }else if(arg == "--color") {
             colorEnable = true;
-        }else if(arg == "--help"){
+        }else if(arg == "--help") {
             printHelp();
             return 0;
+        }else if(arg == "--device") {
+            if(c+1<argc) {
+                //String device = argv[c + 1];
+                videoNumber = atoi(argv[++c]);
+
+            }
         }else{
             std::cout << "Unknown argument: " << arg << std::endl;
             printHelp();
@@ -52,9 +60,9 @@ int main(int argc, char* argv[]){
         }
     }
 
-    dbg::init(dbg::STDOUT, dbg::WARN);
+    dbg::init(dbg::STDOUT, dbg::ERROR);
 
-    VideoCapture cap(0);
+    VideoCapture cap(videoNumber);
     Mat imgOriginal;
 
     if (!cap.isOpened()){
