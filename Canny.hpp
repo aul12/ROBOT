@@ -114,7 +114,7 @@ namespace cnny{
         imgColourFiltered.convertTo(imgColourFiltered, CV_8UC1);*/
 
         // Blur the image to reduce noise
-        blur(imgColourFiltered, imgColourFiltered, Size(3,3), Point(-1, -1));
+        //blur(imgColourFiltered, imgColourFiltered, Size(3,3), Point(-1, -1));
 
         std::chrono::milliseconds now = std::chrono::duration_cast<std::chrono::milliseconds >(
                 std::chrono::system_clock::now().time_since_epoch()
