@@ -11,6 +11,9 @@
 #include "CircleFinder.hpp"
 #include "debug.hpp"
 
+#include <chrono>
+
+
 using namespace cv;
 
 /**
@@ -87,7 +90,9 @@ namespace cnny{
      * @return an image with debug information
      */
     Mat run(Mat imgOriginal){
-        std::time_t timeBegin = std::time(0);
+        std::chrono::milliseconds startTime = std::chrono::duration_cast<std::chrono::milliseconds >(
+                std::chrono::system_clock::now().time_since_epoch()
+        );
         std::cout << "START_FRAME" << std::endl;
 
         // Define the necessary images
@@ -111,7 +116,11 @@ namespace cnny{
         // Blur the image to reduce noise
         blur(imgColourFiltered, imgColourFiltered, Size(3,3), Point(-1, -1));
 
-        std::cout << "CANNY " << (std::time(0)-timeBegin) << std::endl;
+        std::chrono::milliseconds now = std::chrono::duration_cast<std::chrono::milliseconds >(
+                std::chrono::system_clock::now().time_since_epoch()
+        );
+        std::chrono::duration<double> elapsed_seconds = startTime-now;
+        std::cout << "CANNY " << elapsed_seconds.count() << std::endl;
 
         // Get the contours with the canny algorithm
         Canny(imgColourFiltered, imgCanny, threshold, 3*threshold, 3);
@@ -119,7 +128,11 @@ namespace cnny{
         std::vector<std::vector<Point> > contourPoints;
         std::vector<Vec4i> hierarchy;
 
-        std::cout << "FIND_CONTOURS " << (std::time(0)-timeBegin)<< std::endl;
+        now = std::chrono::duration_cast<std::chrono::milliseconds >(
+                std::chrono::system_clock::now().time_since_epoch()
+        );
+        elapsed_seconds = startTime-now;
+        std::cout << "FIND_CONTOURS " << elapsed_seconds.count() << std::endl;
 
         findContours(imgCanny, contourPoints, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
 
@@ -128,7 +141,11 @@ namespace cnny{
 
         cvtColor(imgColourFiltered, imgColourFiltered, COLOR_GRAY2BGR);
 
-        std::cout << "CIRCLE_FINDER " << (std::time(0)-timeBegin)<< std::endl;
+        now = std::chrono::duration_cast<std::chrono::milliseconds >(
+                std::chrono::system_clock::now().time_since_epoch()
+        );
+        elapsed_seconds = startTime-now;
+        std::cout << "CIRCLE_FINDER " << elapsed_seconds.count() << std::endl;
         for( int i = 0; i< contourPoints.size(); i++ )
         {
             CircleFinderResult result = crclfnd::isCircle(contourPoints[i]);
@@ -143,7 +160,11 @@ namespace cnny{
             line(imgColourFiltered, result.triangle[0], result.triangle[2], Scalar(255,0,0), 2, 8);
         }
 
-        std::cout << "END_FRAME "<< (std::time(0)-timeBegin) << std::endl;
+        now = std::chrono::duration_cast<std::chrono::milliseconds >(
+                std::chrono::system_clock::now().time_since_epoch()
+        );
+        elapsed_seconds = startTime-now;
+        std::cout << "END_FRAME " << elapsed_seconds.count() << std::endl;
 
         return imgColourFiltered;
     }
