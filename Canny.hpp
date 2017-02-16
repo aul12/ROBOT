@@ -48,7 +48,7 @@ namespace cnny{
      * Initialise all configuration data required for the algorithm. This is done by reading a configuration file.
      */
     void init(){
-        crclfnd::init();
+        crclfnd::init("../config/circleFinderConfig.xml");
 
         FileStorage fileStorage("../config/canny.xml", FileStorage::READ);
 

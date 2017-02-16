@@ -41,6 +41,7 @@
 
 int main(int argc, char **argv) {
     dbg::init(dbg::STDOUT, dbg::LOG);
+    crclfnd::init("../../config/circleFinderConfig.xml");
       ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }

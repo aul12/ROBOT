@@ -65,8 +65,8 @@ namespace crclfnd{
         return Point(x, y);
     }
 
-    void init(){
-        FileStorage fileStorage("../config/circleFinderConfig.xml", FileStorage::READ);
+    void init(std::string fname){
+        FileStorage fileStorage(fname, FileStorage::READ);
 
         fileStorage["minimumPoints"] >> minimumPoints;
         fileStorage["minAngle"] >> minAngle;
