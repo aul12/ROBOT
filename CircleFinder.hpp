@@ -66,7 +66,7 @@ namespace crclfnd{
     }
 
     void init(){
-        FileStorage fileStorage("../config/circleFinderConfig_webcam.xml", FileStorage::READ);
+        FileStorage fileStorage("../config/circleFinderConfig.xml", FileStorage::READ);
 
         fileStorage["minimumPoints"] >> minimumPoints;
         fileStorage["minAngle"] >> minAngle;

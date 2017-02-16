@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<opencv_storage>
+    <!-- Microsoft Webcam -->
+    <minimumPoints>10</minimumPoints>
+    <minAngle>30</minAngle>
+    <maxRadius>200</maxRadius>
+    <minRadius>6</minRadius>
+    <circleCenterDistanceThreshold>10</circleCenterDistanceThreshold>
+    <triangleLineLengthRatioThreshold>0.1</triangleLineLengthRatioThreshold>
+    <maxRadiusRatioTolerance>0.4</maxRadiusRatioTolerance>
+    <minRadiusRatioTolerance>0.1</minRadiusRatioTolerance>
+    <radiusRatioToleranceFactor>0.006</radiusRatioToleranceFactor>
+    <maxMatchFaultPercentage>0.2</maxMatchFaultPercentage>
+
+    <!-- Fisheye -->
+    <!--<minimumPoints>10</minimumPoints>
+    <minAngle>30</minAngle>
+    <maxRadius>200</maxRadius>
+    <minRadius>6</minRadius>
+    <circleCenterDistanceThreshold>10</circleCenterDistanceThreshold>
+    <triangleLineLengthRatioThreshold>0.1</triangleLineLengthRatioThreshold>
+    <maxRadiusRatioTolerance>0.4</maxRadiusRatioTolerance>
+    <minRadiusRatioTolerance>0.1</minRadiusRatioTolerance>
+    <radiusRatioToleranceFactor>0.006</radiusRatioToleranceFactor>
+    <maxMatchFaultPercentage>0.2</maxMatchFaultPercentage>-->
+</opencv_storage>
