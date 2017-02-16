@@ -20,15 +20,16 @@ using namespace cv;
  * @brief Namespace containing all algorithms to check whether a given set of points describes a circle.
  */
 namespace crclfnd{
-    int minimumPoints = 10; ///<Minimum Points required for an object detected as circle
-    float minAngle = (float)COS(DEG_TO_RAD(25)); ///<the cosine of the minimum angle of any angle in the triangle
-    int maxRadius = 200; ///<Maximum radius for a circle. Larger circles will be ignored
-    int minRadius = 5;     ///<Minimum radius for a circle. Smaller circles will be ignored
-    int circleCenterDistanceThreshold = SQ(10); ///<The maximum distance between the calculated potential centers of the circle
-    float triangleLineLengthRatioThreshold = 0.1; ///<The maximum percentage difference between the two shorter edges of the triangle
-    float maxRadiusRatioTolerance = 0.5;///<The maximum tolerance for the ratio between the calculated radius and the actual distance from a point to the center
-    float minRadiusRatioTolerance = 0.09; ///<The minimum tolerance for the ratio between the calculated radius and the actual distance from a point to the center
-    float radiusRatioToleranceFactor = 0.012;///<The scaling factor of the dynamic radius ratio threshold (lower means more tolerant)
+    int minimumPoints; ///<Minimum Points required for an object detected as circle
+    float minAngle; ///<the cosine of the minimum angle of any angle in the triangle
+    int maxRadius; ///<Maximum radius for a circle. Larger circles will be ignored
+    int minRadius;     ///<Minimum radius for a circle. Smaller circles will be ignored
+    int circleCenterDistanceThreshold; ///<The maximum distance between the calculated potential centers of the circle
+    float triangleLineLengthRatioThreshold; ///<The maximum percentage difference between the two shorter edges of the triangle
+    float maxRadiusRatioTolerance;///<The maximum tolerance for the ratio between the calculated radius and the actual distance from a point to the center
+    float minRadiusRatioTolerance; ///<The minimum tolerance for the ratio between the calculated radius and the actual distance from a point to the center
+    float radiusRatioToleranceFactor;///<The scaling factor of the dynamic radius ratio threshold (lower means more tolerant)
+    float maxMatchFaultPercentage;///<The maximum amount of points (in %) which are allowed to exceed the radius tolerance
 
     /**
      *@brief Calculates the squared distance between two points
@@ -62,6 +63,23 @@ namespace crclfnd{
         x = (p1.x + p2.x + p3.x)/3;
         y = (p1.y + p2.y + p3.y)/3;
         return Point(x, y);
+    }
+
+    void init(){
+        FileStorage fileStorage("../config/circleFinderConfig_webcam.xml", FileStorage::READ);
+
+        fileStorage["minimumPoints"] >> minimumPoints;
+        fileStorage["minAngle"] >> minAngle;
+        minAngle = (float) COS(DEG_TO_RAD(minAngle));
+        fileStorage["maxRadius"] >> maxRadius;
+        fileStorage["minRadius"] >> minRadius;
+        fileStorage["circleCenterDistanceThreshold"] >> circleCenterDistanceThreshold;
+        circleCenterDistanceThreshold = SQ(circleCenterDistanceThreshold);
+        fileStorage["triangleLineLengthRatioThreshold"] >> triangleLineLengthRatioThreshold;
+        fileStorage["maxRadiusRatioTolerance"] >> maxRadiusRatioTolerance;
+        fileStorage["minRadiusRatioTolerance"] >> minRadiusRatioTolerance;
+        fileStorage["radiusRatioToleranceFactor"] >> radiusRatioToleranceFactor;
+        fileStorage["maxMatchFaultPercentage"] >> maxMatchFaultPercentage;
     }
 
     CircleFinderResult isCircle(std::vector<Point> points){
@@ -236,15 +254,21 @@ namespace crclfnd{
         int minRadius = (int)(radius * (1 - dynamicRadiusRatioThreshold));
         int maxRadius = (int)(radius * (1 + dynamicRadiusRatioThreshold));
 
+        int nonMatches = 0;
+
         //check all points of object
         for(int c=0; c<points.size(); c++){
             int currRadius = (int)sqrt(sqDistance(circleCenter, points[c]));
 
             if(currRadius < minRadius || currRadius > maxRadius){
-                dbg::println("Radius not fitting for all Points", dbg::WARN);
-                return result;
+                nonMatches++;
             }
 
+        }
+
+        if((float)nonMatches / points.size() > maxMatchFaultPercentage){
+            dbg::println("Too many points not fitting", dbg::WARN);
+            return result;
         }
 
         dbg::println("OK");

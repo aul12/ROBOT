@@ -17,6 +17,7 @@
 void printHelp(){
     std::cout << "The following arguments are supported:" << std::endl;
     std::cout << "--gui\t Show a graphical output of the images" << std::endl;
+    std::cout << "--undistort\t Undistort the image of the fisheye camera" << std::endl;
     std::cout << "--color\t Run the color based algorithm" << std::endl;
     std::cout << "--canny\t Run the canny based algorithm" << std::endl;
     std::cout << "--device\t Select the video device number" << std::endl;
@@ -43,7 +44,7 @@ Matx<float,1,5> distCoeffs (
  * @return exit code
  */
 int main(int argc, char* argv[]){
-    bool guiEnable = false, colorEnable=false, cannyEnable=false;
+    bool guiEnable = false, colorEnable=false, cannyEnable=false, undistortEnable=false;
     int videoNumber = 0;
 
     if(argc <= 1){
@@ -64,9 +65,11 @@ int main(int argc, char* argv[]){
             printHelp();
             return 0;
         }else if(arg == "--device") {
-            if(c+1<argc) {
+            if (c + 1 < argc) {
                 videoNumber = atoi(argv[++c]);
             }
+        }else if(arg == "--undistort"){
+            undistortEnable = true;
         }else{
             std::cout << "Unknown argument: " << arg << std::endl;
             printHelp();
@@ -74,7 +77,7 @@ int main(int argc, char* argv[]){
         }
     }
 
-    dbg::init(dbg::FILE, dbg::LOG);
+    dbg::init(dbg::STDOUT, dbg::WARN);
 
     VideoCapture cap(videoNumber);
     Mat imgOriginal;
@@ -91,8 +94,9 @@ int main(int argc, char* argv[]){
         if (!cap.read(imgOriginal))
             dbg::println("Camera not available is a other program already using the camera?", dbg::ERROR);
 
-        Mat imgUndist;
-        undistort(imgOriginal,imgUndist,cameraMatrix,distCoeffs);
+        Mat imgUndist = imgOriginal.clone();
+        if(undistortEnable)
+            undistort(imgOriginal,imgUndist,cameraMatrix,distCoeffs);
 
         Mat imgCannyResult, imgColourResult;
         if(cannyEnable)

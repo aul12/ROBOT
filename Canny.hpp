@@ -48,7 +48,9 @@ namespace cnny{
      * Initialise all configuration data required for the algorithm. This is done by reading a configuration file.
      */
     void init(){
-        FileStorage fileStorage("canny.xml", FileStorage::READ);
+        crclfnd::init();
+
+        FileStorage fileStorage("../config/canny.xml", FileStorage::READ);
 
         threshold = fileStorage["threshold"];
         colorBias = fileStorage["colorBias"];
@@ -60,7 +62,7 @@ namespace cnny{
      * Write out all configuration data into the configuration file.
      */
     void close(){
-        FileStorage fileStorage("canny.xml", FileStorage::WRITE);
+        FileStorage fileStorage("../config/canny.xml", FileStorage::WRITE);
 
         fileStorage << "threshold" << threshold;
         fileStorage << "colorBias" << colorBias;
@@ -119,14 +121,6 @@ namespace cnny{
         // Blur the image to reduce noise
         blur(imgColourFiltered, imgColourFiltered, Size(3,3), Point(-1, -1));
 
-        /*std::chrono::milliseconds now = std::chrono::duration_cast<std::chrono::milliseconds >(
-                std::chrono::system_clock::now().time_since_epoch()
-        );
-        std::chrono::duration<double> elapsed_seconds = now-startTime;
-        std::cout << "FILTER_FINISHED " << elapsed_seconds.count() << std::endl;
-        startTime = std::chrono::duration_cast<std::chrono::milliseconds >(
-                std::chrono::system_clock::now().time_since_epoch()
-        );*/
         profilerFilter.end();
         profilerCanny.start();
 

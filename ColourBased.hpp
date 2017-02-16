@@ -15,7 +15,7 @@ namespace clr{
     int minSize;
 
     void init(){
-        FileStorage fileStorage("colourBased.xml", FileStorage::READ);
+        FileStorage fileStorage("../config/colourBased.xml", FileStorage::READ);
 
         minHue = fileStorage["minHue"];
         maxHue = fileStorage["maxHue"];
@@ -26,7 +26,7 @@ namespace clr{
     }
 
     void close(){
-        FileStorage fileStorage("colourBased.xml", FileStorage::WRITE);
+        FileStorage fileStorage("../config/colourBased.xml", FileStorage::WRITE);
 
         fileStorage << "minHue" << minHue;
         fileStorage << "maxHue" << maxHue;
