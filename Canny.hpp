@@ -95,6 +95,7 @@ namespace cnny{
         static Profiler profilerCanny("CANNY");
         static Profiler profilerFindContours("FIND_CONTOURS");
         static Profiler profilerCircleFinder("CIRCLE_FINDER");
+        static Profiler profilerT("T");
 
         profilerComplete.start();
         profilerFilter.start();
@@ -102,11 +103,19 @@ namespace cnny{
         // Define the necessary images
         Mat imgColourFiltered, imgCanny, imgCannyContours;
 
+        static Profiler profilerSplit("SPLIT");
+        static Profiler profilerContrast("CONTRAST");
+        static Profiler profilerBlur("BLUR");
+
+        profilerSplit.start();
         // Apply a colour filter
         Mat planes[3];
         split(imgOriginal,planes);  // Split image into three images one for each color pane
         bitwise_not(planes[GREEN], planes[GREEN]);  // Invert the image
         addWeighted(planes[RED], colorBias/100.0, planes[GREEN], 1-colorBias/100.0, 0, imgColourFiltered);
+
+        profilerSplit.end();
+        profilerContrast.start();
 
         imgColourFiltered.convertTo(imgColourFiltered, CV_16SC1);
 
@@ -117,10 +126,14 @@ namespace cnny{
 
         imgColourFiltered.convertTo(imgColourFiltered, CV_8UC1);
 
+        profilerContrast.end();
+        profilerBlur.start();
 
         // Blur the image to reduce noise
         blur(imgColourFiltered, imgColourFiltered, Size(3,3), Point(-1, -1));
 
+
+        profilerBlur.end();
         profilerFilter.end();
         profilerCanny.start();
 
