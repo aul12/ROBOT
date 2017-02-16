@@ -5,7 +5,7 @@ include_directories( ${OpenCV_INCLUDE_DIRS} )
 set(CMAKE_CXX_STANDARD 11)
 add_definitions(-std=c++11)
 
-set(SOURCE_FILES main.cpp ColourBased.hpp Canny.hpp CircleFinder.hpp Line.cpp Line.hpp CircleFinderResult.cpp CircleFinderResult.hpp debug.hpp)
+set(SOURCE_FILES main.cpp ColourBased.hpp Canny.hpp CircleFinder.hpp Line.cpp Line.hpp CircleFinderResult.cpp CircleFinderResult.hpp debug.hpp Profiler.hpp Profiler.cpp)
 add_executable(OrangeBall ${SOURCE_FILES})
 target_link_libraries( OrangeBall ${OpenCV_LIBS}  -lpthread)
 

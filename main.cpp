@@ -10,6 +10,7 @@
 #include "opencv2/opencv.hpp"
 #include "opencv2/videoio.hpp"
 
+#include "Profiler.hpp"
 #include "ColourBased.hpp"
 #include "Canny.hpp"
 

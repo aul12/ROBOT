@@ -7,8 +7,7 @@
 #ifndef ORANGEBALL_CANNY_HPP
 #define ORANGEBALL_CANNY_HPP
 
-#include <chrono>
-
+#include "Profiler.hpp"
 #include "Line.hpp"
 #include "CircleFinder.hpp"
 #include "debug.hpp"
@@ -89,11 +88,14 @@ namespace cnny{
      * @return an image with debug information
      */
     Mat run(Mat imgOriginal){
+        Profiler profilerComplete("ALL");
+        Profiler profilerFilter("FILTER");
+        Profiler profilerCanny("CANNY");
+        Profiler profilerFindContours("FIND_CONTOURS");
+        Profiler profilerCircleFinder("CIRCLE_FINDER");
 
-        std::chrono::milliseconds startTime = std::chrono::duration_cast<std::chrono::milliseconds >(
-                std::chrono::system_clock::now().time_since_epoch()
-        );
-        std::cout << "START_FRAME" << std::endl;
+        profilerComplete.start();
+        profilerFilter.start();
 
         // Define the necessary images
         Mat imgColourFiltered, imgCanny, imgCannyContours;
@@ -117,46 +119,34 @@ namespace cnny{
         // Blur the image to reduce noise
         blur(imgColourFiltered, imgColourFiltered, Size(3,3), Point(-1, -1));
 
-        std::chrono::milliseconds now = std::chrono::duration_cast<std::chrono::milliseconds >(
+        /*std::chrono::milliseconds now = std::chrono::duration_cast<std::chrono::milliseconds >(
                 std::chrono::system_clock::now().time_since_epoch()
         );
         std::chrono::duration<double> elapsed_seconds = now-startTime;
         std::cout << "FILTER_FINISHED " << elapsed_seconds.count() << std::endl;
         startTime = std::chrono::duration_cast<std::chrono::milliseconds >(
                 std::chrono::system_clock::now().time_since_epoch()
-        );
+        );*/
+        profilerFilter.end();
+        profilerCanny.start();
 
         // Get the contours with the canny algorithm
         Canny(imgColourFiltered, imgCanny, threshold, 3*threshold, 3);
 
-        now = std::chrono::duration_cast<std::chrono::milliseconds >(
-                std::chrono::system_clock::now().time_since_epoch()
-        );
-        elapsed_seconds = now-startTime;
-        std::cout << "CANNY_FINISHED " << elapsed_seconds.count() << std::endl;
-        startTime = std::chrono::duration_cast<std::chrono::milliseconds >(
-                std::chrono::system_clock::now().time_since_epoch()
-        );
-
+        profilerCanny.end();
+        profilerFindContours.start();
 
         std::vector<std::vector<Point> > contourPoints;
         std::vector<Vec4i> hierarchy;
 
         findContours(imgCanny, contourPoints, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
 
-        now = std::chrono::duration_cast<std::chrono::milliseconds >(
-                std::chrono::system_clock::now().time_since_epoch()
-        );
-        elapsed_seconds = now-startTime;
-        std::cout << "FIND_CONTOURS_FINISHED " << elapsed_seconds.count() << std::endl;
-        startTime = std::chrono::duration_cast<std::chrono::milliseconds >(
-                std::chrono::system_clock::now().time_since_epoch()
-        );
-
-
         imgCannyContours = Mat::zeros(imgOriginal.size(), CV_8UC3);
 
         cvtColor(imgColourFiltered, imgColourFiltered, COLOR_GRAY2BGR);
+
+        profilerFindContours.end();
+        profilerCircleFinder.start();
 
         bool existsCircle = false;
         for( int i = 0; i< contourPoints.size(); i++ )
@@ -176,15 +166,8 @@ namespace cnny{
         if(existsCircle)
             std::cout << "################################Circle Exists" << std::endl;
 
-        now = std::chrono::duration_cast<std::chrono::milliseconds >(
-                std::chrono::system_clock::now().time_since_epoch()
-        );
-        elapsed_seconds = now-startTime;
-        std::cout << "CIRCLE_FINDER " << elapsed_seconds.count() << std::endl;
-        startTime = std::chrono::duration_cast<std::chrono::milliseconds >(
-                std::chrono::system_clock::now().time_since_epoch()
-        );
-
+        profilerCircleFinder.end();
+        profilerComplete.end();
 
         return imgColourFiltered;
     }
