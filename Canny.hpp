@@ -90,11 +90,11 @@ namespace cnny{
      * @return an image with debug information
      */
     Mat run(Mat imgOriginal){
-        Profiler profilerComplete("ALL");
-        Profiler profilerFilter("FILTER");
-        Profiler profilerCanny("CANNY");
-        Profiler profilerFindContours("FIND_CONTOURS");
-        Profiler profilerCircleFinder("CIRCLE_FINDER");
+        static Profiler profilerComplete("ALL");
+        static Profiler profilerFilter("FILTER");
+        static Profiler profilerCanny("CANNY");
+        static Profiler profilerFindContours("FIND_CONTOURS");
+        static Profiler profilerCircleFinder("CIRCLE_FINDER");
 
         profilerComplete.start();
         profilerFilter.start();

@@ -77,7 +77,7 @@ int main(int argc, char* argv[]){
         }
     }
 
-    dbg::init(dbg::STDOUT, dbg::WARN);
+    dbg::init(dbg::STDOUT, dbg::ERROR);
 
     VideoCapture cap(videoNumber);
     Mat imgOriginal;

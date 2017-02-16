@@ -19,6 +19,7 @@ class Profiler {
         std::string processName;
         std::chrono::milliseconds startTime;
         double timeConsumed = 0;
+        double runs = 0;
 };
 
 
