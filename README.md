@@ -91,11 +91,10 @@ There are three sliders which let you configure the canny threshold and the colo
  is more tolerant.
 2. Color bias: Determines the ratio of the two pre-color-filters. Low values (slider on the right)
  mean that the inverted green filter will be weighted greater than the red filter and vise versa.
-3. Contrast: Sets the contrast of the filtered image.
+3. Contrast: Sets the contrast of the filtered image. Default value is **20**
 
 Example how to configure the three values to ensure the best results:
-1.  Set Threshold and Color bias to maximum and Contrast to the lowest possible amount before the
-    image becomes only gray.
+1.  Set Threshold and Color bias to maximum and Contrast to **default value**.
     <br><br><br>
     ![Image Step 1](https://git.markdorf-robotics.de/Orangener-Ball/ROBOT/raw/master/calibrationImg/filterStep1.png "Step 1")
     <br><br><br>
