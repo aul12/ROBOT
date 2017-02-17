@@ -113,9 +113,17 @@ int main(int argc, char* argv[]){
 
     Profiler profilerMain("MAIN");
     Profiler profilerCapture("CAPTURE");
+
+
+    Mat temp;
+    for(int c=0; c<100; c++){
+        cap.read(temp);
+    }
     while(true){
         profilerMain.start();
         profilerCapture.start();
+
+        //@TODO wtf!
         if (!cap.read(imgOriginal))
             dbg::println("Camera not available is a other program already using the camera?", dbg::ERROR);
 
