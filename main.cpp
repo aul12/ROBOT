@@ -88,6 +88,7 @@ int main(int argc, char* argv[]){
 
 
     VideoCapture cap(videoNumber);
+    cap.set(CV_CAP_PROP_BUFFERSIZE, 1);
     Mat imgOriginal;
 
     videoCaptureCreate.end();
