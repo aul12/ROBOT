@@ -15,6 +15,8 @@
 #include "ColourBased.hpp"
 #include "Canny.hpp"
 
+#define PROF_ENABLED true
+
 void printHelp(){
     std::cout << "The following arguments are supported:" << std::endl;
     std::cout << "--gui\t Show a graphical output of the images" << std::endl;
@@ -40,30 +42,14 @@ Matx<float,1,5> distCoeffs (
         -3.9872469723213665e-03
 );
 
-Mat imgOriginal;
-bool frameAvailable = false;
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wmissing-noreturn"
-void cameraThread(VideoCapture cap){
-    while(true){
-        if (!cap.read(imgOriginal))
-            dbg::println("Camera not available is a other program already using the camera?", dbg::ERROR);
-        frameAvailable = true;
-    }
-}
-#pragma clang diagnostic pop
-
 /**
  * Main function
  * @return exit code
  */
 int main(int argc, char* argv[]){
+    PROF_START(INIT);
     bool guiEnable = false, colorEnable=false, cannyEnable=false, undistortEnable=false;
     int videoNumber = 0;
-
-    Profiler profilerParam("PARAM");
-    profilerParam.start();
 
     if(argc <= 1){
         printHelp();
@@ -95,52 +81,29 @@ int main(int argc, char* argv[]){
         }
     }
 
-    dbg::init(dbg::STDOUT, dbg::WARN);
-
-    profilerParam.end();
-    Profiler videoCaptureCreate("videoCaptureCreate");
-    videoCaptureCreate.start();
-
+    dbg::init(dbg::STDOUT, dbg::LOG);
 
     VideoCapture cap(videoNumber);
     cap.set(CV_CAP_PROP_BUFFERSIZE, 1);
 
-    std::thread captureThread(cameraThread, cap);
-
-    videoCaptureCreate.end();
-
-    Profiler capOpen("capOpen");
-    capOpen.start();
-
+    Mat imgOriginal;
     if (!cap.isOpened()){
         dbg::println("Camera not available is a other program already using the camera?", dbg::ERROR);
         return -1;
     }
 
-    capOpen.end();
-
-    Profiler init("INIT");
-    init.start();
-
-
     clr::init();
     cnny::init();
-    init.end();
 
-    Profiler profilerMain("MAIN");
-    Profiler profilerCapture("CAPTURE");
-
-
-    while(!frameAvailable);
+    PROF_END(INIT);
     while(true){
-        profilerMain.start();
-        profilerCapture.start();
+        PROF_START(MAIN);
+        PROF_START(CAPTURE)
 
-        //@TODO wtf!
-        /*if (!cap.read(imgOriginal))
-            dbg::println("Camera not available is a other program already using the camera?", dbg::ERROR);*/
+        if (!cap.read(imgOriginal))
+            dbg::println("Camera not available is a other program already using the camera?", dbg::ERROR);
 
-        profilerCapture.end();
+        PROF_END(CAPTURE)
 
         Mat imgUndist = imgOriginal.clone();
         if(undistortEnable)
@@ -160,7 +123,7 @@ int main(int argc, char* argv[]){
             if(colorEnable)
                 clr::show(imgColourResult);
         }
-        profilerMain.end();
+        PROF_END(MAIN);
 
         if (waitKey(30) == 27){
             clr::close();

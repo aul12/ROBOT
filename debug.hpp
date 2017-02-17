@@ -82,17 +82,28 @@ namespace dbg{
     void print(cv::String text, LogLevel level = LOG){
         if(level >= _logLevel){
             std::time_t timeNow = std::time(nullptr);
-            char time[24];
+            char timeString[24];
+            strftime(timeString, sizeof(timeString),"%OH:%OM:%OS", std::localtime(&timeNow));
 
-            strftime(time, sizeof(time),"%OH:%OM:%OS", std::localtime(&timeNow));
-
+            std::string color;
+            switch(level){
+                case LOG:
+                    color = "\033[30m";
+                    break;
+                case WARN:
+                    color = "\033[33m";
+                    break;
+                case ERROR:
+                    color = "\033[31m";
+                    break;
+            }
 
             switch(_output){
                 case STDOUT:
-                    std::cout << time << ":\t" << text;
+                    std::cout << color << timeString << ":\t \\033[0m\\n " << text;
                     break;
                 case FILE:
-                    debugFile << time << ":\t";
+                    debugFile << timeString << ":\t";
                     debugFile << text;
                     break;
                 case NONE:break;
