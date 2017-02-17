@@ -100,7 +100,7 @@ namespace dbg{
 
             switch(_output){
                 case STDOUT:
-                    std::cout << color << timeString << ":\t \\033[0m\\n " << text;
+                    std::cout << color << timeString << ":\t" << text;
                     break;
                 case FILE:
                     debugFile << timeString << ":\t";

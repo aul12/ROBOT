@@ -1,14 +1,27 @@
-//
-// Created by paul on 16.02.17.
-//
+/**
+ * @file Profiler.cpp
+ * @authors Paul Nykiel, Tim Luchterhand
+ * @brief Implementation of Profiler.hpp
+ */
+
 #include "Profiler.hpp"
 
-Profiler::Profiler(std::string processName) {
+/**
+ * Initialize the Profiler
+ * @param processName The name the process should be listed as in the output
+ * @param enabled enable or disable the profiler. The profiler will use nearly no ressources if disabled
+ */
+Profiler::Profiler(std::string processName, bool enabled) {
+    this->enabled = enabled;
     this->processName = processName;
     runs = 0;
     timeConsumed = 0;
 }
 
+/**
+ * Start the profiler, this is the start of the time measurement of the profiler. If the profiler is disabled nothing
+ * will happen.
+ */
 void Profiler::start() {
     if(enabled){
         this->startTime = std::chrono::duration_cast<std::chrono::milliseconds >(
@@ -17,6 +30,10 @@ void Profiler::start() {
     }
 }
 
+/**
+ * End the profiler. If enabled the profiler will print the process name and the execution time onto the stdout.
+ * @return the time in ms the process took this run.
+ */
 int Profiler::end() {
     if(enabled){
         std::chrono::milliseconds now = std::chrono::duration_cast<std::chrono::milliseconds >(
@@ -28,16 +45,9 @@ int Profiler::end() {
         this->timeConsumed += timeThisRun;
         runs++;
 
-        std::cout << "\033[34m" <<processName << ": " << (timeConsumed/runs) << "ms \\033[0m\\n" << std::endl;
+        std::cout << "\033[34m" <<processName << ": " << (timeConsumed/runs) << "ms\n" << std::endl;
 
         return (int) timeThisRun;
     }
     return 0;
-}
-
-Profiler::Profiler(std::string processName, bool enabled) {
-    this->enabled = enabled;
-    this->processName = processName;
-    runs = 0;
-    timeConsumed = 0;
 }

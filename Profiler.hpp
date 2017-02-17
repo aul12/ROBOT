@@ -1,6 +1,8 @@
-//
-// Created by paul on 16.02.17.
-//
+/**
+ * @file Profiler.hpp
+ * @authors Paul Nykiel, Tim Luchterhand
+ * @brief Class and Wrapper to measure execution time of methods
+ */
 
 #ifndef ORANGEBALL_PROFILER_HPP
 #define ORANGEBALL_PROFILER_HPP
@@ -9,12 +11,23 @@
 #include <chrono>
 #include <iostream>
 
+/**
+ * Start a profiler at this point with a certain name, this will manage everything.
+ */
 #define PROF_START(name) static Profiler name##Profiler(#name, PROF_ENABLED); name##Profiler.start();
+
+/**
+ * Stop a profiler with a certain name and print the results.
+ */
 #define PROF_END(name) name##Profiler.end();
 
+/**
+ * The profiler class is used to measure the average execution time of a certain part of the code.
+ * @class Profiler
+ * @brief Profile a certain part of the code
+ */
 class Profiler {
 public:
-    Profiler(std::string processName);
     Profiler(std::string processName, bool enabled);
     void start();
     int end();

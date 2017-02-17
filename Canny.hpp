@@ -151,7 +151,7 @@ namespace cnny{
             line(imgColourFiltered, result.triangle[0], result.triangle[2], Scalar(255,0,0), 2, 8);
         }
         if(existsCircle)
-            std::cout << "################################Circle Exists" << std::endl;
+            dbg::println("Circle Exists", dbg::ERROR);
 
         PROF_END(CIRCLE_FINDER);
 

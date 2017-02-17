@@ -81,7 +81,7 @@ int main(int argc, char* argv[]){
         }
     }
 
-    dbg::init(dbg::STDOUT, dbg::LOG);
+    dbg::init(dbg::STDOUT, dbg::ERROR);
 
     VideoCapture cap(videoNumber);
     cap.set(CV_CAP_PROP_BUFFERSIZE, 1);
