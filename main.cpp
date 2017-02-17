@@ -47,6 +47,9 @@ int main(int argc, char* argv[]){
     bool guiEnable = false, colorEnable=false, cannyEnable=false, undistortEnable=false;
     int videoNumber = 0;
 
+    Profiler profilerParam("PARAM");
+    profilerParam.start();
+
     if(argc <= 1){
         printHelp();
         return 0;
@@ -79,20 +82,43 @@ int main(int argc, char* argv[]){
 
     dbg::init(dbg::STDOUT, dbg::WARN);
 
+    profilerParam.end();
+    Profiler videoCaptureCreate("videoCaptureCreate");
+    videoCaptureCreate.start();
+
+
     VideoCapture cap(videoNumber);
     Mat imgOriginal;
+
+    videoCaptureCreate.end();
+
+    Profiler capOpen("capOpen");
+    capOpen.start();
 
     if (!cap.isOpened()){
         dbg::println("Camera not available is a other program already using the camera?", dbg::ERROR);
         return -1;
     }
 
+    capOpen.end();
+
+    Profiler init("INIT");
+    init.start();
+
+
     clr::init();
     cnny::init();
+    init.end();
 
+    Profiler profilerMain("MAIN");
+    Profiler profilerCapture("CAPTURE");
     while(true){
+        profilerMain.start();
+        profilerCapture.start();
         if (!cap.read(imgOriginal))
             dbg::println("Camera not available is a other program already using the camera?", dbg::ERROR);
+
+        profilerCapture.end();
 
         Mat imgUndist = imgOriginal.clone();
         if(undistortEnable)
@@ -112,6 +138,7 @@ int main(int argc, char* argv[]){
             if(colorEnable)
                 clr::show(imgColourResult);
         }
+        profilerMain.end();
 
         if (waitKey(30) == 27){
             clr::close();
