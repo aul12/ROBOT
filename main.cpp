@@ -5,6 +5,7 @@
  */
 
 #include <iostream>
+#include <thread>
 
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/opencv.hpp"
@@ -38,6 +39,20 @@ Matx<float,1,5> distCoeffs (
         -1.1546095045681297e-03,
         -3.9872469723213665e-03
 );
+
+Mat imgOriginal;
+bool frameAvailable = false;
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wmissing-noreturn"
+void cameraThread(VideoCapture cap){
+    while(true){
+        if (!cap.read(imgOriginal))
+            dbg::println("Camera not available is a other program already using the camera?", dbg::ERROR);
+        frameAvailable = true;
+    }
+}
+#pragma clang diagnostic pop
 
 /**
  * Main function
@@ -89,7 +104,8 @@ int main(int argc, char* argv[]){
 
     VideoCapture cap(videoNumber);
     cap.set(CV_CAP_PROP_BUFFERSIZE, 1);
-    Mat imgOriginal;
+
+    std::thread captureThread(cameraThread, cap);
 
     videoCaptureCreate.end();
 
@@ -115,17 +131,14 @@ int main(int argc, char* argv[]){
     Profiler profilerCapture("CAPTURE");
 
 
-    Mat temp;
-    for(int c=0; c<100; c++){
-        cap.read(temp);
-    }
+    while(!frameAvailable);
     while(true){
         profilerMain.start();
         profilerCapture.start();
 
         //@TODO wtf!
-        if (!cap.read(imgOriginal))
-            dbg::println("Camera not available is a other program already using the camera?", dbg::ERROR);
+        /*if (!cap.read(imgOriginal))
+            dbg::println("Camera not available is a other program already using the camera?", dbg::ERROR);*/
 
         profilerCapture.end();
 
