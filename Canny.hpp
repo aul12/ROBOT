@@ -95,15 +95,15 @@ namespace cnny{
         // Define the necessary images
         Mat imgColourFiltered, imgCanny, imgCannyContours;
 
-        PROF_START(COLOR_FILTER);
-
+        PROF_START(COLOR_FILTER)
+        PROF_START(EXTRACT)
         // Apply a colour filter
         Mat green, red;
         extractChannel(imgOriginal, green, GREEN);
         extractChannel(imgOriginal, red, RED);
         bitwise_not(green, green);
         addWeighted(red,colorBias/100.0, green, 1-colorBias/100.0, 0, imgColourFiltered);
-
+        PROF_END(EXTRACT)
         PROF_START(CV_16)
         imgColourFiltered.convertTo(imgColourFiltered, CV_16SC1);
         PROF_END(CV_16)
@@ -119,8 +119,10 @@ namespace cnny{
         imgColourFiltered.convertTo(imgColourFiltered, CV_8UC1);
         PROF_END(CV_8)
 
+        PROF_START(BLUR)
         // Blur the image to reduce noise
         blur(imgColourFiltered, imgColourFiltered, Size(3,3), Point(-1, -1));
+        PROF_END(BLUR)
 
         PROF_END(COLOR_FILTER);
         PROF_START(CANNY);
@@ -128,8 +130,8 @@ namespace cnny{
         // Get the contours with the canny algorithm
         Canny(imgColourFiltered, imgCanny, threshold, 3*threshold, 3);
 
-        PROF_END(CANNY);
-        PROF_START(FIND_CONTOURS);
+        PROF_END(CANNY)
+        PROF_START(FIND_CONTOURS)
 
         std::vector<std::vector<Point> > contourPoints;
         std::vector<Vec4i> hierarchy;
@@ -140,8 +142,8 @@ namespace cnny{
 
         cvtColor(imgColourFiltered, imgColourFiltered, COLOR_GRAY2BGR);
 
-        PROF_END(FIND_CONTOURS);
-        PROF_START(CIRCLE_FINDER);
+        PROF_END(FIND_CONTOURS)
+        PROF_START(CIRCLE_FINDER)
 
         bool existsCircle = false;
         for( int i = 0; i< contourPoints.size(); i++ )
@@ -161,7 +163,7 @@ namespace cnny{
         if(existsCircle)
             dbg::println("Circle Exists", dbg::ERROR);
 
-        PROF_END(CIRCLE_FINDER);
+        PROF_END(CIRCLE_FINDER)
 
         return imgColourFiltered;
     }
