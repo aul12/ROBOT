@@ -32,7 +32,21 @@ Matx<float,3,3> cameraMatrix (
         0, 2.7558586477980515e+02, 2.3950000000000000e+02,
         0, 0, 1
 );
+// 640x480
+/*
+Matx<float,3,3> cameraMatrixFish (
+        2.5053740487237610e+02, 0, 3.4303555211547041e+02,
+        0, 2.4982895290354298e+02, 2.3747773177305484e+02,
+        0, 0, 1
+);*/
 
+// 1920x1080
+
+Matx<float,3,3> cameraMatrixFish (
+        5.4608602858857068e+02, 0, 9.9783240705152014e+02,
+        0, 5.4372798657356202e+02, 5.3702528456919765e+02,
+        0, 0, 1
+);
 
 Matx<float,1,5> distCoeffs (
         -2.5803810151961959e-01,
@@ -42,14 +56,35 @@ Matx<float,1,5> distCoeffs (
         -3.9872469723213665e-03
 );
 
+//640x480
+/*
+Matx<float,1,4> distCoeffsFish (
+    -7.1478826652600094e-02,
+    0,
+    0,
+    0
+);*/
+
+//1920x1080
+
+Matx<float,1,4> distCoeffsFish (
+    5.6287241244863048e-02,
+    0,
+    0,
+    0
+);
+
+
 /**
  * Main function
  * @return exit code
  */
 int main(int argc, char* argv[]){
     PROF_START(INIT);
-    bool guiEnable = false, colorEnable=false, cannyEnable=false, undistortEnable=false;
+    bool guiEnable = false, colorEnable=false, cannyEnable=false, undistortEnable=false, undistortEnableFish=false;
     int videoNumber = 0;
+
+    int brightness, width, height, contrast, saturation, hue;
 
     if(argc <= 1){
         printHelp();
@@ -74,6 +109,10 @@ int main(int argc, char* argv[]){
             }
         }else if(arg == "--undistort"){
             undistortEnable = true;
+            undistortEnableFish = false;
+        }else if(arg == "--undistortfish"){
+            undistortEnableFish = true;
+            undistortEnable = false;
         }else{
             std::cout << "Unknown argument: " << arg << std::endl;
             printHelp();
@@ -81,10 +120,17 @@ int main(int argc, char* argv[]){
         }
     }
 
-    dbg::init(dbg::STDOUT, dbg::ERROR);
+    dbg::init(dbg::STDOUT, dbg::WARN);
+
+    FileStorage cameraConfig("../config/cameraConfig.xml", FileStorage::READ);
 
     VideoCapture cap(videoNumber);
-    cap.set(CV_CAP_PROP_BUFFERSIZE, 1);
+    /*cap.set(CV_CAP_PROP_FRAME_WIDTH, width = cameraConfig["width"]);
+    cap.set(CV_CAP_PROP_FRAME_HEIGHT, height = cameraConfig["height"]);
+    cap.set(CV_CAP_PROP_BRIGHTNESS, brightness = cameraConfig["brightness"]);
+    cap.set(CV_CAP_PROP_CONTRAST, contrast = cameraConfig["contrast"]);
+    cap.set(CV_CAP_PROP_SATURATION, saturation = cameraConfig["saturation"]);
+    cap.set(CV_CAP_PROP_HUE, hue = cameraConfig["hue"]);*/
 
     Mat imgOriginal;
     if (!cap.isOpened()){
@@ -97,6 +143,15 @@ int main(int argc, char* argv[]){
 
     PROF_END(INIT);
     while(true){
+        /*cap.set(CV_CAP_PROP_FRAME_WIDTH, width);
+        cap.set(CV_CAP_PROP_FRAME_HEIGHT, height);
+        cap.set(CV_CAP_PROP_BRIGHTNESS, brightness);
+        cap.set(CV_CAP_PROP_CONTRAST, contrast);
+        cap.set(CV_CAP_PROP_SATURATION, saturation);
+        cap.set(CV_CAP_PROP_HUE, hue);
+        cap.set(CV_CAP_PROP_GAIN, gain);
+        cap.set(CV_CAP_PROP_EXPOSURE, exposure);*/
+
         PROF_START(MAIN);
         PROF_START(CAPTURE)
 
@@ -105,9 +160,15 @@ int main(int argc, char* argv[]){
 
         PROF_END(CAPTURE)
 
-        Mat imgUndist = imgOriginal.clone();
-        if(undistortEnable)
-            undistort(imgOriginal,imgUndist,cameraMatrix,distCoeffs);
+        //Mat imgUndist = imgOriginal.clone();
+        Mat imgUndist;
+        if(undistortEnable) {
+            undistort(imgOriginal, imgUndist, cameraMatrix, distCoeffs);
+        } else if(undistortEnableFish) {
+            fisheye::undistortImage(imgOriginal, imgUndist, cameraMatrixFish,distCoeffsFish,cameraMatrixFish);
+        } else {
+            imgUndist = imgOriginal.clone();
+        }
 
         Mat imgCannyResult, imgColourResult;
         if(cannyEnable)
@@ -116,6 +177,14 @@ int main(int argc, char* argv[]){
             imgColourResult = clr::run(imgUndist);
 
         if(guiEnable){
+            namedWindow("Original", WINDOW_NORMAL);
+           /* createTrackbar("Brightness", "Original", &brightness, 10);
+            createTrackbar("Width", "Original", &width, 1920);
+            createTrackbar("Height", "Original", &height, 1080);
+            createTrackbar("Contrast", "Original", &contrast, 20);
+            createTrackbar("Saturation", "Original", &saturation, 10);
+            createTrackbar("Hue", "Original", &hue, 10);*/
+
             imshow("Original", imgUndist);
 
             if(cannyEnable)
@@ -126,6 +195,16 @@ int main(int argc, char* argv[]){
         PROF_END(MAIN);
 
         if (waitKey(30) == 27){
+            /*cameraConfig = FileStorage("../config/cameraConfig.xml", FileStorage::WRITE);
+            cameraConfig << "brightness" << brightness;
+            cameraConfig << "width" << width;
+            cameraConfig << "height" << height;
+            cameraConfig << "contrast" << contrast;
+            cameraConfig << "saturation" << saturation;
+            cameraConfig << "hue" << hue;
+            cameraConfig.release();*/
+
+
             clr::close();
             cnny::close();
             dbg::close();

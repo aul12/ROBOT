@@ -79,7 +79,7 @@ namespace cnny{
      * @see run
      */
     void show(Mat img){
-        namedWindow("Canny", CV_WINDOW_AUTOSIZE);
+        namedWindow("Canny", WINDOW_NORMAL);
         createTrackbar("Threshold", "Canny", &threshold, 100);
         createTrackbar("Color bias", "Canny", &colorBias, 100);
         createTrackbar("Contrast", "Canny", &contrastFactor, 100);
@@ -96,11 +96,21 @@ namespace cnny{
         Mat imgColourFiltered, imgCanny, imgCannyContours;
 
         PROF_START(COLOR_FILTER);
+
+        PROF_START(SPLIT)
         // Apply a colour filter
         Mat planes[3];
         split(imgOriginal,planes);  // Split image into three images one for each color pane
         bitwise_not(planes[GREEN], planes[GREEN]);  // Invert the image
         addWeighted(planes[RED], colorBias/100.0, planes[GREEN], 1-colorBias/100.0, 0, imgColourFiltered);
+        PROF_END(SPLIT)
+        PROF_START(EXTRACT)
+        Mat green, red;
+        extractChannel(imgOriginal, green, GREEN);
+        extractChannel(imgOriginal, red, RED);
+        bitwise_not(green, green);
+        addWeighted(red,colorBias/100.0, green, 1-colorBias/100.0, 0, imgColourFiltered);
+        PROF_END(EXTRACT)
 
         imgColourFiltered.convertTo(imgColourFiltered, CV_16SC1);
 
