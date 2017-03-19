@@ -15,7 +15,7 @@
 #include "ColourBased.hpp"
 #include "Canny.hpp"
 
-#define PROF_ENABLED true
+#define PROF_ENABLED false
 
 void printHelp(){
     std::cout << "The following arguments are supported:" << std::endl;
@@ -120,7 +120,7 @@ int main(int argc, char* argv[]){
         }
     }
 
-    dbg::init(dbg::STDOUT, dbg::WARN);
+    dbg::init(dbg::STDOUT, dbg::ERROR);
 
     FileStorage cameraConfig("../config/cameraConfig.xml", FileStorage::READ);
 

@@ -26,6 +26,7 @@ class CircleFinderResult {
 
         Point centre;                           ///<Centre Point of the circle
         int radius;                             ///<Radius of the circle in Pixels
+        unsigned char circularity;              ///<Circularity of an object (high value means round object, values between 0 and 127)
         bool isCircle;                          ///<A boolean whether the object is a circle
 
         ///Points of the Triangle which was calculated by the algorithm

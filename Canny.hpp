@@ -12,7 +12,7 @@
 #include "CircleFinder.hpp"
 #include "debug.hpp"
 
-#define PROF_ENABLED true
+#define PROF_ENABLED false
 
 using namespace cv;
 

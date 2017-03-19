@@ -14,7 +14,7 @@
 /**
  * Start a profiler at this point with a certain name, this will manage everything.
  */
-#define PROF_START(name) static Profiler name##Profiler(#name, PROF_ENABLED); name##Profiler.start();
+#define PROF_START(name) static Profiler name##Profiler(#name, false); name##Profiler.start();
 
 /**
  * Stop a profiler with a certain name and print the results.
