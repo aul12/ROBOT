@@ -176,7 +176,7 @@ Following variables let you configure the CircleFinder module:
    
 ##### Trouble-shooting
 
-*   Reduce noise and to small objects by adjusting **minimumPoints**.
+*   Reduce noise and too small objects by adjusting **minimumPoints**.
 *   Avoid false-positives by:
     * Adjusting **max-** and **minRadius**
     * Setting **minAngle** to a higher value
