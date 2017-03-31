@@ -78,12 +78,56 @@ namespace cnny{
      * @param img the image which got created by run
      * @see run
      */
-    void show(Mat img){
+    void show(Mat img, Mat imgOriginal){
+        // Define the necessary images
+        Mat imgColourFiltered, imgCanny, imgCannyContours;
+
+        // Apply a colour filter
+        Mat green, red;
+        extractChannel(imgOriginal, green, GREEN);
+        extractChannel(imgOriginal, red, RED);
+        bitwise_not(green, green);
+        addWeighted(red,colorBias/100.0, green, 1-colorBias/100.0, 0, imgColourFiltered);
+
+        imgColourFiltered.convertTo(imgColourFiltered, CV_16SC1);
+
+        // Increase the contrast
+        imgColourFiltered -= 127;
+        imgColourFiltered *= (contrastFactor/20.0);
+        imgColourFiltered += 127;
+
+        imgColourFiltered.convertTo(imgColourFiltered, CV_8UC1);
+
+        // Blur the image to reduce noise
+        blur(imgColourFiltered, imgColourFiltered, Size(3,3), Point(-1, -1));
+
+        // Get the contours with the canny algorithm
+        Canny(imgColourFiltered, imgCanny, threshold, 3*threshold, 3);
+
+        std::vector<std::vector<Point> > contourPoints;
+        std::vector<Vec4i> hierarchy;
+
+        findContours(imgCanny, contourPoints, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
+
+        imgCannyContours = Mat::zeros(imgOriginal.size(), CV_8UC3);
+
+        cvtColor(imgColourFiltered, imgColourFiltered, COLOR_GRAY2BGR);
+
+        Mat imgResult = Mat::zeros(imgOriginal.size(), CV_8UC1);
+
+        std::vector<CircleFinderResult> results;
+
+        for( int i = 0; i< contourPoints.size(); i++ )
+        {
+            drawContours(imgColourFiltered, contourPoints, i, Scalar(255, 0, 0), 2, 8, hierarchy, 0, Point());
+        }
+
         namedWindow("Canny", WINDOW_NORMAL);
         createTrackbar("Threshold", "Canny", &threshold, 100);
         createTrackbar("Color bias", "Canny", &colorBias, 100);
         createTrackbar("Contrast", "Canny", &contrastFactor, 100);
         imshow("Canny", img);
+        imshow("Canny", imgColourFiltered);
     }
 
     /**
@@ -91,7 +135,7 @@ namespace cnny{
      * @param imgOriginal the image the algorithm should check
      * @return an image with debug information
      */
-    Mat run(Mat imgOriginal){
+    std::vector<CircleFinderResult> run(Mat imgOriginal){
         // Define the necessary images
         Mat imgColourFiltered, imgCanny, imgCannyContours;
 
@@ -146,12 +190,20 @@ namespace cnny{
         PROF_START(CIRCLE_FINDER)
 
         bool existsCircle = false;
+
+        Mat imgResult = Mat::zeros(imgOriginal.size(), CV_8UC1);
+
+        std::vector<CircleFinderResult> results;
+
         for( int i = 0; i< contourPoints.size(); i++ )
         {
             CircleFinderResult result = crclfnd::isCircle(contourPoints[i]);
+            results.push_back(result);
             if(result.isCircle){
                 existsCircle = true;
                 drawContours(imgColourFiltered, contourPoints, i, Scalar(0, 255, 0), 2, 8, hierarchy, 0, Point());
+
+                circle(imgResult, result.centre, result.radius, result.circularity, -1);
             }else {
                 drawContours(imgColourFiltered, contourPoints, i, Scalar(0, 0, 255), 1, 8, hierarchy, 0, Point());
             }
@@ -165,7 +217,7 @@ namespace cnny{
 
         PROF_END(CIRCLE_FINDER)
 
-        return imgColourFiltered;
+        return results;
     }
 }
 

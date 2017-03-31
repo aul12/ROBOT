@@ -84,8 +84,6 @@ int main(int argc, char* argv[]){
     bool guiEnable = false, colorEnable=false, cannyEnable=false, undistortEnable=false, undistortEnableFish=false;
     int videoNumber = 0;
 
-    int brightness, width, height, contrast, saturation, hue;
-
     if(argc <= 1){
         printHelp();
         return 0;
@@ -122,15 +120,7 @@ int main(int argc, char* argv[]){
 
     dbg::init(dbg::STDOUT, dbg::ERROR);
 
-    FileStorage cameraConfig("../config/cameraConfig.xml", FileStorage::READ);
-
     VideoCapture cap(videoNumber);
-    /*cap.set(CV_CAP_PROP_FRAME_WIDTH, width = cameraConfig["width"]);
-    cap.set(CV_CAP_PROP_FRAME_HEIGHT, height = cameraConfig["height"]);
-    cap.set(CV_CAP_PROP_BRIGHTNESS, brightness = cameraConfig["brightness"]);
-    cap.set(CV_CAP_PROP_CONTRAST, contrast = cameraConfig["contrast"]);
-    cap.set(CV_CAP_PROP_SATURATION, saturation = cameraConfig["saturation"]);
-    cap.set(CV_CAP_PROP_HUE, hue = cameraConfig["hue"]);*/
 
     Mat imgOriginal;
     if (!cap.isOpened()){
@@ -143,15 +133,6 @@ int main(int argc, char* argv[]){
 
     PROF_END(INIT);
     while(true){
-        /*cap.set(CV_CAP_PROP_FRAME_WIDTH, width);
-        cap.set(CV_CAP_PROP_FRAME_HEIGHT, height);
-        cap.set(CV_CAP_PROP_BRIGHTNESS, brightness);
-        cap.set(CV_CAP_PROP_CONTRAST, contrast);
-        cap.set(CV_CAP_PROP_SATURATION, saturation);
-        cap.set(CV_CAP_PROP_HUE, hue);
-        cap.set(CV_CAP_PROP_GAIN, gain);
-        cap.set(CV_CAP_PROP_EXPOSURE, exposure);*/
-
         PROF_START(MAIN);
         PROF_START(CAPTURE)
 
@@ -171,40 +152,75 @@ int main(int argc, char* argv[]){
         }
 
         Mat imgCannyResult, imgColourResult;
-        if(cannyEnable)
-            imgCannyResult = cnny::run(imgUndist);
+        std::vector<CircleFinderResult> results;
+        if(cannyEnable){
+            results = cnny::run(imgUndist);
+
+            imgCannyResult = Mat::zeros(imgOriginal.size(), CV_8UC1);
+
+            for(int c=0; c<results.size(); c++){
+                if(results[c].isCircle)
+                    circle(imgCannyResult, results[c].centre, results[c].radius, results[c].circularity, -1);
+            }
+        }
         if(colorEnable)
             imgColourResult = clr::run(imgUndist);
 
+        Mat imgFinal = Mat::zeros(imgOriginal.size(), CV_8UC1);
+        if(colorEnable && cannyEnable) {
+            addWeighted(imgCannyResult, 1, imgColourResult, 1, 0, imgFinal);
+
+            blur(imgFinal, imgFinal, Size(9, 9));
+
+            uchar max = 0;
+            bool orangeObject = false;
+            int xMax = 0, yMax = 0;
+            for (int y = 0; y < imgFinal.rows; y++) {
+                for (int x = 0; x < imgFinal.cols; x++) {
+                    uchar val = imgFinal.at<uchar>(Point(x, y));
+
+                    if (val > max && val > 80) {
+                        orangeObject = true;
+                        max = val;
+                        xMax = x;
+                        yMax = y;
+                    }
+                }
+            }
+
+            bool foundCircle = false;
+            if (orangeObject) {
+                for (int c = 0; c < results.size(); c++) {
+                    Point centre = results[c].centre;
+                    if (SQ(xMax - centre.x) + SQ(yMax - centre.y) < SQ(results[c].radius)) {
+                        circle(imgFinal, centre, results[c].radius, 255, -1);
+                        foundCircle = true;
+                        break;
+                    }
+                }
+            }
+
+            if(!foundCircle && orangeObject){
+                circle(imgFinal, Point(xMax, yMax), 10, 255, -1);
+            }
+        }
+
         if(guiEnable){
             namedWindow("Original", WINDOW_NORMAL);
-           /* createTrackbar("Brightness", "Original", &brightness, 10);
-            createTrackbar("Width", "Original", &width, 1920);
-            createTrackbar("Height", "Original", &height, 1080);
-            createTrackbar("Contrast", "Original", &contrast, 20);
-            createTrackbar("Saturation", "Original", &saturation, 10);
-            createTrackbar("Hue", "Original", &hue, 10);*/
 
             imshow("Original", imgUndist);
 
             if(cannyEnable)
-                cnny::show(imgCannyResult);
+                cnny::show(imgCannyResult, imgOriginal);
             if(colorEnable)
                 clr::show(imgColourResult);
+
+            if(cannyEnable && colorEnable)
+                imshow("Final", imgFinal);
         }
         PROF_END(MAIN);
 
         if (waitKey(30) == 27){
-            /*cameraConfig = FileStorage("../config/cameraConfig.xml", FileStorage::WRITE);
-            cameraConfig << "brightness" << brightness;
-            cameraConfig << "width" << width;
-            cameraConfig << "height" << height;
-            cameraConfig << "contrast" << contrast;
-            cameraConfig << "saturation" << saturation;
-            cameraConfig << "hue" << hue;
-            cameraConfig.release();*/
-
-
             clr::close();
             cnny::close();
             dbg::close();

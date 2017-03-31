@@ -267,12 +267,12 @@ namespace crclfnd{
         }
 
         float matchPercentage = 1 - (float)nonMatches / points.size();
-        result.circularity = (unsigned char)(matchPercentage<0.5? 0 : 127 * matchPercentage);
+        result.circularity = (unsigned char)(matchPercentage<1-maxMatchFaultPercentage? 0 : 127 * matchPercentage);
 
-        if((float)nonMatches / points.size() > maxMatchFaultPercentage){
+        /*if((float)nonMatches / points.size() > maxMatchFaultPercentage){
             dbg::println("Too many points not fitting", dbg::WARN);
             return result;
-        }
+        }*/
 
         dbg::println("OK");
         dbg::println("Circle valid!", dbg::WARN);

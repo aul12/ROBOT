@@ -60,7 +60,7 @@ namespace clr{
                 int hueDifference = abs(val[0] - hue);
                 if(hueDifference > 90)
                     hueDifference = 180 - hueDifference;
-                imgColorThresholded.at<uchar>(y, x) = (uchar) ((90 - hueDifference) * (val[1] / 255.0) * 2.83);
+                imgColorThresholded.at<uchar>(y, x) = (uchar) ((90 - hueDifference) * (val[1] / 255.0) * 1.41);
             }
         }
 
