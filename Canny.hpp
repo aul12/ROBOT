@@ -115,19 +115,13 @@ namespace cnny{
 
         Mat imgResult = Mat::zeros(imgOriginal.size(), CV_8UC1);
 
-        std::vector<CircleFinderResult> results;
 
-        for( int i = 0; i< contourPoints.size(); i++ )
-        {
-            drawContours(imgColourFiltered, contourPoints, i, Scalar(255, 0, 0), 2, 8, hierarchy, 0, Point());
-        }
 
         namedWindow("Canny", WINDOW_NORMAL);
         createTrackbar("Threshold", "Canny", &threshold, 100);
         createTrackbar("Color bias", "Canny", &colorBias, 100);
         createTrackbar("Contrast", "Canny", &contrastFactor, 100);
         imshow("Canny", img);
-        imshow("Canny", imgColourFiltered);
     }
 
     /**
@@ -163,6 +157,8 @@ namespace cnny{
         imgColourFiltered.convertTo(imgColourFiltered, CV_8UC1);
         PROF_END(CV_8)
 
+        imshow("Colour Filter", imgColourFiltered); //@TODO nur für Demo
+
         PROF_START(BLUR)
         // Blur the image to reduce noise
         blur(imgColourFiltered, imgColourFiltered, Size(3,3), Point(-1, -1));
@@ -175,6 +171,9 @@ namespace cnny{
         Canny(imgColourFiltered, imgCanny, threshold, 3*threshold, 3);
 
         PROF_END(CANNY)
+
+        imshow("Canny", imgCanny);  //@TODO nur für Demo
+
         PROF_START(FIND_CONTOURS)
 
         std::vector<std::vector<Point> > contourPoints;
@@ -216,6 +215,8 @@ namespace cnny{
             dbg::println("Circle Exists", dbg::ERROR);
 
         PROF_END(CIRCLE_FINDER)
+
+        imshow("CircleFinder", imgColourFiltered);
 
         return results;
     }
