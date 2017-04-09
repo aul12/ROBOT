@@ -157,8 +157,6 @@ namespace cnny{
         imgColourFiltered.convertTo(imgColourFiltered, CV_8UC1);
         PROF_END(CV_8)
 
-        imshow("Colour Filter", imgColourFiltered); //@TODO nur für Demo
-
         PROF_START(BLUR)
         // Blur the image to reduce noise
         blur(imgColourFiltered, imgColourFiltered, Size(3,3), Point(-1, -1));
@@ -171,8 +169,6 @@ namespace cnny{
         Canny(imgColourFiltered, imgCanny, threshold, 3*threshold, 3);
 
         PROF_END(CANNY)
-
-        imshow("Canny", imgCanny);  //@TODO nur für Demo
 
         PROF_START(FIND_CONTOURS)
 
@@ -215,8 +211,6 @@ namespace cnny{
             dbg::println("Circle Exists", dbg::ERROR);
 
         PROF_END(CIRCLE_FINDER)
-
-        imshow("CircleFinder", imgColourFiltered);
 
         return results;
     }
