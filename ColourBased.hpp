@@ -40,7 +40,7 @@ namespace clr{
     }
 
     void show(Mat img){
-        namedWindow("ColourBased", CV_WINDOW_AUTOSIZE);
+        namedWindow("ColourBased", WINDOW_NORMAL);
 
         createTrackbar("Hue", "ColourBased", &hue, 179);
 
