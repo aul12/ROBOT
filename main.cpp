@@ -15,7 +15,7 @@
 #include "ColourBased.hpp"
 #include "Canny.hpp"
 #include "fusion.hpp"
-
+#include "Serial.hpp"
 
 void printHelp(){
     std::cout << "The following arguments are supported:" << std::endl;
@@ -75,16 +75,12 @@ int main(int argc, char* argv[]){
 
     clr::init();
     cnny::init();
+    serial::init();
 
     PROF_END(INIT);
     while(true){
-        PROF_START(MAIN);
-        PROF_START(CAPTURE)
-
         if (!cap.read(imgOriginal))
             dbg::println("Camera not available is a other program already using the camera?", dbg::ERROR);
-
-        PROF_END(CAPTURE)
 
         Mat imgCannyResult, imgColourResult;
         std::vector<CircleFinderResult> results;
@@ -94,16 +90,16 @@ int main(int argc, char* argv[]){
         if(colorEnable)
             imgColourResult = clr::run(imgOriginal);
 
-        PROF_START(Fusion)
         fusion::BallPosition ballPosition = fusion::getPosition(cannyEnable, colorEnable,
             results, imgColourResult, imgOriginal.size);
 
-        circle(imgOriginal, ballPosition.center, ballPosition.radius==0?5:ballPosition.radius,
-               Vec3b(0, 255, 0), 3);
+        serial::sendChar(37);
 
-        PROF_END(Fusion)
 
         if(guiEnable){
+            circle(imgOriginal, ballPosition.center, ballPosition.radius==0?5:ballPosition.radius,
+                   Vec3b(0, 255, 0), 3);
+
             namedWindow("Original", WINDOW_NORMAL);
 
             imshow("Original", imgOriginal);
@@ -113,7 +109,6 @@ int main(int argc, char* argv[]){
             if(colorEnable)
                 clr::show(imgColourResult);
         }
-        PROF_END(MAIN);
 
         if (waitKey(30) == 27){
             clr::close();
