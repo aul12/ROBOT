@@ -26,8 +26,8 @@ namespace serial {
         }
 
         /* Set Baud Rate */
-        cfsetospeed(&tty, B9600);
-        cfsetispeed(&tty, B9600);
+        cfsetospeed(&tty, B38400);
+        cfsetispeed(&tty, B38400);
 
         /* Setting other Port Stuff */
         tty.c_cflag &= ~PARENB;        // Make 8n1

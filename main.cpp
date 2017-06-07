@@ -93,7 +93,8 @@ int main(int argc, char* argv[]){
         fusion::BallPosition ballPosition = fusion::getPosition(cannyEnable, colorEnable,
             results, imgColourResult, imgOriginal.size);
 
-        serial::sendChar(37);
+        std::cout << ballPosition.center.x;
+        serial::sendChar((uint8_t) (ballPosition.value > 150 ?ballPosition.center.x / 5 : 0xFF));
 
 
         if(guiEnable){

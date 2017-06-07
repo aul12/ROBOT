@@ -49,7 +49,7 @@ namespace fusion{
             for (int x = 0; x < imgFinal.cols; x++) {
                 uchar val = imgFinal.at<uchar>(Point(x, y));
 
-                if (val > max && val > 80) { // @TODO Hardcoded value
+                if (val > max && val > 120) { // @TODO Hardcoded value
                     objectFound = true;
                     max = val;
                     xMax = x;
