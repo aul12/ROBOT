@@ -34,6 +34,8 @@ int main(int argc, char* argv[]){
     PROF_START(INIT);
     bool guiEnable = false, colorEnable=false, cannyEnable=false;
     int videoNumber = 0;
+    int fusionBias = 50; ///<The weight (in percent) the algorithm uses the contour-based algorithm
+    int fusionTreshold = 127; ///<The threshold which is necessary for an object to be recognized as the ball
 
     if(argc <= 1){
         printHelp();
@@ -63,6 +65,10 @@ int main(int argc, char* argv[]){
         }
     }
 
+    FileStorage fileStorage("../config/fusion.xml", FileStorage::READ);
+    fusionBias = fileStorage["bias"];
+    fusionTreshold = fileStorage["treshold"];
+
     dbg::init(dbg::STDOUT, dbg::ERROR);
 
     VideoCapture cap(videoNumber);
@@ -91,19 +97,22 @@ int main(int argc, char* argv[]){
             imgColourResult = clr::run(imgOriginal);
 
         fusion::BallPosition ballPosition = fusion::getPosition(cannyEnable, colorEnable,
-            results, imgColourResult, imgOriginal.size);
+            results, imgColourResult, imgOriginal.size, fusionBias);
 
         std::cout << ballPosition.center.x;
-        serial::sendChar((uint8_t) (ballPosition.value > 150 ?ballPosition.center.x / 5 : 0xFF));
+        serial::sendChar((uint8_t) (ballPosition.value > fusionTreshold ?ballPosition.center.x / 5 : 0xFF));
 
 
         if(guiEnable){
-            circle(imgOriginal, ballPosition.center, ballPosition.radius==0?5:ballPosition.radius,
-                   Vec3b(0, 255, 0), 3);
-
+            if(ballPosition.value > fusionTreshold) {
+                circle(imgOriginal, ballPosition.center, ballPosition.radius == 0 ? 5 : ballPosition.radius,
+                       Vec3b(0, 255, 0), 3);
+            }
             namedWindow("Original", WINDOW_NORMAL);
 
             imshow("Original", imgOriginal);
+            createTrackbar("Fusion bias", "Original", &fusionBias, 100);
+            createTrackbar("Fusion Treshold", "Original", &fusionTreshold, 256);
 
             if(cannyEnable)
                 cnny::show(fusion::getCanny(results, imgOriginal.size), imgOriginal);
@@ -115,6 +124,12 @@ int main(int argc, char* argv[]){
             clr::close();
             cnny::close();
             dbg::close();
+
+            fileStorage = FileStorage("../config/fusion.xml", FileStorage::WRITE);
+
+            fileStorage << "treshold" << fusionTreshold;
+            fileStorage << "bias" << fusionBias;
+
             return 0;
         }
     }

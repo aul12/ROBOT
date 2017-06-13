@@ -26,7 +26,7 @@ namespace fusion{
 
     BallPosition getPosition(bool cannyEnable, bool colorEnable,
                                 std::vector<CircleFinderResult> circleFinderResults,
-                                cv::Mat colourResults, cv::MatSize matSize){
+                                cv::Mat colourResults, cv::MatSize matSize, int fusionBias){
         cv::Size s = matSize();
         cv::Mat imgFinal = cv::Mat::zeros(s, CV_8UC1);
 
@@ -39,7 +39,7 @@ namespace fusion{
             colourResults = cv::Mat::zeros(s, CV_8UC1);
         }
 
-        addWeighted(imgCircleFinder, 1, colourResults, 1, 0, imgFinal);
+        addWeighted(imgCircleFinder, fusionBias/50.0, colourResults, (100-fusionBias)/50, 0, imgFinal);
         blur(imgFinal, imgFinal, Size(9, 9));
 
         uchar max = 0;
@@ -49,7 +49,7 @@ namespace fusion{
             for (int x = 0; x < imgFinal.cols; x++) {
                 uchar val = imgFinal.at<uchar>(Point(x, y));
 
-                if (val > max && val > 120) { // @TODO Hardcoded value
+                if (val > max) {
                     objectFound = true;
                     max = val;
                     xMax = x;
