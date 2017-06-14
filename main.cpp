@@ -99,7 +99,6 @@ int main(int argc, char* argv[]){
         fusion::BallPosition ballPosition = fusion::getPosition(cannyEnable, colorEnable,
             results, imgColourResult, imgOriginal.size, fusionBias);
 
-        std::cout << ballPosition.center.x;
         serial::sendChar((uint8_t) (ballPosition.value > fusionTreshold ?ballPosition.center.x / 5 : 0xFF));
 
 
@@ -115,9 +114,11 @@ int main(int argc, char* argv[]){
             createTrackbar("Fusion Treshold", "Original", &fusionTreshold, 256);
 
             if(cannyEnable)
-                cnny::show(fusion::getCanny(results, imgOriginal.size), imgOriginal);
+                cnny::show(fusion::getCanny(results, imgOriginal.size));
             if(colorEnable)
                 clr::show(imgColourResult);
+        } else {
+            std::cout << ballPosition.center.x << std::endl;
         }
 
         if (waitKey(30) == 27){

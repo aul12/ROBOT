@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <opencv_storage>
     <!-- Microsoft Webcam -->
-    <minimumPoints>10</minimumPoints>
+    <!--<minimumPoints>10</minimumPoints>
     <minAngle>30</minAngle>
     <maxRadius>200</maxRadius>
     <minRadius>6</minRadius>
@@ -23,4 +23,16 @@
     <minRadiusRatioTolerance>0.08</minRadiusRatioTolerance>
     <radiusRatioToleranceFactor>0.01</radiusRatioToleranceFactor>
     <maxMatchFaultPercentage>0.18</maxMatchFaultPercentage>-->
+
+    <!-- Playstation Eye @TODO-->
+    <minimumPoints>10</minimumPoints>
+    <minAngle>30</minAngle>
+    <maxRadius>200</maxRadius>
+    <minRadius>6</minRadius>
+    <circleCenterDistanceThreshold>10</circleCenterDistanceThreshold>
+    <triangleLineLengthRatioThreshold>0.1</triangleLineLengthRatioThreshold>
+    <maxRadiusRatioTolerance>0.3</maxRadiusRatioTolerance>
+    <minRadiusRatioTolerance>0.08</minRadiusRatioTolerance>
+    <radiusRatioToleranceFactor>0.008</radiusRatioToleranceFactor>
+    <maxMatchFaultPercentage>0.2</maxMatchFaultPercentage>
 </opencv_storage>

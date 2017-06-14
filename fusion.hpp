@@ -7,12 +7,17 @@
 
 #include "opencv2/opencv.hpp"
 
+#define MEM_SIZE 5
+
 namespace fusion{
     struct BallPosition{
         Point center;
         uint16_t radius;
         uint16_t value;
     };
+
+    BallPosition lastPosition[MEM_SIZE];
+    int head = 0;
 
     Mat getCanny(std::vector<CircleFinderResult> circleFinderResults, MatSize matSize){
         Mat result = Mat::zeros(matSize(), CV_8UC1);
@@ -40,7 +45,18 @@ namespace fusion{
         }
 
         addWeighted(imgCircleFinder, fusionBias/50.0, colourResults, (100-fusionBias)/50, 0, imgFinal);
+
+        Mat imgLast = Mat::zeros(s, CV_8UC1);
+        for(int c=0; c<MEM_SIZE; c++){
+            circle(imgLast, lastPosition[(c+head)%MEM_SIZE].center,
+                lastPosition[(c+head)%MEM_SIZE].radius, lastPosition[(c+head)%MEM_SIZE].value/(log(c+2)), -1);
+        }
+
+        addWeighted(imgFinal, 1, imgLast, 1, 0, imgFinal);
+
         blur(imgFinal, imgFinal, Size(9, 9));
+
+        imshow("Final", imgFinal);
 
         uchar max = 0;
         bool objectFound = false;
@@ -81,6 +97,9 @@ namespace fusion{
             result.radius = circleFinderResults[circleIndex].radius;
         }
         result.value = max;
+
+        head = (head-1+MEM_SIZE)%MEM_SIZE;
+        lastPosition[head] = result;
 
         return result;
     }
