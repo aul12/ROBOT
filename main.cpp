@@ -32,7 +32,7 @@ void printHelp(){
  */
 int main(int argc, char* argv[]){
     PROF_START(INIT);
-    bool guiEnable = false, colorEnable=false, cannyEnable=false;
+    bool guiEnable = false, colorEnable=false, cannyEnable=false, serialOutput=false;
     int videoNumber = 0;
     int fusionBias = 50; ///<The weight (in percent) the algorithm uses the contour-based algorithm
     int fusionTreshold = 127; ///<The threshold which is necessary for an object to be recognized as the ball
@@ -51,6 +51,8 @@ int main(int argc, char* argv[]){
             cannyEnable = true;
         }else if(arg == "--color") {
             colorEnable = true;
+        }else if(arg == "--serial"){
+            serialOutput = true;
         }else if(arg == "--help") {
             printHelp();
             return 0;
@@ -81,7 +83,9 @@ int main(int argc, char* argv[]){
 
     clr::init();
     cnny::init();
-    serial::init();
+
+    if(serialOutput)
+        serial::init();
 
     PROF_END(INIT);
     while(true){
@@ -99,7 +103,8 @@ int main(int argc, char* argv[]){
         fusion::BallPosition ballPosition = fusion::getPosition(cannyEnable, colorEnable,
             results, imgColourResult, imgOriginal.size, fusionBias);
 
-        serial::sendChar((uint8_t) (ballPosition.value > fusionTreshold ?ballPosition.center.x / 5 : 0xFF));
+        if(serialOutput)
+            serial::sendChar((uint8_t) (ballPosition.value > fusionTreshold ?ballPosition.center.x / 5 : 0xFF));
 
 
         if(guiEnable){
