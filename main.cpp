@@ -59,6 +59,9 @@ int main(int argc, char* argv[]){
         }else if(arg == "--device") {
             if (c + 1 < argc) {
                 videoNumber = atoi(argv[++c]);
+            } else {
+                printHelp();
+                return 0;
             }
         }else{
             std::cout << "Unknown argument: " << arg << std::endl;
@@ -115,8 +118,8 @@ int main(int argc, char* argv[]){
             namedWindow("Original", WINDOW_NORMAL);
 
             imshow("Original", imgOriginal);
-            createTrackbar("Fusion bias", "Original", &fusionBias, 100);
-            createTrackbar("Fusion Treshold", "Original", &fusionTreshold, 256);
+            createTrackbar("Fusion Bias", "Original", &fusionBias, 100);
+            createTrackbar("Fusion Threshold", "Original", &fusionTreshold, 256);
 
             if(cannyEnable)
                 cnny::show(fusion::getCanny(results, imgOriginal.size));

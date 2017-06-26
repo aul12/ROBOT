@@ -39,8 +39,8 @@ namespace dbg{
         ERROR   ///<Severe issues, issues regarding i/o etc.
     };
 
-    Output _output = STDOUT;
-    LogLevel _logLevel = WARN;
+    Output _output = NONE;
+    LogLevel _logLevel = ERROR;
     std::ofstream debugFile;
 
     /**

@@ -56,6 +56,7 @@ namespace fusion{
 
         blur(imgFinal, imgFinal, Size(9, 9));
 
+        namedWindow("Final", WINDOW_NORMAL);
         imshow("Final", imgFinal);
 
         uchar max = 0;

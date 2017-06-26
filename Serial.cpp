@@ -13,7 +13,8 @@ namespace serial {
 
         /* Error Handling */
         if (usb < 0) {
-           std:: cout << "Error " << errno << " opening " << "/dev/ttyUSB0" << ": " << strerror(errno) << std::endl;
+           std:: cout << "Error " << errno << " opening " << "/dev/ttyUSB1" << ": " << strerror(errno) << std::endl;
+            while(1);
         }
 
         /* *** Configure Port *** */

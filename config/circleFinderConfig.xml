@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <opencv_storage>
     <!-- Microsoft Webcam -->
-    <minimumPoints>20</minimumPoints>
+   <!-- <minimumPoints>20</minimumPoints>
     <minAngle>30</minAngle>
     <maxRadius>200</maxRadius>
     <minRadius>6</minRadius>
@@ -10,10 +10,10 @@
     <maxRadiusRatioTolerance>0.2</maxRadiusRatioTolerance>
     <minRadiusRatioTolerance>0.08</minRadiusRatioTolerance>
     <radiusRatioToleranceFactor>0.008</radiusRatioToleranceFactor>
-    <maxMatchFaultPercentage>0.10</maxMatchFaultPercentage>
+    <maxMatchFaultPercentage>0.10</maxMatchFaultPercentage>-->
 
     <!-- Fisheye (without undistortion)-->
-    <!--<minimumPoints>10</minimumPoints>
+    <minimumPoints>10</minimumPoints>
     <minAngle>25</minAngle>
     <maxRadius>100</maxRadius>
     <minRadius>5</minRadius>
@@ -22,7 +22,7 @@
     <maxRadiusRatioTolerance>0.30</maxRadiusRatioTolerance>
     <minRadiusRatioTolerance>0.08</minRadiusRatioTolerance>
     <radiusRatioToleranceFactor>0.01</radiusRatioToleranceFactor>
-    <maxMatchFaultPercentage>0.18</maxMatchFaultPercentage>-->
+    <maxMatchFaultPercentage>0.18</maxMatchFaultPercentage>
 
     <!-- Playstation Eye @TODO-->
     <!--<minimumPoints>10</minimumPoints>

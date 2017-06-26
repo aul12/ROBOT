@@ -87,6 +87,7 @@ namespace cnny{
         createTrackbar("Contrast", "CircleFinder", &contrastFactor, 100);
         imshow("CircleFinder", img);
 
+        namedWindow("Canny", WINDOW_NORMAL);
         imshow("Canny", imgColourFiltered);
     }
 
