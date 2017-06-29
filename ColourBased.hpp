@@ -48,10 +48,12 @@ namespace clr{
     }
 
     Mat run(Mat imgOriginal){
-        Mat imgHSV, imgColorThresholded;
-        cvtColor(imgOriginal, imgHSV, COLOR_BGR2HSV);
+        Mat imgHSV, imgColorThresholded, imgLowRes;
 
-        imgColorThresholded = Mat::zeros(imgOriginal.size(), CV_8UC1);
+        resize(imgOriginal, imgLowRes, Size(80, 60));
+        cvtColor(imgLowRes, imgHSV, COLOR_BGR2HSV);
+        
+        imgColorThresholded = Mat::zeros(imgLowRes.size(), CV_8UC1);
 
         //Abweichung vom gesetzten Hue-Wert berechnen und eintragen
         for(int y = 0; y < imgHSV.rows; y++){
@@ -64,8 +66,8 @@ namespace clr{
             }
         }
 
-        blur(imgColorThresholded,imgColorThresholded, Size(5,5));
-
+        //blur(imgColorThresholded,imgColorThresholded, Size(5,5));
+        resize(imgColorThresholded, imgColorThresholded, imgOriginal.size());
         return imgColorThresholded;
     }
 }

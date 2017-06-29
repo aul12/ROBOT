@@ -23,6 +23,7 @@ void printHelp(){
     std::cout << "--color\t Run the color based algorithm" << std::endl;
     std::cout << "--canny\t Run the canny based algorithm" << std::endl;
     std::cout << "--device\t Select the video device number" << std::endl;
+    std::cout << "--serial\t Boolean to toggle serial output" << std::endl;
     std::cout << "--help\t Show this help message" << std::endl;
 }
 
@@ -92,19 +93,37 @@ int main(int argc, char* argv[]){
 
     PROF_END(INIT);
     while(true){
+        PROF_START(Frame)
+        PROF_START(Capture)
         if (!cap.read(imgOriginal))
             dbg::println("Camera not available is a other program already using the camera?", dbg::ERROR);
+        PROF_END(Capture)
+
 
         Mat imgCannyResult, imgColourResult;
         std::vector<CircleFinderResult> results;
-
+        
+        PROF_START(Canny)
         if(cannyEnable)
             results = cnny::run(imgOriginal);
+        PROF_END(Canny)
+
+        PROF_START(Color)
         if(colorEnable)
             imgColourResult = clr::run(imgOriginal);
+        PROF_END(Color)
 
-        fusion::BallPosition ballPosition = fusion::getPosition(cannyEnable, colorEnable,
-            results, imgColourResult, imgOriginal.size, fusionBias);
+
+        fusion::BallPosition ballPosition;
+        PROF_START(Fusion)
+        if(cannyEnable && colorEnable){
+            ballPosition = fusion::getPosition(cannyEnable, colorEnable,
+                results, imgColourResult, imgOriginal.size, fusionBias);
+        } else {
+            ballPosition.center.x = 0;
+            // @TODO
+        }
+        PROF_END(Fusion)
 
         if(serialOutput)
             serial::sendChar((uint8_t) (ballPosition.value > fusionTreshold ?ballPosition.center.x / 5 : 0xFF));
@@ -126,10 +145,11 @@ int main(int argc, char* argv[]){
             if(colorEnable)
                 clr::show(imgColourResult);
         } else {
-            std::cout << ballPosition.center.x << std::endl;
+            if(ballPosition.value > fusionTreshold)
+                std::cout << ballPosition.center.x << std::endl;
         }
 
-        if (waitKey(30) == 27){
+        if (waitKey(1) == 27){
             clr::close();
             cnny::close();
             dbg::close();
@@ -141,5 +161,6 @@ int main(int argc, char* argv[]){
 
             return 0;
         }
+        PROF_END(Frame)
     }
 }

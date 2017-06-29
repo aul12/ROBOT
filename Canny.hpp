@@ -109,7 +109,7 @@ namespace cnny{
         bitwise_not(green, green);
         addWeighted(red,colorBias/100.0, green, 1-colorBias/100.0, 0, imgColourFiltered);
         PROF_END(EXTRACT)
-        PROF_START(CV_16)
+       /* PROF_START(CV_16)
         imgColourFiltered.convertTo(imgColourFiltered, CV_16SC1);
         PROF_END(CV_16)
 
@@ -122,7 +122,7 @@ namespace cnny{
 
         PROF_START(CV_8)
         imgColourFiltered.convertTo(imgColourFiltered, CV_8UC1);
-        PROF_END(CV_8)
+        PROF_END(CV_8)*/
 
         PROF_START(BLUR)
         // Blur the image to reduce noise
