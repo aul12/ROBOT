@@ -1,9 +1,9 @@
 #This file requires all libraries to be installed, for more information see the readme
 
 stages:
-- validate
+#- validate
 - build
-- test
+#- test
 
 # Static Type Analysis
 check:
