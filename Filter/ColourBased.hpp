@@ -66,7 +66,6 @@ namespace clr{
             }
         }
 
-        //blur(imgColorThresholded,imgColorThresholded, Size(5,5));
         resize(imgColorThresholded, imgColorThresholded, imgOriginal.size());
         return imgColorThresholded;
     }

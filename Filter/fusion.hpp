@@ -31,7 +31,8 @@ namespace fusion{
 
     BallPosition getPosition(bool cannyEnable, bool colorEnable,
                                 std::vector<CircleFinderResult> circleFinderResults,
-                                cv::Mat colourResults, cv::MatSize matSize, int fusionBias){
+                                cv::Mat colourResults, cv::MatSize matSize, int fusionBias,
+                                bool guiEnable){
         cv::Size s = matSize();
         cv::Mat imgFinal = cv::Mat::zeros(s, CV_8UC1);
 
@@ -56,8 +57,11 @@ namespace fusion{
 
         blur(imgFinal, imgFinal, Size(9, 9));
 
-       // namedWindow("Final", WINDOW_NORMAL);
-       // imshow("Final", imgFinal);
+        if(guiEnable){
+            namedWindow("Final", WINDOW_NORMAL);
+            imshow("Final", imgFinal);
+
+        }
 
         uchar max = 0;
         bool objectFound = false;

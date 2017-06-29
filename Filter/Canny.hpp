@@ -7,10 +7,10 @@
 #ifndef ORANGEBALL_CANNY_HPP
 #define ORANGEBALL_CANNY_HPP
 
-#include "Profiler.hpp"
-#include "Line.hpp"
+#include "../Profiler.hpp"
+#include "lib/Line.hpp"
 #include "CircleFinder.hpp"
-#include "debug.hpp"
+#include "../debug.hpp"
 
 
 using namespace cv;
@@ -100,45 +100,24 @@ namespace cnny{
         // Define the necessary images
         Mat imgCanny, imgCannyContours;
 
-        PROF_START(COLOR_FILTER)
-        PROF_START(EXTRACT)
+        PROF_START(Canny_ColorFilter)
         // Apply a colour filter
         Mat green, red;
         extractChannel(imgOriginal, green, GREEN);
         extractChannel(imgOriginal, red, RED);
         bitwise_not(green, green);
         addWeighted(red,colorBias/100.0, green, 1-colorBias/100.0, 0, imgColourFiltered);
-        PROF_END(EXTRACT)
-       /* PROF_START(CV_16)
-        imgColourFiltered.convertTo(imgColourFiltered, CV_16SC1);
-        PROF_END(CV_16)
 
-        PROF_START(MATMUL)
-        // Increase the contrast
-        imgColourFiltered -= 127;
-        imgColourFiltered *= (contrastFactor/20.0);
-        imgColourFiltered += 127;
-        PROF_END(MATMUL)
-
-        PROF_START(CV_8)
-        imgColourFiltered.convertTo(imgColourFiltered, CV_8UC1);
-        PROF_END(CV_8)*/
-
-        PROF_START(BLUR)
         // Blur the image to reduce noise
         blur(imgColourFiltered, imgColourFiltered, Size(3,3), Point(-1, -1));
-        PROF_END(BLUR)
+        PROF_END(Canny_ColorFilter);
 
-        PROF_END(COLOR_FILTER);
-        PROF_START(CANNY);
-
+        PROF_START(Canny_Canny);
         // Get the contours with the canny algorithm
         Canny(imgColourFiltered, imgCanny, threshold, 3*threshold, 3);
+        PROF_END(Canny_Canny)
 
-        PROF_END(CANNY)
-
-        PROF_START(FIND_CONTOURS)
-
+        PROF_START(Canny_FindContours)
         std::vector<std::vector<Point> > contourPoints;
         std::vector<Vec4i> hierarchy;
 
@@ -147,14 +126,13 @@ namespace cnny{
         imgCannyContours = Mat::zeros(imgOriginal.size(), CV_8UC3);
 
         cvtColor(imgColourFiltered, imgColourFiltered, COLOR_GRAY2BGR);
+        PROF_END(Canny_FindContours)
 
-        PROF_END(FIND_CONTOURS)
-        PROF_START(CIRCLE_FINDER)
 
+        PROF_START(Canny_CircleFinder)
         Mat imgResult = Mat::zeros(imgOriginal.size(), CV_8UC1);
 
         std::vector<CircleFinderResult> results;
-
         for( int i = 0; i< contourPoints.size(); i++ )
         {
             CircleFinderResult result = crclfnd::isCircle(contourPoints[i]);
@@ -165,8 +143,7 @@ namespace cnny{
             line(imgColourFiltered, result.triangle[1], result.triangle[2], Scalar(255,0,0), 2, 8);
             line(imgColourFiltered, result.triangle[0], result.triangle[2], Scalar(255,0,0), 2, 8);
         }
-
-        PROF_END(CIRCLE_FINDER)
+        PROF_END(Canny_CircleFinder)
 
         return results;
     }

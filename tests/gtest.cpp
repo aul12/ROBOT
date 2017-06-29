@@ -3,8 +3,8 @@
 #include "opencv2/opencv.hpp"
 #include "opencv2/videoio.hpp"
 
-#include "../CircleFinder.hpp"
-#include "../Canny.hpp"
+#include "../Filter/CircleFinder.hpp"
+#include "../Filter/Canny.hpp"
 
 // Hand written tests
 #include "tests/IsCircleTest/ToFewPoints.h"

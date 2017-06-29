@@ -11,10 +11,11 @@
 #include "opencv2/opencv.hpp"
 #include "opencv2/videoio.hpp"
 
+#include "capture.hpp"
 #include "Profiler.hpp"
-#include "ColourBased.hpp"
-#include "Canny.hpp"
-#include "fusion.hpp"
+#include "Filter/ColourBased.hpp"
+#include "Filter/Canny.hpp"
+#include "Filter/fusion.hpp"
 #include "Serial.hpp"
 
 void printHelp(){
@@ -32,11 +33,10 @@ void printHelp(){
  * @return exit code
  */
 int main(int argc, char* argv[]){
-    PROF_START(INIT);
     bool guiEnable = false, colorEnable=false, cannyEnable=false, serialOutput=false;
     int videoNumber = 0;
-    int fusionBias = 50; ///<The weight (in percent) the algorithm uses the contour-based algorithm
-    int fusionTreshold = 127; ///<The threshold which is necessary for an object to be recognized as the ball
+    int fusionBias; ///<The weight (in percent) the algorithm uses the contour-based algorithm
+    int fusionThreshold; ///<The threshold which is necessary for an object to be recognized as the ball
 
     if(argc <= 1){
         printHelp();
@@ -73,17 +73,18 @@ int main(int argc, char* argv[]){
 
     FileStorage fileStorage("../config/fusion.xml", FileStorage::READ);
     fusionBias = fileStorage["bias"];
-    fusionTreshold = fileStorage["treshold"];
+    fusionThreshold = fileStorage["threshold"];
 
     dbg::init(dbg::STDOUT, dbg::ERROR);
 
-    VideoCapture cap(videoNumber);
+    //VideoCapture cap(videoNumber);
 
-    Mat imgOriginal;
+    /*Mat imgOriginal;
     if (!cap.isOpened()){
         dbg::println("Camera not available is a other program already using the camera?", dbg::ERROR);
         return -1;
-    }
+    }*/
+    std::thread captureThread(capture::captureThread, videoNumber);
 
     clr::init();
     cnny::init();
@@ -91,61 +92,56 @@ int main(int argc, char* argv[]){
     if(serialOutput)
         serial::init();
 
-    PROF_END(INIT);
+    while(!capture::firstImage);
     while(true){
         PROF_START(Frame)
-        PROF_START(Capture)
+       /* PROF_START(Capture)
         if (!cap.read(imgOriginal))
             dbg::println("Camera not available is a other program already using the camera?", dbg::ERROR);
-        PROF_END(Capture)
-
+        PROF_END(Capture)*/
 
         Mat imgCannyResult, imgColourResult;
         std::vector<CircleFinderResult> results;
         
         PROF_START(Canny)
         if(cannyEnable)
-            results = cnny::run(imgOriginal);
+            results = cnny::run(capture::imgOriginal);
         PROF_END(Canny)
 
         PROF_START(Color)
         if(colorEnable)
-            imgColourResult = clr::run(imgOriginal);
+            imgColourResult = clr::run(capture::imgOriginal);
         PROF_END(Color)
 
 
         fusion::BallPosition ballPosition;
         PROF_START(Fusion)
-        if(cannyEnable && colorEnable){
-            ballPosition = fusion::getPosition(cannyEnable, colorEnable,
-                results, imgColourResult, imgOriginal.size, fusionBias);
-        } else {
-            ballPosition.center.x = 0;
-            // @TODO
-        }
+        ballPosition = fusion::getPosition(cannyEnable, colorEnable,
+            results, imgColourResult, capture::imgOriginal.size, fusionBias, guiEnable);
         PROF_END(Fusion)
 
         if(serialOutput)
-            serial::sendChar((uint8_t) (ballPosition.value > fusionTreshold ?ballPosition.center.x / 5 : 0xFF));
+            serial::sendChar((uint8_t) (ballPosition.value > fusionThreshold ?ballPosition.center.x / 5 : 0xFF));
 
 
         if(guiEnable){
-            if(ballPosition.value > fusionTreshold) {
-                circle(imgOriginal, ballPosition.center, ballPosition.radius == 0 ? 5 : ballPosition.radius,
+            Mat imgOriginalCopy = capture::imgOriginal.clone();
+            if(ballPosition.value > fusionThreshold) {
+                circle(imgOriginalCopy, ballPosition.center, ballPosition.radius == 0 ? 5 : ballPosition.radius,
                        Vec3b(0, 255, 0), 3);
             }
             namedWindow("Original", WINDOW_NORMAL);
 
-            imshow("Original", imgOriginal);
+            imshow("Original", imgOriginalCopy);
             createTrackbar("Fusion Bias", "Original", &fusionBias, 100);
-            createTrackbar("Fusion Threshold", "Original", &fusionTreshold, 256);
+            createTrackbar("Fusion Threshold", "Original", &fusionThreshold, 256);
 
             if(cannyEnable)
-                cnny::show(fusion::getCanny(results, imgOriginal.size));
+                cnny::show(fusion::getCanny(results, capture::imgOriginal.size));
             if(colorEnable)
                 clr::show(imgColourResult);
         } else {
-            if(ballPosition.value > fusionTreshold)
+            if(ballPosition.value > fusionThreshold)
                 std::cout << ballPosition.center.x << std::endl;
         }
 
@@ -156,8 +152,10 @@ int main(int argc, char* argv[]){
 
             fileStorage = FileStorage("../config/fusion.xml", FileStorage::WRITE);
 
-            fileStorage << "treshold" << fusionTreshold;
+            fileStorage << "threshold" << fusionThreshold;
             fileStorage << "bias" << fusionBias;
+
+            fileStorage.release();
 
             return 0;
         }

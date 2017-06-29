@@ -9,10 +9,10 @@
 
 using namespace cv;
 
-#include "Line.hpp"
-#include "CircleFinderResult.hpp"
-#include "debug.hpp"
-#include "preprocessor_math.h"
+#include "lib/Line.hpp"
+#include "lib/CircleFinderResult.hpp"
+#include "../debug.hpp"
+#include "../preprocessor_math.h"
 
 //Östereicher werden restlos erkannt
 

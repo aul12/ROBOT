@@ -11,7 +11,7 @@ find_package( OpenCV REQUIRED )
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES ../ColourBased.hpp ../Canny.hpp ../CircleFinder.hpp ../Line.cpp ../Line.hpp ../CircleFinderResult.cpp ../CircleFinderResult.hpp ../Profiler.cpp ../Profiler.hpp)
+set(SOURCE_FILES ../Filter/ColourBased.hpp ../Filter/Canny.hpp ../Filter/CircleFinder.hpp ../Filter/lib/Line.cpp ../Filter/lib/Line.hpp ../Filter/lib/CircleFinderResult.cpp ../Filter/lib/CircleFinderResult.hpp ../Profiler.cpp ../Profiler.hpp)
 add_executable(RunUnitTests gtest.cpp ${test_SRCS} ${SOURCE_FILES})
 
 target_link_libraries(RunUnitTests ${GTEST_LIBS} ${OpenCV_LIBS} -lgtest -lpthread)
