@@ -6,13 +6,13 @@ stages:
 #- test
 
 # Static Type Analysis
-check:
-  stage: validate
-  script:
-    - cppcheck . --enabled=all -I *.hpp > cppcheck.txt
-  artifacts:
-    paths:
-    - cppcheck.txt
+#check:
+#  stage: validate
+#  script:
+#    - cppcheck . --enabled=all -I *.hpp > cppcheck.txt
+#  artifacts:
+#    paths:
+#    - cppcheck.txt
 
 # Build the program
 build:
@@ -22,18 +22,22 @@ build:
     - cd build
     - cmake ..
     - make OrangeBall
-
-# run tests
-test:
-  stage: test
-  script:
-    - mkdir build
-    - cd build
-    - cmake ..
-    - make RunUnitTests
-    - cd tests
-    - ./RunUnitTests --gtest_repeat=10 --gtest_output=xml:testOutput.xml
   artifacts:
     when: always
     paths:
-    - build/testOutput.xml
+    - build/OrangeBall
+
+# run tests
+#test:
+#  stage: test
+#  script:
+#    - mkdir build
+#    - cd build
+#    - cmake ..
+#    - make RunUnitTests
+#    - cd tests
+#    - ./RunUnitTests --gtest_repeat=10 --gtest_output=xml:testOutput.xml
+#  artifacts:
+#    when: always
+#    paths:
+#    - build/testOutput.xml
