@@ -45,7 +45,7 @@ int Profiler::end() {
         this->timeConsumed += timeThisRun;
         runs++;
 
-        std::cout << "\033[34m" <<processName << ": " << (timeConsumed/runs) << "ms\n" << std::endl;
+        std::cout << "\e[36m" <<processName << ": " << (timeConsumed/runs) << "ms\n\e[39m" << std::endl;
 
         return (int) timeThisRun;
     }
