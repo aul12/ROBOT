@@ -45,7 +45,7 @@ namespace fusion{
             colourResults = cv::Mat::zeros(s, CV_8UC1);
         }
 
-        addWeighted(imgCircleFinder, fusionBias/50.0, colourResults, (100-fusionBias)/50, 0, imgFinal);
+        addWeighted(imgCircleFinder, fusionBias/50.0, colourResults, (100-fusionBias)/50.0, 0, imgFinal);
 
         Mat imgLast = Mat::zeros(s, CV_8UC1);
         for(int c=0; c<MEM_SIZE; c++){
