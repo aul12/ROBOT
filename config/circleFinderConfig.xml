@@ -9,7 +9,6 @@
     <triangleLineLengthRatioThreshold>0.1</triangleLineLengthRatioThreshold>
     <maxRadiusRatioTolerance>0.2</maxRadiusRatioTolerance>
     <minRadiusRatioTolerance>0.08</minRadiusRatioTolerance>
-    <radiusRatioToleranceFactor>0.008</radiusRatioToleranceFactor>
     <maxMatchFaultPercentage>0.10</maxMatchFaultPercentage>-->
 
     <!-- Fisheye (without undistortion)-->
@@ -21,7 +20,6 @@
     <triangleLineLengthRatioThreshold>0.1</triangleLineLengthRatioThreshold>
     <maxRadiusRatioTolerance>0.30</maxRadiusRatioTolerance>
     <minRadiusRatioTolerance>0.08</minRadiusRatioTolerance>
-    <radiusRatioToleranceFactor>0.01</radiusRatioToleranceFactor>
     <maxMatchFaultPercentage>0.18</maxMatchFaultPercentage>
 
     <!-- Playstation Eye @TODO-->
@@ -33,6 +31,5 @@
     <triangleLineLengthRatioThreshold>0.1</triangleLineLengthRatioThreshold>
     <maxRadiusRatioTolerance>0.3</maxRadiusRatioTolerance>
     <minRadiusRatioTolerance>0.08</minRadiusRatioTolerance>
-    <radiusRatioToleranceFactor>0.008</radiusRatioToleranceFactor>
     <maxMatchFaultPercentage>0.2</maxMatchFaultPercentage>-->
 </opencv_storage>

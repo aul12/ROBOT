@@ -28,7 +28,7 @@ namespace crclfnd{
     float triangleLineLengthRatioThreshold; ///<The maximum percentage difference between the two shorter edges of the triangle
     float maxRadiusRatioTolerance;///<The maximum tolerance for the ratio between the calculated radius and the actual distance from a point to the center
     float minRadiusRatioTolerance; ///<The minimum tolerance for the ratio between the calculated radius and the actual distance from a point to the center
-    float radiusRatioToleranceFactor;///<The scaling factor of the dynamic radius ratio threshold (lower means more tolerant)
+    float radiusRatioToleranceFactor;///<The scaling factor of the dynamic radius ratio threshold (calculated from max- and minRadiusRatioTolerance)
     float maxMatchFaultPercentage;///<The maximum amount of points (in %) which are allowed to exceed the radius tolerance
 
     /**
@@ -78,8 +78,9 @@ namespace crclfnd{
         fileStorage["triangleLineLengthRatioThreshold"] >> triangleLineLengthRatioThreshold;
         fileStorage["maxRadiusRatioTolerance"] >> maxRadiusRatioTolerance;
         fileStorage["minRadiusRatioTolerance"] >> minRadiusRatioTolerance;
-        fileStorage["radiusRatioToleranceFactor"] >> radiusRatioToleranceFactor;
         fileStorage["maxMatchFaultPercentage"] >> maxMatchFaultPercentage;
+        radiusRatioToleranceFactor = (maxRadiusRatioTolerance - minRadiusRatioTolerance) /
+                (maxRadius - minRadius);
     }
 
     CircleFinderResult isCircle(std::vector<Point> points){
