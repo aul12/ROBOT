@@ -11,7 +11,7 @@
 #include <chrono>
 #include <iostream>
 
-#define PROF_ENABLED true 
+#define PROF_ENABLED true
 
 /**
  * Start a profiler at this point with a certain name, this will manage everything.

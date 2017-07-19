@@ -10,7 +10,10 @@
 namespace capture{
     cv::Mat imgOriginal;
     bool firstImage = false;
+    bool imgWrite = false;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wmissing-noreturn"
     void captureThread(int videoNumber){
         cv::Mat img;
         cv::VideoCapture cap(videoNumber);
@@ -20,13 +23,21 @@ namespace capture{
         }
         while(1){
             if (cap.read(img)) {
+                imgWrite = true;
                 imgOriginal = img;
+                imgWrite = false;
                 firstImage = true;
             }
                /* dbg::println("Camera not available is a other program already using the camera?", dbg::ERROR);
             else
                 i*/
         }
+    }
+#pragma clang diagnostic pop
+
+    cv::Mat getImageOriginal(){
+        while(imgWrite);
+        return imgOriginal;
     }
 }
 

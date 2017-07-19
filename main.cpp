@@ -77,13 +77,6 @@ int main(int argc, char* argv[]){
 
     dbg::init(dbg::STDOUT, dbg::ERROR);
 
-    //VideoCapture cap(videoNumber);
-
-    /*Mat imgOriginal;
-    if (!cap.isOpened()){
-        dbg::println("Camera not available is a other program already using the camera?", dbg::ERROR);
-        return -1;
-    }*/
     std::thread captureThread(capture::captureThread, videoNumber);
 
     clr::init();
@@ -95,29 +88,25 @@ int main(int argc, char* argv[]){
     while(!capture::firstImage);
     while(true){
         PROF_START(Frame)
-       /* PROF_START(Capture)
-        if (!cap.read(imgOriginal))
-            dbg::println("Camera not available is a other program already using the camera?", dbg::ERROR);
-        PROF_END(Capture)*/
 
         Mat imgCannyResult, imgColourResult;
         std::vector<CircleFinderResult> results;
         
         PROF_START(Canny)
         if(cannyEnable)
-            results = cnny::run(capture::imgOriginal);
+            results = cnny::run(capture::getImageOriginal());
         PROF_END(Canny)
 
         PROF_START(Color)
         if(colorEnable)
-            imgColourResult = clr::run(capture::imgOriginal);
+            imgColourResult = clr::run(capture::getImageOriginal());
         PROF_END(Color)
 
 
         fusion::BallPosition ballPosition;
         PROF_START(Fusion)
         ballPosition = fusion::getPosition(cannyEnable, colorEnable,
-            results, imgColourResult, capture::imgOriginal.size, fusionBias, guiEnable);
+            results, imgColourResult, capture::getImageOriginal().size, fusionBias, guiEnable);
         PROF_END(Fusion)
 
         if(serialOutput)
@@ -125,19 +114,19 @@ int main(int argc, char* argv[]){
 
 
         if(guiEnable){
-            Mat imgOriginalCopy = capture::imgOriginal.clone();
+            Mat imageOriginalCopy = capture::getImageOriginal().clone();
             if(ballPosition.value > fusionThreshold) {
-                circle(imgOriginalCopy, ballPosition.center, ballPosition.radius == 0 ? 5 : ballPosition.radius,
+                circle(imageOriginalCopy, ballPosition.center, ballPosition.radius == 0 ? 5 : ballPosition.radius,
                        Vec3b(0, 255, 0), 3);
             }
             namedWindow("Original", WINDOW_NORMAL);
 
-            imshow("Original", imgOriginalCopy);
+            imshow("Original", imageOriginalCopy);
             createTrackbar("Fusion Bias", "Original", &fusionBias, 100);
             createTrackbar("Fusion Threshold", "Original", &fusionThreshold, 256);
 
             if(cannyEnable)
-                cnny::show(fusion::getCanny(results, capture::imgOriginal.size));
+                cnny::show(fusion::getCanny(results, capture::getImageOriginal().size));
             if(colorEnable)
                 clr::show(imgColourResult);
         } else {
