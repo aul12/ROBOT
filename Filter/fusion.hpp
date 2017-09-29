@@ -8,6 +8,7 @@
 #include "opencv2/opencv.hpp"
 
 #define MEM_SIZE 5
+#define MAX_SEARCH_PREC 8   ///< Grid to be searched to find maximum
 
 namespace fusion{
     struct BallPosition{
@@ -66,8 +67,8 @@ namespace fusion{
         uchar max = 0;
         bool objectFound = false;
         int xMax = 0, yMax = 0;
-        for (int y = 0; y < imgFinal.rows; y++) {
-            for (int x = 0; x < imgFinal.cols; x++) {
+        for (int y = 0; y < imgFinal.rows; y+=MAX_SEARCH_PREC) {
+            for (int x = 0; x < imgFinal.cols; x+=MAX_SEARCH_PREC) {
                 uchar val = imgFinal.at<uchar>(Point(x, y));
 
                 if (val > max) {
