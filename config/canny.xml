@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <opencv_storage>
-<threshold>64</threshold>
+<threshold>52</threshold>
 <colorBias>62</colorBias>
 <contrastFactor>25</contrastFactor>
 </opencv_storage>

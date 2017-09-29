@@ -97,6 +97,7 @@ namespace cnny{
      * @return an image with debug information
      */
     std::vector<CircleFinderResult> run(Mat imgOriginal){
+        PROF_START(Canny)
         // Define the necessary images
         Mat imgCanny, imgCannyContours;
 
@@ -144,7 +145,7 @@ namespace cnny{
             line(imgColourFiltered, result.triangle[0], result.triangle[2], Scalar(255,0,0), 2, 8);
         }
         PROF_END(Canny_CircleFinder)
-
+        PROF_END(Canny)
         return results;
     }
 }

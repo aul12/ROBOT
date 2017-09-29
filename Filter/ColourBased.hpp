@@ -48,6 +48,7 @@ namespace clr{
     }
 
     Mat run(Mat imgOriginal){
+        PROF_START(Color)
         Mat imgHSV, imgColorThresholded, imgLowRes;
 
         resize(imgOriginal, imgLowRes, Size(80, 60));
@@ -67,10 +68,9 @@ namespace clr{
         }
 
         resize(imgColorThresholded, imgColorThresholded, imgOriginal.size());
+        PROF_END(Color)
         return imgColorThresholded;
     }
 }
-
-
 
 #endif //ORANGEBALL_COLOURBASED_HPP

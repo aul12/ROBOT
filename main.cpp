@@ -87,38 +87,33 @@ int main(int argc, char* argv[]){
         serial::init();
 
     while(!capture::firstImage);
+
+    std::future<std::vector<CircleFinderResult> > cannyFutureResult;
+    std::future<Mat> imgColourFuture;
+    if(cannyEnable) {
+        cannyFutureResult = std::async(cnny::run, capture::getImageOriginal());
+    }
+
+    if(colorEnable) {
+        imgColourFuture = std::async(clr::run, capture::getImageOriginal());
+    }
+
     while(true){
         PROF_START(Frame)
+        PROF_START(Frame_NoGui)
 
         Mat imgCannyResult, imgColourResult;
         std::vector<CircleFinderResult> results;
 
-        static std::future<std::vector<CircleFinderResult> > cannyFutureResult;
-        static std::future<Mat> imgColourFuture;
-        
-        PROF_START(Canny)
-        if(cannyEnable) {
-            cannyFutureResult = std::async(cnny::run, capture::getImageOriginal());
-        }
-
-
-        PROF_START(Color)
-        if(colorEnable) {
-            imgColourFuture = std::async(clr::run, capture::getImageOriginal());
-        }
-
-
         if(cannyEnable){
             cannyFutureResult.wait();
             results = cannyFutureResult.get();
-            PROF_END(Canny)
             cannyFutureResult = std::async(cnny::run, capture::getImageOriginal());
         }
 
         if(colorEnable){
             imgColourFuture.wait();
             imgColourResult = imgColourFuture.get();
-            PROF_END(Color)
             imgColourFuture = std::async(clr::run, capture::getImageOriginal());
         }
 
@@ -132,6 +127,7 @@ int main(int argc, char* argv[]){
             serial::sendChar((uint8_t) (ballPosition.value > fusionThreshold ?ballPosition.center.x / 5 : 0xFF));
 
 
+        PROF_END(Frame_NoGui)
         if(guiEnable){
             Mat imageOriginalCopy = capture::getImageOriginal().clone();
             if(ballPosition.value > fusionThreshold) {
