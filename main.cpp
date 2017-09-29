@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <thread>
+#include <future>
 
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/opencv.hpp"
@@ -91,17 +92,35 @@ int main(int argc, char* argv[]){
 
         Mat imgCannyResult, imgColourResult;
         std::vector<CircleFinderResult> results;
+
+        static std::future<std::vector<CircleFinderResult> > cannyFutureResult;
+        static std::future<Mat> imgColourFuture;
         
         PROF_START(Canny)
-        if(cannyEnable)
-            results = cnny::run(capture::getImageOriginal());
-        PROF_END(Canny)
+        if(cannyEnable) {
+            cannyFutureResult = std::async(cnny::run, capture::getImageOriginal());
+        }
+
 
         PROF_START(Color)
-        if(colorEnable)
-            imgColourResult = clr::run(capture::getImageOriginal());
-        PROF_END(Color)
+        if(colorEnable) {
+            imgColourFuture = std::async(clr::run, capture::getImageOriginal());
+        }
 
+
+        if(cannyEnable){
+            cannyFutureResult.wait();
+            results = cannyFutureResult.get();
+            PROF_END(Canny)
+            cannyFutureResult = std::async(cnny::run, capture::getImageOriginal());
+        }
+
+        if(colorEnable){
+            imgColourFuture.wait();
+            imgColourResult = imgColourFuture.get();
+            PROF_END(Color)
+            imgColourFuture = std::async(clr::run, capture::getImageOriginal());
+        }
 
         fusion::BallPosition ballPosition;
         PROF_START(Fusion)
