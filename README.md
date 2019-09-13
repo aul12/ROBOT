@@ -1,6 +1,5 @@
 # ROBOT - ROBOT Orange Ball-shaped Object Tracker
-
-[![build status](https://git.markdorf-robotics.de/Orangener-Ball/ROBOT/badges/master/build.svg)](https://git.markdorf-robotics.de/Orangener-Ball/ROBOT/commits/master)
+An algorithm to detect the ball for RoboCup-Junior Soccer.
 
 ## Modules
 ### Color Based
