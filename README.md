@@ -95,28 +95,28 @@ There are three sliders which let you configure the canny threshold and the colo
 Example how to configure the three values to ensure the best results:
 1.  Set Threshold and Color bias to maximum and Contrast to **default value**.
     <br><br><br>
-    ![Image Step 1](https://git.markdorf-robotics.de/Orangener-Ball/ROBOT/raw/master/calibrationImg/filterStep1.png "Step 1")
+    ![Image Step 1](calibrationImg/filterStep1.png "Step 1")
     <br><br><br>
 2.  Set Color bias to a value where all background colors appear in the same grayish tone and
     only reddish colors are clearly distinguished.
     <br><br><br>
-    ![Image Step 2](https://git.markdorf-robotics.de/Orangener-Ball/ROBOT/raw/master/calibrationImg/filterStep2.png "Step 2")
+    ![Image Step 2](calibrationImg/filterStep2.png "Step 2")
     <br><br><br>
 3.  Adjust the contrast so reddish areas are marked by red / green lines (detected as edge). You can do this
     simultaneously with the previous step if necessary.
     <br><br><br>
-    ![Image Step 3](https://git.markdorf-robotics.de/Orangener-Ball/ROBOT/raw/master/calibrationImg/filterStep3.png "Step 3")
+    ![Image Step 3](calibrationImg/filterStep3.png "Step 3")
 
     <br><br><br>
 4.  Reduce the Canny threshold to improve edge detection of reddish objects. Don't go to low
     to avoid noise.
     <br><br><br>
-    ![Image Step 4](https://git.markdorf-robotics.de/Orangener-Ball/ROBOT/raw/master/calibrationImg/filterStep4.png "Step 4")
+    ![Image Step 4](calibrationImg/filterStep4.png "Step 4")
     <br><br><br>
     or (with a lower contrast, the canny threshold needs to be lower. 
     Both setups work equally well. Choose one depending on the environmental lighting)
     <br><br><br>
-    ![Image Step 4 alternative](https://git.markdorf-robotics.de/Orangener-Ball/ROBOT/raw/master/calibrationImg/filterStep4_1.png "Step 4 alternative")
+    ![Image Step 4 alternative](calibrationImg/filterStep4_1.png "Step 4 alternative")
 
  
 
@@ -197,41 +197,6 @@ Following variables let you configure the CircleFinder module:
 *   Bad detection of objects at a medium distance:
     * Adjust **radiusRatioToleranceFactor**
     
-
-## Runner
-Because there is no build server available gitlab requires a runner to build, 
-execute and test the program, therefore you are advised to install a runner on your
-development machine.
-
-### Installation
-First add the gitlab-runner package to your package-list:
-
-    wget https://packages.gitlab.com/install/repositories/runner/gitlab-ci-multi-runner/script.deb.sh
-    
-    sudo bash script.deb.sh
-
-Finally install the gitlab-runner:
-
-    sudo apt-get install gitlab-ci-multi-runner
-    
-If you haven't already installed all dev-dependencies you are advised to do so, the gitlab-runner requires them.
-     
-## Configure the runner
-To use the runner you need to configure the runner to build the project in the right repo:
-
-    sudo gitlab-ci-multi-runner register
-    
-During execution enter [https://git.markdorf-robotics.de/ci](https://git.markdorf-robotics.de/ci) 
-as the "gitlab-ci coordinator URL".
-
-Next get a token for the repo. The token is available
-in the settings of the gitlab page 
-([https://git.markdorf-robotics.de/panykiel/OrangeBall/runners](https://git.markdorf-robotics.de/panykiel/OrangeBall/runners)).
-Enter this token as "gitlab-ci token for this runner".
-
-Next enter a description of your runner (e.g. John Doe's Laptop).
-
-Finally you need to select a executor, just choose "shell".
 
 ## Coding Style
 The code style should follow the kernel.org code style 
